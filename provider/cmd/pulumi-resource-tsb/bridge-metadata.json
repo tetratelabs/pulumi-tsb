@@ -1,0 +1,23 @@
+{
+  "resources": {
+    "tsb:index/tenant:Tenant": "tsb_tenant"
+  },
+  "functions": {
+    "tsb:index:Organization": "tsb_organization"
+  },
+  "renamedProperties": {
+    "tsb:index/tenant:Tenant": {
+      "displayName": "display_name",
+      "securityDomain": "security_domain"
+    },
+    "tsb:index:Organization": {
+      "displayName": "display_name"
+    },
+    "tsb:index:Provider": {
+      "basicAuth": "basic_auth"
+    }
+  },
+  "renamedConfigProperties": {
+    "basicAuth": "basic_auth"
+  }
+}

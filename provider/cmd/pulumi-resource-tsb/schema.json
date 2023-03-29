@@ -1,0 +1,234 @@
+{
+    "name": "tsb",
+    "attribution": "This Pulumi package is based on the [`tsb` Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb).",
+    "meta": {
+        "moduleFormat": "(.*)(?:/[^/]*)"
+    },
+    "language": {
+        "nodejs": {
+            "compatibility": "tfbridge20",
+            "dependencies": {
+                "@pulumi/pulumi": "^3.0.0"
+            },
+            "devDependencies": {
+                "@types/node": "^10.0.0"
+            },
+            "disableUnionOutputTypes": true,
+            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.2",
+            "packageName": "",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-tsb` repo](/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-tsb` repo](https://github.com/tetratelabs/terraform-provider-tsb/issues).",
+            "typescriptVersion": ""
+        },
+        "python": {
+            "compatibility": "tfbridge20",
+            "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-tsb` repo](/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-tsb` repo](https://github.com/tetratelabs/terraform-provider-tsb/issues)."
+        }
+    },
+    "config": {
+        "variables": {
+            "address": {
+                "type": "string",
+                "description": "The address that the management plane can be reached at. Must include port.\n"
+            },
+            "basicAuth": {
+                "$ref": "#/types/tsb:config/basicAuth:basicAuth",
+                "description": "The basic auth credentials to communicate with a TSB management plane.\n"
+            }
+        },
+        "defaults": [
+            "address",
+            "basicAuth"
+        ]
+    },
+    "types": {
+        "tsb:config/basicAuth:basicAuth": {
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredInputs": []
+                }
+            }
+        },
+        "tsb:index/ProviderBasicAuth:ProviderBasicAuth": {
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "secret": true
+                },
+                "username": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "required": [
+                "password",
+                "username"
+            ],
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": []
+                }
+            }
+        }
+    },
+    "provider": {
+        "description": "The provider type for the tsb package. By default, resources use package-wide configuration\nsettings, however an explicit `Provider` instance may be created and passed during resource\nconstruction to achieve fine-grained programmatic control over provider settings. See the\n[documentation](https://www.pulumi.com/docs/reference/programming-model/#providers) for more information.\n",
+        "properties": {
+            "address": {
+                "type": "string",
+                "description": "The address that the management plane can be reached at. Must include port.\n"
+            },
+            "basicAuth": {
+                "$ref": "#/types/tsb:index/ProviderBasicAuth:ProviderBasicAuth",
+                "description": "The basic auth credentials to communicate with a TSB management plane.\n"
+            }
+        },
+        "required": [
+            "address",
+            "basicAuth"
+        ],
+        "inputProperties": {
+            "address": {
+                "type": "string",
+                "description": "The address that the management plane can be reached at. Must include port.\n"
+            },
+            "basicAuth": {
+                "$ref": "#/types/tsb:index/ProviderBasicAuth:ProviderBasicAuth",
+                "description": "The basic auth credentials to communicate with a TSB management plane.\n"
+            }
+        },
+        "requiredInputs": [
+            "address",
+            "basicAuth"
+        ]
+    },
+    "resources": {
+        "tsb:index/tenant:Tenant": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the resource.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "parent": {
+                    "type": "string",
+                    "description": "Parent resource where the Tenant will be created.\n"
+                },
+                "securityDomain": {
+                    "type": "string",
+                    "description": "Security domains can be used to group different resources under the same security domain. Although security domain is\nnot resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a\nchild cannot override any ancestor's security domain. Once a security domain is assigned to a _Tenant_, all the children\nresources will belong to that security domain in the same way a _Workspace_ belongs to a _Tenant_, a _Workspace_ will\nalso belong to the security domain assigned to the _Tenant_. Security domains can also be used to define _Security\nsettings Authorization rules_ in which you can allow or deny request from or to a security domain.\n"
+                }
+            },
+            "required": [
+                "name",
+                "parent"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the resource.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "parent": {
+                    "type": "string",
+                    "description": "Parent resource where the Tenant will be created.\n"
+                },
+                "securityDomain": {
+                    "type": "string",
+                    "description": "Security domains can be used to group different resources under the same security domain. Although security domain is\nnot resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a\nchild cannot override any ancestor's security domain. Once a security domain is assigned to a _Tenant_, all the children\nresources will belong to that security domain in the same way a _Workspace_ belongs to a _Tenant_, a _Workspace_ will\nalso belong to the security domain assigned to the _Tenant_. Security domains can also be used to define _Security\nsettings Authorization rules_ in which you can allow or deny request from or to a security domain.\n"
+                }
+            },
+            "requiredInputs": [
+                "name",
+                "parent"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering Tenant resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "A description of the resource.\n"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "User friendly name for the resource.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The short name for the resource to be created.\n"
+                    },
+                    "parent": {
+                        "type": "string",
+                        "description": "Parent resource where the Tenant will be created.\n"
+                    },
+                    "securityDomain": {
+                        "type": "string",
+                        "description": "Security domains can be used to group different resources under the same security domain. Although security domain is\nnot resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a\nchild cannot override any ancestor's security domain. Once a security domain is assigned to a _Tenant_, all the children\nresources will belong to that security domain in the same way a _Workspace_ belongs to a _Tenant_, a _Workspace_ will\nalso belong to the security domain assigned to the _Tenant_. Security domains can also be used to define _Security\nsettings Authorization rules_ in which you can allow or deny request from or to a security domain.\n"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "functions": {
+        "tsb:index:Organization": {
+            "inputs": {
+                "description": "A collection of arguments for invoking Organization.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id"
+                ]
+            },
+            "outputs": {
+                "description": "A collection of values returned by Organization.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string"
+                    },
+                    "id": {
+                        "type": "string"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id"
+                ]
+            }
+        }
+    }
+}
