@@ -71,9 +71,9 @@ export class User extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The Organization the User belongs to.
+     * The parent ID of the user.
      */
-    public readonly organization!: pulumi.Output<string>;
+    public readonly parent!: pulumi.Output<string>;
     /**
      * Where the user comes from. It can be a local user that exists only in TSB (LOCAL) or it can be a user that has been
      * synchronized from the Identity Provider (LDAP).
@@ -99,7 +99,7 @@ export class User extends pulumi.CustomResource {
             resourceInputs["lastName"] = state ? state.lastName : undefined;
             resourceInputs["loginName"] = state ? state.loginName : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["organization"] = state ? state.organization : undefined;
+            resourceInputs["parent"] = state ? state.parent : undefined;
             resourceInputs["sourceType"] = state ? state.sourceType : undefined;
         } else {
             const args = argsOrState as UserArgs | undefined;
@@ -109,8 +109,8 @@ export class User extends pulumi.CustomResource {
             if ((!args || args.name === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            if ((!args || args.organization === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'organization'");
+            if ((!args || args.parent === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'parent'");
             }
             resourceInputs["displayName"] = args ? args.displayName : undefined;
             resourceInputs["email"] = args ? args.email : undefined;
@@ -118,7 +118,7 @@ export class User extends pulumi.CustomResource {
             resourceInputs["lastName"] = args ? args.lastName : undefined;
             resourceInputs["loginName"] = args ? args.loginName : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["organization"] = args ? args.organization : undefined;
+            resourceInputs["parent"] = args ? args.parent : undefined;
             resourceInputs["sourceType"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -155,9 +155,9 @@ export interface UserState {
      */
     name?: pulumi.Input<string>;
     /**
-     * The Organization the User belongs to.
+     * The parent ID of the user.
      */
-    organization?: pulumi.Input<string>;
+    parent?: pulumi.Input<string>;
     /**
      * Where the user comes from. It can be a local user that exists only in TSB (LOCAL) or it can be a user that has been
      * synchronized from the Identity Provider (LDAP).
@@ -194,7 +194,7 @@ export interface UserArgs {
      */
     name: pulumi.Input<string>;
     /**
-     * The Organization the User belongs to.
+     * The parent ID of the user.
      */
-    organization: pulumi.Input<string>;
+    parent: pulumi.Input<string>;
 }

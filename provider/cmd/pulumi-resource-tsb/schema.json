@@ -14,7 +14,7 @@
                 "@types/node": "^10.0.0"
             },
             "disableUnionOutputTypes": true,
-            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.3",
+            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.4",
             "packageName": "",
             "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-tsb` repo](/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-tsb` repo](https://github.com/tetratelabs/terraform-provider-tsb/issues).",
             "typescriptVersion": ""
@@ -174,16 +174,16 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The organization the Service Account will belong to.\n"
+                    "description": "The parent ID of the Service Account.\n"
                 }
             },
             "required": [
                 "keyEncoding",
                 "keys",
                 "name",
-                "organization"
+                "parent"
             ],
             "inputProperties": {
                 "description": {
@@ -202,14 +202,14 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The organization the Service Account will belong to.\n"
+                    "description": "The parent ID of the Service Account.\n"
                 }
             },
             "requiredInputs": [
                 "name",
-                "organization"
+                "parent"
             ],
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering ServiceAccount resources.\n",
@@ -237,9 +237,9 @@
                         "type": "string",
                         "description": "The short name for the resource to be created.\n"
                     },
-                    "organization": {
+                    "parent": {
                         "type": "string",
-                        "description": "The organization the Service Account will belong to.\n"
+                        "description": "The parent ID of the Service Account.\n"
                     }
                 },
                 "type": "object"
@@ -259,9 +259,9 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The Organization the Tenant belongs to.\n"
+                    "description": "The parent ID of the Tenant.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -270,7 +270,7 @@
             },
             "required": [
                 "name",
-                "organization"
+                "parent"
             ],
             "inputProperties": {
                 "description": {
@@ -285,9 +285,9 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The Organization the Tenant belongs to.\n"
+                    "description": "The parent ID of the Tenant.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -296,7 +296,7 @@
             },
             "requiredInputs": [
                 "name",
-                "organization"
+                "parent"
             ],
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering Tenant resources.\n",
@@ -313,9 +313,9 @@
                         "type": "string",
                         "description": "The short name for the resource to be created.\n"
                     },
-                    "organization": {
+                    "parent": {
                         "type": "string",
-                        "description": "The Organization the Tenant belongs to.\n"
+                        "description": "The parent ID of the Tenant.\n"
                     },
                     "securityDomain": {
                         "type": "string",
@@ -351,9 +351,9 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The Organization the User belongs to.\n"
+                    "description": "The parent ID of the user.\n"
                 },
                 "sourceType": {
                     "type": "string",
@@ -363,7 +363,7 @@
             "required": [
                 "loginName",
                 "name",
-                "organization",
+                "parent",
                 "sourceType"
             ],
             "inputProperties": {
@@ -391,15 +391,15 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "organization": {
+                "parent": {
                     "type": "string",
-                    "description": "The Organization the User belongs to.\n"
+                    "description": "The parent ID of the user.\n"
                 }
             },
             "requiredInputs": [
                 "loginName",
                 "name",
-                "organization"
+                "parent"
             ],
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering User resources.\n",
@@ -428,9 +428,9 @@
                         "type": "string",
                         "description": "The short name for the resource to be created.\n"
                     },
-                    "organization": {
+                    "parent": {
                         "type": "string",
-                        "description": "The Organization the User belongs to.\n"
+                        "description": "The parent ID of the user.\n"
                     },
                     "sourceType": {
                         "type": "string",

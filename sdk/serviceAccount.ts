@@ -72,9 +72,9 @@ export class ServiceAccount extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The organization the Service Account will belong to.
+     * The parent ID of the Service Account.
      */
-    public readonly organization!: pulumi.Output<string>;
+    public readonly parent!: pulumi.Output<string>;
 
     /**
      * Create a ServiceAccount resource with the given unique name, arguments, and options.
@@ -94,20 +94,20 @@ export class ServiceAccount extends pulumi.CustomResource {
             resourceInputs["keyEncoding"] = state ? state.keyEncoding : undefined;
             resourceInputs["keys"] = state ? state.keys : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["organization"] = state ? state.organization : undefined;
+            resourceInputs["parent"] = state ? state.parent : undefined;
         } else {
             const args = argsOrState as ServiceAccountArgs | undefined;
             if ((!args || args.name === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            if ((!args || args.organization === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'organization'");
+            if ((!args || args.parent === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'parent'");
             }
             resourceInputs["description"] = args ? args.description : undefined;
             resourceInputs["displayName"] = args ? args.displayName : undefined;
             resourceInputs["keyEncoding"] = args ? args.keyEncoding : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["organization"] = args ? args.organization : undefined;
+            resourceInputs["parent"] = args ? args.parent : undefined;
             resourceInputs["keys"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -143,9 +143,9 @@ export interface ServiceAccountState {
      */
     name?: pulumi.Input<string>;
     /**
-     * The organization the Service Account will belong to.
+     * The parent ID of the Service Account.
      */
-    organization?: pulumi.Input<string>;
+    parent?: pulumi.Input<string>;
 }
 
 /**
@@ -169,7 +169,7 @@ export interface ServiceAccountArgs {
      */
     name: pulumi.Input<string>;
     /**
-     * The organization the Service Account will belong to.
+     * The parent ID of the Service Account.
      */
-    organization: pulumi.Input<string>;
+    parent: pulumi.Input<string>;
 }

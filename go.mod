@@ -7,7 +7,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.6.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.43.1-0.20230328212400-4806fbe25bd9
 	github.com/pulumi/pulumi/sdk/v3 v3.59.0
-	github.com/tetratelabs/terraform-provider-tsb v0.0.3
+	github.com/tetratelabs/terraform-provider-tsb v0.0.4
 )
 
 require (

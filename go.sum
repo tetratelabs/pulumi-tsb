@@ -1777,8 +1777,8 @@ github.com/tetrateio/tetrate v0.0.2-0.20230201205234-5d44a721cb40 h1:mK8DI/BiHXE
 github.com/tetrateio/tetrate v0.0.2-0.20230201205234-5d44a721cb40/go.mod h1:58JZLAOeIpCAAueeaCFpMV4dL1VjWdsO07m5wcaYHwc=
 github.com/tetratelabs/multierror v1.1.1 h1:84JfJvfmnYC5y4877Ag3c4PkCUmQwq6sGI6iRfBATKI=
 github.com/tetratelabs/multierror v1.1.1/go.mod h1:hAyQ/XifPOPdb0x3GsowbjsjCPgT9Fsxjety9TxmuGY=
-github.com/tetratelabs/terraform-provider-tsb v0.0.3 h1:IXXWO6o3VWarbjyLU2G0IcsPEZSMswWnmjwqYgB6uc8=
-github.com/tetratelabs/terraform-provider-tsb v0.0.3/go.mod h1:sSItW3eWTQwycUfFdkUx4e3ZIjx8iHvXmgvpPIxL3Ec=
+github.com/tetratelabs/terraform-provider-tsb v0.0.4 h1:FLGSmbyLvB53jK9LtJ9rRDpNNTUbHrus783cBDJ8nrA=
+github.com/tetratelabs/terraform-provider-tsb v0.0.4/go.mod h1:sSItW3eWTQwycUfFdkUx4e3ZIjx8iHvXmgvpPIxL3Ec=
 github.com/texttheater/golang-levenshtein v1.0.1 h1:+cRNoVrfiwufQPhoMzB6N0Yf/Mqajr6t1lOv8GyGE2U=
 github.com/texttheater/golang-levenshtein v1.0.1/go.mod h1:PYAKrbF5sAiq9wd+H82hs7gNaen0CplQ9uvm6+enD/8=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
