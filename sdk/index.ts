@@ -29,10 +29,20 @@ export type Provider = import("./provider").Provider;
 export const Provider: typeof import("./provider").Provider = null as any;
 utilities.lazyLoad(exports, ["Provider"], () => require("./provider"));
 
+export { ServiceAccountArgs, ServiceAccountState } from "./serviceAccount";
+export type ServiceAccount = import("./serviceAccount").ServiceAccount;
+export const ServiceAccount: typeof import("./serviceAccount").ServiceAccount = null as any;
+utilities.lazyLoad(exports, ["ServiceAccount"], () => require("./serviceAccount"));
+
 export { TenantArgs, TenantState } from "./tenant";
 export type Tenant = import("./tenant").Tenant;
 export const Tenant: typeof import("./tenant").Tenant = null as any;
 utilities.lazyLoad(exports, ["Tenant"], () => require("./tenant"));
+
+export { UserArgs, UserState } from "./user";
+export type User = import("./user").User;
+export const User: typeof import("./user").User = null as any;
+utilities.lazyLoad(exports, ["User"], () => require("./user"));
 
 
 // Export sub-modules:
@@ -48,14 +58,20 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "tsb:index/serviceAccount:ServiceAccount":
+                return new ServiceAccount(name, <any>undefined, { urn })
             case "tsb:index/tenant:Tenant":
                 return new Tenant(name, <any>undefined, { urn })
+            case "tsb:index/user:User":
+                return new User(name, <any>undefined, { urn })
             default:
                 throw new Error(`unknown resource type ${type}`);
         }
     },
 };
+pulumi.runtime.registerResourceModule("tsb", "index/serviceAccount", _module)
 pulumi.runtime.registerResourceModule("tsb", "index/tenant", _module)
+pulumi.runtime.registerResourceModule("tsb", "index/user", _module)
 pulumi.runtime.registerResourcePackage("tsb", {
     version: utilities.getVersion(),
     constructProvider: (name: string, type: string, urn: string): pulumi.ProviderResource => {

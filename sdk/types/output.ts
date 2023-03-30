@@ -19,6 +19,14 @@ import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
 
+export interface ServiceAccountKey {
+    defaultToken: string;
+    encoding: string;
+    id: string;
+    privateKey: string;
+    publicKey: string;
+}
+
 export namespace config {
     export interface BasicAuth {
         password: string;
