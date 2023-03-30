@@ -23,5 +23,13 @@ export interface ProviderBasicAuth {
     password: pulumi.Input<string>;
     username: pulumi.Input<string>;
 }
+
+export interface ServiceAccountKey {
+    defaultToken?: pulumi.Input<string>;
+    encoding?: pulumi.Input<string>;
+    id?: pulumi.Input<string>;
+    privateKey?: pulumi.Input<string>;
+    publicKey?: pulumi.Input<string>;
+}
 export namespace config {
 }

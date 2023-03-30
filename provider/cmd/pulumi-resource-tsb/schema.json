@@ -14,7 +14,7 @@
                 "@types/node": "^10.0.0"
             },
             "disableUnionOutputTypes": true,
-            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.2",
+            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.3",
             "packageName": "",
             "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-tsb` repo](/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-tsb` repo](https://github.com/tetratelabs/terraform-provider-tsb/issues).",
             "typescriptVersion": ""
@@ -82,6 +82,39 @@
                     "requiredOutputs": []
                 }
             }
+        },
+        "tsb:index/ServiceAccountKey:ServiceAccountKey": {
+            "properties": {
+                "defaultToken": {
+                    "type": "string",
+                    "secret": true
+                },
+                "encoding": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "privateKey": {
+                    "type": "string",
+                    "secret": true
+                },
+                "publicKey": {
+                    "type": "string"
+                }
+            },
+            "type": "object",
+            "language": {
+                "nodejs": {
+                    "requiredOutputs": [
+                        "defaultToken",
+                        "encoding",
+                        "id",
+                        "privateKey",
+                        "publicKey"
+                    ]
+                }
+            }
         }
     },
     "provider": {
@@ -116,6 +149,102 @@
         ]
     },
     "resources": {
+        "tsb:index/serviceAccount:ServiceAccount": {
+            "properties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the resource.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "keyEncoding": {
+                    "type": "string",
+                    "description": "The format in which the generated key pairs will be returned. If not set keys are returned in PEM format.\n"
+                },
+                "keys": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/types/tsb:index/ServiceAccountKey:ServiceAccountKey"
+                    },
+                    "description": "Keys associated with the service account. A default key-pair is automatically created when the Service Account is\ncreated. Note that TSB does not store the private keys, so it is up to the client to store the returned private keys\nsecurely, as they are only returned once after creation. Additional keys can be added (and deleted) by using the\ncorresponding key management APIs. +protoc-gen-terraform:computed\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The organization the Service Account will belong to.\n"
+                }
+            },
+            "required": [
+                "keyEncoding",
+                "keys",
+                "name",
+                "organization"
+            ],
+            "inputProperties": {
+                "description": {
+                    "type": "string",
+                    "description": "A description of the resource.\n"
+                },
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "keyEncoding": {
+                    "type": "string",
+                    "description": "The format in which the generated key pairs will be returned. If not set keys are returned in PEM format.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The organization the Service Account will belong to.\n"
+                }
+            },
+            "requiredInputs": [
+                "name",
+                "organization"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering ServiceAccount resources.\n",
+                "properties": {
+                    "description": {
+                        "type": "string",
+                        "description": "A description of the resource.\n"
+                    },
+                    "displayName": {
+                        "type": "string",
+                        "description": "User friendly name for the resource.\n"
+                    },
+                    "keyEncoding": {
+                        "type": "string",
+                        "description": "The format in which the generated key pairs will be returned. If not set keys are returned in PEM format.\n"
+                    },
+                    "keys": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/types/tsb:index/ServiceAccountKey:ServiceAccountKey"
+                        },
+                        "description": "Keys associated with the service account. A default key-pair is automatically created when the Service Account is\ncreated. Note that TSB does not store the private keys, so it is up to the client to store the returned private keys\nsecurely, as they are only returned once after creation. Additional keys can be added (and deleted) by using the\ncorresponding key management APIs. +protoc-gen-terraform:computed\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The short name for the resource to be created.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The organization the Service Account will belong to.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
         "tsb:index/tenant:Tenant": {
             "properties": {
                 "description": {
@@ -130,9 +259,9 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "parent": {
+                "organization": {
                     "type": "string",
-                    "description": "Parent resource where the Tenant will be created.\n"
+                    "description": "The Organization the Tenant belongs to.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -141,7 +270,7 @@
             },
             "required": [
                 "name",
-                "parent"
+                "organization"
             ],
             "inputProperties": {
                 "description": {
@@ -156,9 +285,9 @@
                     "type": "string",
                     "description": "The short name for the resource to be created.\n"
                 },
-                "parent": {
+                "organization": {
                     "type": "string",
-                    "description": "Parent resource where the Tenant will be created.\n"
+                    "description": "The Organization the Tenant belongs to.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -167,7 +296,7 @@
             },
             "requiredInputs": [
                 "name",
-                "parent"
+                "organization"
             ],
             "stateInputs": {
                 "description": "Input properties used for looking up and filtering Tenant resources.\n",
@@ -184,13 +313,128 @@
                         "type": "string",
                         "description": "The short name for the resource to be created.\n"
                     },
-                    "parent": {
+                    "organization": {
                         "type": "string",
-                        "description": "Parent resource where the Tenant will be created.\n"
+                        "description": "The Organization the Tenant belongs to.\n"
                     },
                     "securityDomain": {
                         "type": "string",
                         "description": "Security domains can be used to group different resources under the same security domain. Although security domain is\nnot resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a\nchild cannot override any ancestor's security domain. Once a security domain is assigned to a _Tenant_, all the children\nresources will belong to that security domain in the same way a _Workspace_ belongs to a _Tenant_, a _Workspace_ will\nalso belong to the security domain assigned to the _Tenant_. Security domains can also be used to define _Security\nsettings Authorization rules_ in which you can allow or deny request from or to a security domain.\n"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "tsb:index/user:User": {
+            "properties": {
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email for the user where alerts and other notifications will be sent.\n"
+                },
+                "firstName": {
+                    "type": "string",
+                    "description": "The first name of the user.\n"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "The last name of the user, if any.\n"
+                },
+                "loginName": {
+                    "type": "string",
+                    "description": "The username used in the login credentials.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The Organization the User belongs to.\n"
+                },
+                "sourceType": {
+                    "type": "string",
+                    "description": "Where the user comes from. It can be a local user that exists only in TSB (LOCAL) or it can be a user that has been\nsynchronized from the Identity Provider (LDAP).\n"
+                }
+            },
+            "required": [
+                "loginName",
+                "name",
+                "organization",
+                "sourceType"
+            ],
+            "inputProperties": {
+                "displayName": {
+                    "type": "string",
+                    "description": "User friendly name for the resource.\n"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "Email for the user where alerts and other notifications will be sent.\n"
+                },
+                "firstName": {
+                    "type": "string",
+                    "description": "The first name of the user.\n"
+                },
+                "lastName": {
+                    "type": "string",
+                    "description": "The last name of the user, if any.\n"
+                },
+                "loginName": {
+                    "type": "string",
+                    "description": "The username used in the login credentials.\n"
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The short name for the resource to be created.\n"
+                },
+                "organization": {
+                    "type": "string",
+                    "description": "The Organization the User belongs to.\n"
+                }
+            },
+            "requiredInputs": [
+                "loginName",
+                "name",
+                "organization"
+            ],
+            "stateInputs": {
+                "description": "Input properties used for looking up and filtering User resources.\n",
+                "properties": {
+                    "displayName": {
+                        "type": "string",
+                        "description": "User friendly name for the resource.\n"
+                    },
+                    "email": {
+                        "type": "string",
+                        "description": "Email for the user where alerts and other notifications will be sent.\n"
+                    },
+                    "firstName": {
+                        "type": "string",
+                        "description": "The first name of the user.\n"
+                    },
+                    "lastName": {
+                        "type": "string",
+                        "description": "The last name of the user, if any.\n"
+                    },
+                    "loginName": {
+                        "type": "string",
+                        "description": "The username used in the login credentials.\n"
+                    },
+                    "name": {
+                        "type": "string",
+                        "description": "The short name for the resource to be created.\n"
+                    },
+                    "organization": {
+                        "type": "string",
+                        "description": "The Organization the User belongs to.\n"
+                    },
+                    "sourceType": {
+                        "type": "string",
+                        "description": "Where the user comes from. It can be a local user that exists only in TSB (LOCAL) or it can be a user that has been\nsynchronized from the Identity Provider (LDAP).\n"
                     }
                 },
                 "type": "object"

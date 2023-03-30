@@ -1,14 +1,32 @@
 {
   "resources": {
-    "tsb:index/tenant:Tenant": "tsb_tenant"
+    "tsb:index/serviceAccount:ServiceAccount": "tsb_service_account",
+    "tsb:index/tenant:Tenant": "tsb_tenant",
+    "tsb:index/user:User": "tsb_user"
   },
   "functions": {
     "tsb:index:Organization": "tsb_organization"
   },
   "renamedProperties": {
+    "tsb:index/ServiceAccountKey:ServiceAccountKey": {
+      "defaultToken": "default_token",
+      "privateKey": "private_key",
+      "publicKey": "public_key"
+    },
+    "tsb:index/serviceAccount:ServiceAccount": {
+      "displayName": "display_name",
+      "keyEncoding": "key_encoding"
+    },
     "tsb:index/tenant:Tenant": {
       "displayName": "display_name",
       "securityDomain": "security_domain"
+    },
+    "tsb:index/user:User": {
+      "displayName": "display_name",
+      "firstName": "first_name",
+      "lastName": "last_name",
+      "loginName": "login_name",
+      "sourceType": "source_type"
     },
     "tsb:index:Organization": {
       "displayName": "display_name"

@@ -59,9 +59,9 @@ export class Tenant extends pulumi.CustomResource {
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * Parent resource where the Tenant will be created.
+     * The Organization the Tenant belongs to.
      */
-    public readonly parent!: pulumi.Output<string>;
+    public readonly organization!: pulumi.Output<string>;
     /**
      * Security domains can be used to group different resources under the same security domain. Although security domain is
      * not resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a
@@ -88,20 +88,20 @@ export class Tenant extends pulumi.CustomResource {
             resourceInputs["description"] = state ? state.description : undefined;
             resourceInputs["displayName"] = state ? state.displayName : undefined;
             resourceInputs["name"] = state ? state.name : undefined;
-            resourceInputs["parent"] = state ? state.parent : undefined;
+            resourceInputs["organization"] = state ? state.organization : undefined;
             resourceInputs["securityDomain"] = state ? state.securityDomain : undefined;
         } else {
             const args = argsOrState as TenantArgs | undefined;
             if ((!args || args.name === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'name'");
             }
-            if ((!args || args.parent === undefined) && !opts.urn) {
-                throw new Error("Missing required property 'parent'");
+            if ((!args || args.organization === undefined) && !opts.urn) {
+                throw new Error("Missing required property 'organization'");
             }
             resourceInputs["description"] = args ? args.description : undefined;
             resourceInputs["displayName"] = args ? args.displayName : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
-            resourceInputs["parent"] = args ? args.parent : undefined;
+            resourceInputs["organization"] = args ? args.organization : undefined;
             resourceInputs["securityDomain"] = args ? args.securityDomain : undefined;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -126,9 +126,9 @@ export interface TenantState {
      */
     name?: pulumi.Input<string>;
     /**
-     * Parent resource where the Tenant will be created.
+     * The Organization the Tenant belongs to.
      */
-    parent?: pulumi.Input<string>;
+    organization?: pulumi.Input<string>;
     /**
      * Security domains can be used to group different resources under the same security domain. Although security domain is
      * not resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a
@@ -157,9 +157,9 @@ export interface TenantArgs {
      */
     name: pulumi.Input<string>;
     /**
-     * Parent resource where the Tenant will be created.
+     * The Organization the Tenant belongs to.
      */
-    parent: pulumi.Input<string>;
+    organization: pulumi.Input<string>;
     /**
      * Security domains can be used to group different resources under the same security domain. Although security domain is
      * not resource itself currently, it follows a fqn format `organizations/myorg/securitydomains/mysecuritydomain`, and a

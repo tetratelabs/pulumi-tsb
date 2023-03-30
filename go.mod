@@ -7,7 +7,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.6.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.43.1-0.20230328212400-4806fbe25bd9
 	github.com/pulumi/pulumi/sdk/v3 v3.59.0
-	github.com/tetratelabs/terraform-provider-tsb v0.0.2
+	github.com/tetratelabs/terraform-provider-tsb v0.0.3
 )
 
 require (
@@ -186,6 +186,7 @@ require (
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
 	github.com/ryanuber/go-glob v1.0.0 // indirect
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06 // indirect
+	github.com/samber/lo v1.38.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v5 v5.0.0 // indirect
 	github.com/segmentio/asm v1.1.3 // indirect
 	github.com/segmentio/encoding v0.3.5 // indirect
@@ -197,7 +198,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
-	github.com/tetrateio/api v0.0.0-20230204072422-470286015512 // indirect
+	github.com/tetrateio/api v0.0.0-20230330135441-0264d4eda8ac // indirect
 	github.com/tetrateio/tetrate v0.0.2-0.20230201205234-5d44a721cb40 // indirect
 	github.com/tetratelabs/multierror v1.1.1 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
@@ -217,6 +218,7 @@ require (
 	gocloud.dev v0.27.0 // indirect
 	gocloud.dev/secrets/hashivault v0.27.0 // indirect
 	golang.org/x/crypto v0.7.0 // indirect
+	golang.org/x/exp v0.0.0-20220713135740-79cabaa25d75 // indirect
 	golang.org/x/mod v0.8.0 // indirect
 	golang.org/x/net v0.8.0 // indirect
 	golang.org/x/oauth2 v0.4.0 // indirect

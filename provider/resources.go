@@ -49,13 +49,15 @@ func Provider() tfpfbridge.ProviderInfo {
 	info := tfbridge.ProviderInfo{
 		Name:              "tsb",
 		GitHubOrg:         "tetratelabs",
-		TFProviderVersion: "0.0.2",
-		Version:           "0.0.1",
+		TFProviderVersion: "0.0.3",
+		Version:           "0.0.2",
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			"tsb_organization": {Tok: checkMember(tsbMod, "Organization")},
 		},
 		Resources: map[string]*tfbridge.ResourceInfo{
-			"tsb_tenant": {Tok: checkResourceTok(tsbMod, "Tenant")},
+			"tsb_tenant":          {Tok: checkResourceTok(tsbMod, "Tenant")},
+			"tsb_service_account": {Tok: checkResourceTok(tsbMod, "ServiceAccount")},
+			"tsb_user":            {Tok: checkResourceTok(tsbMod, "User")},
 		},
 		JavaScript: &tfbridge.JavaScriptInfo{
 			Dependencies: map[string]string{
