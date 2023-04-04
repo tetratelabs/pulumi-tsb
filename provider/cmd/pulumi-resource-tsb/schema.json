@@ -14,7 +14,7 @@
                 "@types/node": "^10.0.0"
             },
             "disableUnionOutputTypes": true,
-            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.4",
+            "packageDescription": ". Based on terraform-provider-tsb: version v0.0.5",
             "packageName": "",
             "readme": "\u003e This provider is a derived work of the [Terraform Provider](https://github.com/tetratelabs/terraform-provider-tsb)\n\u003e distributed under [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/). If you encounter a bug or missing feature,\n\u003e first check the [`pulumi-tsb` repo](/issues); however, if that doesn't turn up anything,\n\u003e please consult the source [`terraform-provider-tsb` repo](https://github.com/tetratelabs/terraform-provider-tsb/issues).",
             "typescriptVersion": ""
@@ -257,11 +257,11 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The short name for the resource to be created.\n"
+                    "description": "Short name of the Tenant resource.\n"
                 },
                 "parent": {
                     "type": "string",
-                    "description": "The parent ID of the Tenant.\n"
+                    "description": "The parent id for the Tenant resource.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -283,11 +283,11 @@
                 },
                 "name": {
                     "type": "string",
-                    "description": "The short name for the resource to be created.\n"
+                    "description": "Short name of the Tenant resource.\n"
                 },
                 "parent": {
                     "type": "string",
-                    "description": "The parent ID of the Tenant.\n"
+                    "description": "The parent id for the Tenant resource.\n"
                 },
                 "securityDomain": {
                     "type": "string",
@@ -311,11 +311,11 @@
                     },
                     "name": {
                         "type": "string",
-                        "description": "The short name for the resource to be created.\n"
+                        "description": "Short name of the Tenant resource.\n"
                     },
                     "parent": {
                         "type": "string",
-                        "description": "The parent ID of the Tenant.\n"
+                        "description": "The parent id for the Tenant resource.\n"
                     },
                     "securityDomain": {
                         "type": "string",

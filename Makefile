@@ -13,10 +13,10 @@
 # limitations under the License.
 
 # Terraform provider version
-PROVIDER_VERSION=0.0.4
+PROVIDER_VERSION=0.0.5
 
 # Pulumi bridged provider version (this package)
-VERSION=0.0.2
+VERSION=0.0.3
 
 default: build
 

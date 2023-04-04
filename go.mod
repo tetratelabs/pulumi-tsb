@@ -7,7 +7,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.6.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.43.1-0.20230328212400-4806fbe25bd9
 	github.com/pulumi/pulumi/sdk/v3 v3.59.0
-	github.com/tetratelabs/terraform-provider-tsb v0.0.4
+	github.com/tetratelabs/terraform-provider-tsb v0.0.5
 )
 
 require (
@@ -198,7 +198,7 @@ require (
 	github.com/spf13/cobra v1.6.1 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/testify v1.8.2 // indirect
-	github.com/tetrateio/api v0.0.0-20230330135441-0264d4eda8ac // indirect
+	github.com/tetrateio/api v0.0.0-20230404164318-a1ab6329ff86 // indirect
 	github.com/tetrateio/tetrate v0.0.2-0.20230201205234-5d44a721cb40 // indirect
 	github.com/tetratelabs/multierror v1.1.1 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect

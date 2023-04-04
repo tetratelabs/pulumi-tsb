@@ -55,11 +55,11 @@ export class Tenant extends pulumi.CustomResource {
      */
     public readonly displayName!: pulumi.Output<string | undefined>;
     /**
-     * The short name for the resource to be created.
+     * Short name of the Tenant resource.
      */
     public readonly name!: pulumi.Output<string>;
     /**
-     * The parent ID of the Tenant.
+     * The parent id for the Tenant resource.
      */
     public readonly parent!: pulumi.Output<string>;
     /**
@@ -122,11 +122,11 @@ export interface TenantState {
      */
     displayName?: pulumi.Input<string>;
     /**
-     * The short name for the resource to be created.
+     * Short name of the Tenant resource.
      */
     name?: pulumi.Input<string>;
     /**
-     * The parent ID of the Tenant.
+     * The parent id for the Tenant resource.
      */
     parent?: pulumi.Input<string>;
     /**
@@ -153,11 +153,11 @@ export interface TenantArgs {
      */
     displayName?: pulumi.Input<string>;
     /**
-     * The short name for the resource to be created.
+     * Short name of the Tenant resource.
      */
     name: pulumi.Input<string>;
     /**
-     * The parent ID of the Tenant.
+     * The parent id for the Tenant resource.
      */
     parent: pulumi.Input<string>;
     /**
