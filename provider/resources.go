@@ -50,7 +50,7 @@ func Provider() tfpfbridge.ProviderInfo {
 		Name:              "tsb",
 		GitHubOrg:         "tetratelabs",
 		TFProviderVersion: "0.0.5",
-		Version:           "0.0.3",
+		Version:           "0.0.4",
 		DataSources: map[string]*tfbridge.DataSourceInfo{
 			"tsb_organization": {Tok: checkMember(tsbMod, "Organization")},
 		},
