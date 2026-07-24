@@ -1,0 +1,1 @@
+Copyright (c) {{ .Owner }} {{ .Year }} All Rights Reserved.
