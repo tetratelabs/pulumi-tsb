@@ -2,8 +2,7 @@
   "name": "@tetratelabs/pulumi-tsb",
   "version": "${VERSION}",
   "description": ". Based on terraform-provider-tsb: version v${PROVIDER_VERSION}",
-  "main": "ts_bin/index.js",
-  "types": "ts_bin/index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
