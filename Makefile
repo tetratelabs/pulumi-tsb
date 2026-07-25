@@ -30,7 +30,7 @@ licenser:
 sdk: schema sdk.nodejs licenser
 
 sdk.nodejs:
-	cd $(TFGEN) && go run main.go nodejs -o ../../../sdk
+	go run ./$(TFGEN) nodejs -o sdk
 	sed -e 's/$${VERSION}/${VERSION}/g' \
 		-e 's/$${PROVIDER_VERSION}/${PROVIDER_VERSION}/g' package.json.tpl > package.json
 	rm sdk/package.json sdk/tsconfig.json

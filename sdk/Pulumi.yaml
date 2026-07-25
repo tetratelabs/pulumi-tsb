@@ -1,0 +1,3 @@
+name: tsb
+description: A Pulumi resource provider for tsb.
+language: nodejs
