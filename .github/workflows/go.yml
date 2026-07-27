@@ -54,3 +54,14 @@ jobs:
       run: make check
       env:
         GOPRIVATE: github.com/tetrateio/*
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - run: npm ci
+    - name: Verify the tarball is installable
+      run: ./hack/smoke-package.sh

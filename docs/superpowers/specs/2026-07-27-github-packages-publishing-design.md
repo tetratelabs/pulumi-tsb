@@ -148,9 +148,10 @@ The README gains an install section covering the `.npmrc` that consumers need:
 ```
 
 The text states explicitly that GitHub Packages requires authentication even
-though the repository is public, that the token needs `read:packages`, and that
-the provider binary download needs no token. The existing "Publishing" section
-is updated to drop the npmjs reference.
+though the repository is public, that the token must be a classic personal
+access token with `read:packages` (GitHub Packages' npm registry rejects
+fine-grained tokens), and that the provider binary download needs no token.
+The existing "Publishing" section is updated to drop the npmjs reference.
 
 ## Risks
 

@@ -15,8 +15,8 @@ reads even though this repository is public. Add an `.npmrc` next to your
 //npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}
 ```
 
-Set `GITHUB_TOKEN` to a personal access token with the `read:packages` scope,
-then:
+Set `GITHUB_TOKEN` to a classic personal access token with the `read:packages`
+scope, then:
 
 ```
 npm install @tetratelabs/pulumi-tsb

@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+
+# Copyright (c) Tetrate, Inc 2026 All Rights Reserved.
 # Verifies that the tarball `npm publish` would upload is installable and
 # importable. Run from anywhere; it operates on the repo root.
 set -euo pipefail
@@ -55,8 +57,8 @@ npm install --ignore-scripts --no-audit --no-fund "$TARBALL" >/dev/null
 
 node -e '
   const pkg = require("@tetratelabs/pulumi-tsb");
-  if (typeof pkg.Cluster === "undefined") {
-    throw new Error("expected Cluster export to be present");
+  if (typeof pkg.Cluster !== "function") {
+    throw new Error("expected Cluster export to be a function");
   }
   const { getVersion } = require("@tetratelabs/pulumi-tsb/dist/sdk/utilities");
   const got = getVersion();
