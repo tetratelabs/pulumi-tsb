@@ -68,25 +68,34 @@ cleanup() { rm -rf "$SMOKE_DIR" "$TARBALL"; }
 trap cleanup EXIT
 
 # `npm pack` runs the `prepare` script, which populates dist/ via tsc.
+# dist/ still will not reach the tarball until `files` is set: without an
+# allowlist npm falls back to .gitignore, which excludes dist/.
 npm pack --silent >/dev/null
 if [ ! -f "$TARBALL" ]; then
   echo "FAIL: expected tarball at $TARBALL"
   exit 1
 fi
 
+# Capture the listing once rather than piping `tar` into `grep -q` per check.
+# Under `set -o pipefail` that pipeline is unsound: `grep -q` exits at the
+# first match, `tar` then takes SIGPIPE and returns 141, and the pipeline
+# reports failure even though the pattern matched. For the negative check
+# below that would mean a silent pass.
+CONTENTS="$(tar -tzf "$TARBALL")"
+
 echo "--- tarball contents ---"
-tar -tzf "$TARBALL"
+echo "$CONTENTS"
 echo "-----------------------"
 
-if ! tar -tzf "$TARBALL" | grep -q '^package/dist/index\.js$'; then
+if ! grep -q '^package/dist/index\.js$' <<<"$CONTENTS"; then
   echo "FAIL: dist/index.js missing from tarball"
   exit 1
 fi
-if ! tar -tzf "$TARBALL" | grep -q '^package/sdk/scripts/install-pulumi-plugin\.js$'; then
+if ! grep -q '^package/sdk/scripts/install-pulumi-plugin\.js$' <<<"$CONTENTS"; then
   echo "FAIL: sdk/scripts/install-pulumi-plugin.js missing from tarball"
   exit 1
 fi
-if tar -tzf "$TARBALL" | grep -q '^package/provider/'; then
+if grep -q '^package/provider/' <<<"$CONTENTS"; then
   echo "FAIL: Go provider sources leaked into the tarball"
   exit 1
 fi
@@ -123,11 +132,11 @@ chmod +x hack/smoke-package.sh
 
 Run: `./hack/smoke-package.sh`
 
-Expected: FAIL. The exact first failure depends on npm's tarball defaults, but it will be one of:
-- `FAIL: Go provider sources leaked into the tarball` (no `files` allowlist yet), or
-- `Error: Cannot find module '../package.json'` from the `node -e` block.
+Expected: FAIL with `FAIL: dist/index.js missing from tarball`.
 
-Both are fixed by Tasks 2 and 3. Do NOT fix anything here.
+The cause is worth understanding, because it is the first of the three defects to surface: with no `files` allowlist, npm falls back to `.gitignore` when deciding what to pack, and `.gitignore` lists `dist/`. So `prepare` compiles `dist/` and npm then omits it. Task 3 adds the allowlist, which overrides `.gitignore`.
+
+Do NOT fix anything here.
 
 - [ ] **Step 4: Commit**
 
@@ -236,7 +245,7 @@ Adds `main` so the package can be required by name, `files` so the Go provider t
 
 Run: `./hack/smoke-package.sh`
 
-Expected: FAIL with `FAIL: Go provider sources leaked into the tarball`.
+Expected: FAIL with `FAIL: dist/index.js missing from tarball`. Task 2 fixed the runtime `require` path but not what npm packs, so the tarball is still filtered by `.gitignore` — which excludes `dist/`. The `files` allowlist added in Step 2 is what overrides that.
 
 - [ ] **Step 2: Update the template**
 
