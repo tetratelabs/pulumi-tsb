@@ -7,7 +7,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.49.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.135.0
 	github.com/pulumi/pulumi/sdk/v3 v3.253.0
-	github.com/tetratelabs/terraform-provider-tsb v0.1.1
+	github.com/tetratelabs/terraform-provider-tsb v0.1.2-0.20260727091046-209680a67d3a
 )
 
 require (
@@ -264,7 +264,5 @@ require (
 	sigs.k8s.io/randfill v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v6 v6.3.0 // indirect
 )
-
-replace github.com/tetratelabs/terraform-provider-tsb => /Users/chirauki/src/terraform-provider-tsb
 
 exclude github.com/pulumi/pulumi-java/pkg v0.17.0

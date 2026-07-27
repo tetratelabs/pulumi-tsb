@@ -617,6 +617,8 @@ github.com/tetratelabs/multierror v1.1.1 h1:84JfJvfmnYC5y4877Ag3c4PkCUmQwq6sGI6i
 github.com/tetratelabs/multierror v1.1.1/go.mod h1:hAyQ/XifPOPdb0x3GsowbjsjCPgT9Fsxjety9TxmuGY=
 github.com/tetratelabs/telemetry v0.8.2 h1:VXwSVpfX1yRMo6UdhsLP80GuPzavVWuoJrVM+2lMOSk=
 github.com/tetratelabs/telemetry v0.8.2/go.mod h1:jDUcf1A2u4F5V1io5RdipM/bKz/hFCsx/RAgGopC37s=
+github.com/tetratelabs/terraform-provider-tsb v0.1.2-0.20260727091046-209680a67d3a h1:04NLiQt2AY35pYbWjtR/So1g0VZrAIILgH3+KULVotM=
+github.com/tetratelabs/terraform-provider-tsb v0.1.2-0.20260727091046-209680a67d3a/go.mod h1:xuUsCmttSrEUq73U2C+i3rM7cscMEQ2bmM5pYmf2NNE=
 github.com/texttheater/golang-levenshtein v1.0.1 h1:+cRNoVrfiwufQPhoMzB6N0Yf/Mqajr6t1lOv8GyGE2U=
 github.com/texttheater/golang-levenshtein v1.0.1/go.mod h1:PYAKrbF5sAiq9wd+H82hs7gNaen0CplQ9uvm6+enD/8=
 github.com/uber/jaeger-client-go v2.30.0+incompatible h1:D6wyKGCecFaSRUpo8lCVbaOOb6ThwMmTEbhRwtKR97o=
