@@ -1,48 +1,42 @@
-# Copyright 2023 Tetrate
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# Copyright (c) Tetrate, Inc 2026 All Rights Reserved.
 
 # Terraform provider version
-PROVIDER_VERSION=0.0.5
+PROVIDER_VERSION=0.1.2-0.20260727091046-209680a67d3a
 
 # Pulumi bridged provider version (this package)
-VERSION=0.0.4
+VERSION=0.1.1
 
 default: build
 
-build: schema bridge sdk
+build: generate schema bridge sdk
 
+GEN=provider/cmd/gen-resources-tsb
 TFGEN=provider/cmd/pulumi-tfgen-tsb
 BRIDGE=provider/cmd/pulumi-resource-tsb
+
+# regenerates provider/resources_gen.go from the live terraform-provider-tsb
+generate:
+	go run ./$(GEN) -o provider/resources_gen.go
 
 # generates the provider schema
 schema: providerversion
 	cd $(TFGEN) && go run main.go schema -o ../pulumi-resource-tsb
 
 licenser:
-	licenser apply Tetrate -r
+	go run github.com/liamawhite/licenser@v0.7.0 apply -r -t header.txt -m "Copyright (c) Tetrate" "Tetrate, Inc"
 
 # generates the typescript package for using the provider
 # this requires the provider to be installed in $PATH
 sdk: schema sdk.nodejs licenser
 
 sdk.nodejs:
-	cd $(TFGEN) && go run main.go nodejs -o ../../../sdk
+	go run ./$(TFGEN) nodejs -o sdk
 	sed -e 's/$${VERSION}/${VERSION}/g' \
 		-e 's/$${PROVIDER_VERSION}/${PROVIDER_VERSION}/g' package.json.tpl > package.json
 	rm sdk/package.json sdk/tsconfig.json
 	sed -i -e 's/.\/package.json/..\/package.json/' sdk/utilities.ts
-	sed -i -e 's/$${VERSION}/'v${VERSION}/ sdk/scripts/install-pulumi-plugin.js
+	mkdir -p sdk/scripts
+	sed -e 's/$${VERSION}/'v${VERSION}/ install-pulumi-plugin.js > sdk/scripts/install-pulumi-plugin.js
 
 # builds the pulumi terraform bridge
 bridge: schema
@@ -51,11 +45,6 @@ bridge: schema
 # installs the bridge
 install: bridge
 	cd $(BRIDGE) && go install
-
-# tests a simple pulumi program using this provider
-# TODO: currently needs the bridge and provider to be installed
-test: bridge
-	cd $(BRIDGE)/test && pulumi up --stack dev
 
 providerversion:
 	grep -q "github.com/tetratelabs/terraform-provider-tsb\s\s*v${PROVIDER_VERSION}" go.mod || (echo go.mod tf provider version does not match && false)
@@ -69,5 +58,5 @@ versioncheck: providerversion
 tagcheck: versioncheck
 	git tag --points-at HEAD | grep -q v${VERSION} || (echo tag does not match specified version && false)
 
-check: licenser
+check: generate licenser
 	[ -z "`git status -uno --porcelain`" ] || (git status && echo 'Check failed. This could be a failed check or dirty git state.'; exit 1)

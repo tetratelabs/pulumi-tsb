@@ -1,4 +1,3 @@
 provider/cmd/pulumi-resource-tsb/pulumi-resource-tsb
 dist/
-ts_bin/
 node_modules/

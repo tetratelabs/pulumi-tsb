@@ -4,8 +4,6 @@
 name: Go
 
 on:
-  push:
-    branches: [ "*" ]
   pull_request:
     branches: [ "*" ]
 
@@ -13,21 +11,46 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Go
-      uses: actions/setup-go@v3
+      uses: actions/setup-go@v5
       with:
-        go-version: 1.19
+        go-version-file: 'go.mod'
+        cache: true
     - name: Configure SSH Agent
-      uses: webfactory/ssh-agent@v0.4.1
+      uses: webfactory/ssh-agent@v0.9.0
       with:
         ssh-private-key: ${{ secrets.TETRATE_CI_SSH_PRIVATE_KEY }}
     - name: Disable Strict Host Key Checking for SSH
       run: mkdir -p ~/.ssh && echo -e "\tStrictHostKeyChecking no" >> ~/.ssh/config && ssh-keyscan github.com >> ~/.ssh/known_hosts
     - name: Pull over SSH instead of HTTPS
-      working-directory: .
       run: echo -e '[url "git@github.com:"]\n\tinsteadOf = https://github.com/' | sudo tee /etc/gitconfig
     - name: Install licenser
       run: 'go install github.com/liamawhite/licenser@v0.7.0'
     - name: Build
       run: make
+      env:
+        GOPRIVATE: github.com/tetrateio/*
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+        cache: true
+    - name: Configure SSH Agent
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.TETRATE_CI_SSH_PRIVATE_KEY }}
+    - name: Disable Strict Host Key Checking for SSH
+      run: mkdir -p ~/.ssh && echo -e "\tStrictHostKeyChecking no" >> ~/.ssh/config && ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - name: Pull over SSH instead of HTTPS
+      run: echo -e '[url "git@github.com:"]\n\tinsteadOf = https://github.com/' | sudo tee /etc/gitconfig
+    - name: Install licenser
+      run: 'go install github.com/liamawhite/licenser@v0.7.0'
+    - name: Build
+      run: make check
+      env:
+        GOPRIVATE: github.com/tetrateio/*

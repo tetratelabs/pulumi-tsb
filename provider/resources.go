@@ -1,18 +1,6 @@
-// Copyright 2023 Tetrate
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// Copyright (c) Tetrate, Inc 2026 All Rights Reserved.
 
-package check
+package tsb
 
 import (
 	"unicode"
@@ -22,54 +10,48 @@ import (
 	"github.com/pulumi/pulumi-terraform-bridge/v3/pkg/tfbridge"
 	"github.com/pulumi/pulumi/sdk/v3/go/common/tokens"
 
-	provider "github.com/tetratelabs/terraform-provider-tsb/pkg"
+	tsbprovider "github.com/tetratelabs/terraform-provider-tsb/pkg/provider"
 )
 
 const tsbPkg = "tsb"
 const tsbMod = "index"
 
+// getProvider unwraps terraform-provider-tsb's constructor — New() returns
+// a func() provider.Provider (for providerserver.Serve), not a value.
 func getProvider() framework.Provider {
-	return provider.NewProvider()
+	return tsbprovider.New()()
 }
 
-func checkMember(mod string, mem string) tokens.ModuleMember {
+func tsbMember(mod string, mem string) tokens.ModuleMember {
 	return tokens.ModuleMember(tsbPkg + ":" + mod + ":" + mem)
 }
 
-func checkType(mod string, typ string) tokens.Type {
-	return tokens.Type(checkMember(mod, typ))
+func tsbType(mod string, typ string) tokens.Type {
+	return tokens.Type(tsbMember(mod, typ))
 }
 
-func checkResourceTok(mod string, res string) tokens.Type {
+func tsbResourceTok(mod string, res string) tokens.Type {
 	fn := string(unicode.ToLower(rune(res[0]))) + res[1:]
-	return checkType(mod+"/"+fn, res)
+	return tsbType(mod+"/"+fn, res)
 }
 
-func Provider() tfpfbridge.ProviderInfo {
-	info := tfbridge.ProviderInfo{
+func Provider() tfbridge.ProviderInfo {
+	return tfbridge.ProviderInfo{
+		P:                 tfpfbridge.ShimProvider(getProvider()),
 		Name:              "tsb",
 		GitHubOrg:         "tetratelabs",
-		TFProviderVersion: "0.0.5",
-		Version:           "0.0.4",
-		DataSources: map[string]*tfbridge.DataSourceInfo{
-			"tsb_organization": {Tok: checkMember(tsbMod, "Organization")},
-		},
-		Resources: map[string]*tfbridge.ResourceInfo{
-			"tsb_tenant":          {Tok: checkResourceTok(tsbMod, "Tenant")},
-			"tsb_service_account": {Tok: checkResourceTok(tsbMod, "ServiceAccount")},
-			"tsb_user":            {Tok: checkResourceTok(tsbMod, "User")},
-		},
+		TFProviderVersion: "0.1.2-0.20260727091046-209680a67d3a",
+		Version:           "0.1.1",
+		Resources:         generatedResources,
 		JavaScript: &tfbridge.JavaScriptInfo{
+			PackageName: "@tetratelabs/pulumi-tsb",
 			Dependencies: map[string]string{
 				"@pulumi/pulumi": "^3.0.0",
 			},
 			DevDependencies: map[string]string{
-				"@types/node": "^10.0.0", // so we can access strongly typed node definitions.
+				"@types/node": "^10.0.0",
 			},
 		},
-	}
-	return tfpfbridge.ProviderInfo{
-		ProviderInfo: info,
-		NewProvider:  getProvider,
+		MetadataInfo: tfbridge.NewProviderMetadata([]byte{}),
 	}
 }
