@@ -14,25 +14,34 @@ cleanup() { rm -rf "$SMOKE_DIR" "$TARBALL"; }
 trap cleanup EXIT
 
 # `npm pack` runs the `prepare` script, which populates dist/ via tsc.
+# dist/ still will not reach the tarball until `files` is set: without an
+# allowlist npm falls back to .gitignore, which excludes dist/.
 npm pack --silent >/dev/null
 if [ ! -f "$TARBALL" ]; then
   echo "FAIL: expected tarball at $TARBALL"
   exit 1
 fi
 
+# Capture the listing once rather than piping `tar` into `grep -q` per check.
+# Under `set -o pipefail` that pipeline is unsound: `grep -q` exits at the
+# first match, `tar` then takes SIGPIPE and returns 141, and the pipeline
+# reports failure even though the pattern matched. For the negative check
+# below that would mean a silent pass.
+CONTENTS="$(tar -tzf "$TARBALL")"
+
 echo "--- tarball contents ---"
-tar -tzf "$TARBALL"
+echo "$CONTENTS"
 echo "-----------------------"
 
-if ! tar -tzf "$TARBALL" | grep -q '^package/dist/index\.js$'; then
+if ! grep -q '^package/dist/index\.js$' <<<"$CONTENTS"; then
   echo "FAIL: dist/index.js missing from tarball"
   exit 1
 fi
-if ! tar -tzf "$TARBALL" | grep -q '^package/sdk/scripts/install-pulumi-plugin\.js$'; then
+if ! grep -q '^package/sdk/scripts/install-pulumi-plugin\.js$' <<<"$CONTENTS"; then
   echo "FAIL: sdk/scripts/install-pulumi-plugin.js missing from tarball"
   exit 1
 fi
-if tar -tzf "$TARBALL" | grep -q '^package/provider/'; then
+if grep -q '^package/provider/' <<<"$CONTENTS"; then
   echo "FAIL: Go provider sources leaked into the tarball"
   exit 1
 fi
