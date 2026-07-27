@@ -34,7 +34,8 @@ sdk.nodejs:
 	sed -e 's/$${VERSION}/${VERSION}/g' \
 		-e 's/$${PROVIDER_VERSION}/${PROVIDER_VERSION}/g' package.json.tpl > package.json
 	rm sdk/package.json sdk/tsconfig.json
-	sed -i -e 's/.\/package.json/..\/package.json/' sdk/utilities.ts
+	sed -i -e "s|require('\./package\.json')|require('../../package.json')|" sdk/utilities.ts
+	grep -q "require('../../package.json')" sdk/utilities.ts || (echo utilities.ts package.json path rewrite failed && false)
 	mkdir -p sdk/scripts
 	sed -e 's/$${VERSION}/'v${VERSION}/ install-pulumi-plugin.js > sdk/scripts/install-pulumi-plugin.js
 
