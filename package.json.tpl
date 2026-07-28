@@ -2,7 +2,19 @@
   "name": "@tetratelabs/pulumi-tsb",
   "version": "${VERSION}",
   "description": ". Based on terraform-provider-tsb: version v${PROVIDER_VERSION}",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tetratelabs/pulumi-tsb.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "dist/",
+    "sdk/scripts/"
+  ],
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
