@@ -1,7 +1,7 @@
 {
   "name": "@tetratelabs/pulumi-tsb",
-  "version": "0.1.1",
-  "description": ". Based on terraform-provider-tsb: version v0.1.2-0.20260727091046-209680a67d3a",
+  "version": "0.1.2",
+  "description": ". Based on terraform-provider-tsb: version v0.1.2",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "repository": {
@@ -18,7 +18,7 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "install": "node sdk/scripts/install-pulumi-plugin.js resource tsb 0.1.1 --server github://api.github.com/tetratelabs"
+    "install": "node sdk/scripts/install-pulumi-plugin.js resource tsb 0.1.2 --server github://api.github.com/tetratelabs"
   },
   "dependencies": {
     "@pulumi/pulumi": "^3.0.0"

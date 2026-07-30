@@ -27447,6 +27447,10 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     clientTokenSecret: pulumi.Input<string>;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: pulumi.Input<inputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType?: pulumi.Input<string | undefined>;
@@ -27470,6 +27474,13 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: pulumi.Input<inputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+}
+
+export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite?: pulumi.Input<string | undefined>;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -30171,6 +30182,10 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      */
     clientTokenSecret: pulumi.Input<string>;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: pulumi.Input<inputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType?: pulumi.Input<string | undefined>;
@@ -30194,6 +30209,13 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: pulumi.Input<inputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+}
+
+export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite?: pulumi.Input<string | undefined>;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -32889,6 +32911,10 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      */
     clientTokenSecret: pulumi.Input<string>;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: pulumi.Input<inputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType?: pulumi.Input<string | undefined>;
@@ -32912,6 +32938,13 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: pulumi.Input<inputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+}
+
+export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite?: pulumi.Input<string | undefined>;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -35689,6 +35722,10 @@ export namespace application {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.application.ApplicationApiHttpServerAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -35712,6 +35749,13 @@ export namespace application {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.application.ApplicationApiHttpServerAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface ApplicationApiHttpServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface ApplicationApiHttpServerAuthenticationOidcProvider {
@@ -37221,6 +37265,10 @@ export namespace application {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.application.ApplicationApiServerAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -37244,6 +37292,13 @@ export namespace application {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.application.ApplicationApiServerAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface ApplicationApiServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface ApplicationApiServerAuthenticationOidcProvider {
@@ -38798,6 +38853,10 @@ export namespace gateway {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.gateway.GatewayGatewayHttpAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -38821,6 +38880,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.gateway.GatewayGatewayHttpAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface GatewayGatewayHttpAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayGatewayHttpAuthenticationOidcProvider {
@@ -40803,6 +40869,10 @@ export namespace gateway {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -40826,6 +40896,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface GatewayIngressGatewayHttpAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayIngressGatewayHttpAuthenticationOidcProvider {
@@ -42843,6 +42920,10 @@ export namespace gateway {
          */
         revision?: pulumi.Input<string | undefined>;
         /**
+         * The pod-level termination grace period, in seconds, for the gateway Deployment. This is the hard limit Kubernetes waits after sending SIGTERM before force-killing the pod. It SHOULD be greater than or equal to `connectionDrainDuration` so that in-flight connections can finish draining before the pod is killed. If unset, it defaults to `connectionDrainDuration + 5s`. https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+         */
+        terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
+        /**
          * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
          */
         type?: pulumi.Input<string | undefined>;
@@ -43863,6 +43944,10 @@ export namespace gateway {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -43886,6 +43971,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayTier1GatewayExternalServerAuthenticationOidcProvider {
@@ -44751,6 +44843,10 @@ export namespace gateway {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -44774,6 +44870,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcUseRefreshToken | undefined>;
+    }
+
+    export interface GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayTier1GatewayInternalServerAuthenticationOidcProvider {
@@ -45573,6 +45676,10 @@ export namespace profile {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -45596,6 +45703,13 @@ export namespace profile {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+    }
+
+    export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcProvider {
@@ -49050,6 +49164,10 @@ export namespace profile {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -49073,6 +49191,13 @@ export namespace profile {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+    }
+
+    export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcProvider {
@@ -52640,6 +52765,10 @@ export namespace security {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -52663,6 +52792,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+    }
+
+    export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -53196,6 +53332,10 @@ export namespace security {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -53219,6 +53359,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+    }
+
+    export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcProvider {
@@ -53752,6 +53899,10 @@ export namespace security {
          */
         clientTokenSecret: pulumi.Input<string>;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: pulumi.Input<inputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig | undefined>;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType?: pulumi.Input<string | undefined>;
@@ -53775,6 +53926,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: pulumi.Input<inputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcUseRefreshToken | undefined>;
+    }
+
+    export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite?: pulumi.Input<string | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcProvider {

@@ -85,6 +85,10 @@ export class GatewayInstallGateway extends pulumi.CustomResource {
      */
     declare public readonly targetNamespace: pulumi.Output<string>;
     /**
+     * The pod-level termination grace period, in seconds, for the gateway Deployment. This is the hard limit Kubernetes waits after sending SIGTERM before force-killing the pod. It SHOULD be greater than or equal to `connectionDrainDuration` so that in-flight connections can finish draining before the pod is killed. If unset, it defaults to `connectionDrainDuration + 5s`. https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+     */
+    declare public readonly terminationGracePeriodSeconds: pulumi.Output<number>;
+    /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
      */
     declare public readonly type: pulumi.Output<string>;
@@ -114,6 +118,7 @@ export class GatewayInstallGateway extends pulumi.CustomResource {
             resourceInputs["revision"] = state?.revision;
             resourceInputs["targetCluster"] = state?.targetCluster;
             resourceInputs["targetNamespace"] = state?.targetNamespace;
+            resourceInputs["terminationGracePeriodSeconds"] = state?.terminationGracePeriodSeconds;
             resourceInputs["type"] = state?.type;
         } else {
             const args = argsOrState as GatewayInstallGatewayArgs | undefined;
@@ -135,6 +140,7 @@ export class GatewayInstallGateway extends pulumi.CustomResource {
             resourceInputs["revision"] = args?.revision;
             resourceInputs["targetCluster"] = args?.targetCluster;
             resourceInputs["targetNamespace"] = args?.targetNamespace;
+            resourceInputs["terminationGracePeriodSeconds"] = args?.terminationGracePeriodSeconds;
             resourceInputs["type"] = args?.type;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -195,6 +201,10 @@ export interface GatewayInstallGatewayState {
      */
     targetNamespace?: pulumi.Input<string | undefined>;
     /**
+     * The pod-level termination grace period, in seconds, for the gateway Deployment. This is the hard limit Kubernetes waits after sending SIGTERM before force-killing the pod. It SHOULD be greater than or equal to `connectionDrainDuration` so that in-flight connections can finish draining before the pod is killed. If unset, it defaults to `connectionDrainDuration + 5s`. https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+     */
+    terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
+    /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
      */
     type?: pulumi.Input<string | undefined>;
@@ -252,6 +262,10 @@ export interface GatewayInstallGatewayArgs {
      * Namespace where the gateway will be deployed. Required when using TSB MP and TSB GitOps to deploy the gateway. Ignored when using as a pure kubernetes resource.
      */
     targetNamespace?: pulumi.Input<string | undefined>;
+    /**
+     * The pod-level termination grace period, in seconds, for the gateway Deployment. This is the hard limit Kubernetes waits after sending SIGTERM before force-killing the pod. It SHOULD be greater than or equal to `connectionDrainDuration` so that in-flight connections can finish draining before the pod is killed. If unset, it defaults to `connectionDrainDuration + 5s`. https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+     */
+    terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
     /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
      */
