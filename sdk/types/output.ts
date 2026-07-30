@@ -27447,6 +27447,10 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     clientTokenSecret: string;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: outputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType: string;
@@ -27470,6 +27474,13 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: outputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken;
+}
+
+export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite: string;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -30171,6 +30182,10 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      */
     clientTokenSecret: string;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: outputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType: string;
@@ -30194,6 +30209,13 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: outputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken;
+}
+
+export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite: string;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -32889,6 +32911,10 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      */
     clientTokenSecret: string;
     /**
+     * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+     */
+    cookieConfig?: outputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
+    /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
      */
     grantType: string;
@@ -32912,6 +32938,13 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
      */
     useRefreshToken?: outputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken;
+}
+
+export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+    /**
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     */
+    sameSite: string;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -35690,6 +35723,10 @@ export namespace application {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.application.ApplicationApiHttpServerAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -35713,6 +35750,13 @@ export namespace application {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.application.ApplicationApiHttpServerAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface ApplicationApiHttpServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface ApplicationApiHttpServerAuthenticationOidcProvider {
@@ -37222,6 +37266,10 @@ export namespace application {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.application.ApplicationApiServerAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -37245,6 +37293,13 @@ export namespace application {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.application.ApplicationApiServerAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface ApplicationApiServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface ApplicationApiServerAuthenticationOidcProvider {
@@ -38801,6 +38856,10 @@ export namespace gateway {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.gateway.GatewayGatewayHttpAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -38824,6 +38883,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.gateway.GatewayGatewayHttpAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface GatewayGatewayHttpAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface GatewayGatewayHttpAuthenticationOidcProvider {
@@ -40806,6 +40872,10 @@ export namespace gateway {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -40829,6 +40899,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface GatewayIngressGatewayHttpAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface GatewayIngressGatewayHttpAuthenticationOidcProvider {
@@ -42846,6 +42923,10 @@ export namespace gateway {
          */
         revision: string;
         /**
+         * The pod-level termination grace period, in seconds, for the gateway Deployment. This is the hard limit Kubernetes waits after sending SIGTERM before force-killing the pod. It SHOULD be greater than or equal to `connectionDrainDuration` so that in-flight connections can finish draining before the pod is killed. If unset, it defaults to `connectionDrainDuration + 5s`. https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#pod-termination
+         */
+        terminationGracePeriodSeconds: number;
+        /**
          * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
          */
         type: string;
@@ -43866,6 +43947,10 @@ export namespace gateway {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -43889,6 +43974,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface GatewayTier1GatewayExternalServerAuthenticationOidcProvider {
@@ -44754,6 +44846,10 @@ export namespace gateway {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -44777,6 +44873,13 @@ export namespace gateway {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcUseRefreshToken;
+    }
+
+    export interface GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface GatewayTier1GatewayInternalServerAuthenticationOidcProvider {
@@ -45578,6 +45681,10 @@ export namespace profile {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -45601,6 +45708,13 @@ export namespace profile {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcUseRefreshToken;
+    }
+
+    export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcProvider {
@@ -49055,6 +49169,10 @@ export namespace profile {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -49078,6 +49196,13 @@ export namespace profile {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcUseRefreshToken;
+    }
+
+    export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcProvider {
@@ -52647,6 +52772,10 @@ export namespace security {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -52670,6 +52799,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcUseRefreshToken;
+    }
+
+    export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -53203,6 +53339,10 @@ export namespace security {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -53226,6 +53366,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcUseRefreshToken;
+    }
+
+    export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcProvider {
@@ -53759,6 +53906,10 @@ export namespace security {
          */
         clientTokenSecret: string;
         /**
+         * Configuration applied to the cookies set by the proxy during the OIDC authentication flow. Unlike Envoy, which allows configuring each cookie individually, a single cookie configuration is applied uniformly to every cookie the proxy sets (bearer token, HMAC, expiry, ID token, refresh token, nonce, and code verifier cookies). If not specified, the proxy defaults are used for all cookies.
+         */
+        cookieConfig?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig;
+        /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
          */
         grantType: string;
@@ -53782,6 +53933,13 @@ export namespace security {
          * Enable automatic access token refresh using associated refresh token [(see RFC 6749 section 6)](https://datatracker.ietf.org/doc/html/rfc6749#section-6) provided that the OAuth server supports that. If not set defaults to `true`.
          */
         useRefreshToken?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcUseRefreshToken;
+    }
+
+    export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig {
+        /**
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         */
+        sameSite: string;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcProvider {
