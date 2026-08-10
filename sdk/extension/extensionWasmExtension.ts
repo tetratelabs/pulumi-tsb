@@ -57,7 +57,7 @@ export class ExtensionWasmExtension extends pulumi.CustomResource {
      */
     declare public readonly image: pulumi.Output<string>;
     /**
-     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour.
+     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
     declare public readonly imagePullPolicy: pulumi.Output<string>;
     /**
@@ -77,7 +77,7 @@ export class ExtensionWasmExtension extends pulumi.CustomResource {
      */
     declare public readonly parent: pulumi.Output<string>;
     /**
-     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase
+     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
     declare public readonly phase: pulumi.Output<string>;
     /**
@@ -182,7 +182,7 @@ export interface ExtensionWasmExtensionState {
      */
     image?: pulumi.Input<string | undefined>;
     /**
-     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour.
+     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
     imagePullPolicy?: pulumi.Input<string | undefined>;
     /**
@@ -202,7 +202,7 @@ export interface ExtensionWasmExtensionState {
      */
     parent?: pulumi.Input<string | undefined>;
     /**
-     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase
+     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
     phase?: pulumi.Input<string | undefined>;
     /**
@@ -248,7 +248,7 @@ export interface ExtensionWasmExtensionArgs {
      */
     image?: pulumi.Input<string | undefined>;
     /**
-     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour.
+     * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
     imagePullPolicy?: pulumi.Input<string | undefined>;
     /**
@@ -268,7 +268,7 @@ export interface ExtensionWasmExtensionArgs {
      */
     parent: pulumi.Input<string>;
     /**
-     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase
+     * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
     phase?: pulumi.Input<string | undefined>;
     /**

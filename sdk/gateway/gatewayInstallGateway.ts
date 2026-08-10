@@ -89,7 +89,7 @@ export class GatewayInstallGateway extends pulumi.CustomResource {
      */
     declare public readonly terminationGracePeriodSeconds: pulumi.Output<number>;
     /**
-     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
+     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
     declare public readonly type: pulumi.Output<string>;
 
@@ -205,7 +205,7 @@ export interface GatewayInstallGatewayState {
      */
     terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
     /**
-     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
+     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
     type?: pulumi.Input<string | undefined>;
 }
@@ -267,7 +267,7 @@ export interface GatewayInstallGatewayArgs {
      */
     terminationGracePeriodSeconds?: pulumi.Input<number | undefined>;
     /**
-     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
+     * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
     type?: pulumi.Input<string | undefined>;
 }

@@ -67,7 +67,7 @@ export class Team extends pulumi.CustomResource {
      */
     declare public readonly parent: pulumi.Output<string>;
     /**
-     * Where the team comes from. It can be a local team that exists only in TSB (type LOCAL) or it can be a team that has been synchronized from the Identity Provider (for example: type LDAP). <!-- terraform code generation tags +protoc-gen-terraform:computed -->
+     * Where the team comes from. It can be a local team that exists only in TSB (type LOCAL) or it can be a team that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
     declare public /*out*/ readonly sourceType: pulumi.Output<string>;
 
@@ -153,7 +153,7 @@ export interface TeamState {
      */
     parent?: pulumi.Input<string | undefined>;
     /**
-     * Where the team comes from. It can be a local team that exists only in TSB (type LOCAL) or it can be a team that has been synchronized from the Identity Provider (for example: type LDAP). <!-- terraform code generation tags +protoc-gen-terraform:computed -->
+     * Where the team comes from. It can be a local team that exists only in TSB (type LOCAL) or it can be a team that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
     sourceType?: pulumi.Input<string | undefined>;
 }

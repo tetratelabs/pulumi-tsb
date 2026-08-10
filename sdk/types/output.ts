@@ -87,7 +87,7 @@ export interface ClusterInstallTemplateHelmImage {
 
 export interface ClusterInstallTemplateHelmOperator {
     /**
-     * ControlPlaneMode is the mode for the control plane Possible values are: - UNSET: Defaults to CONTROL - OBSERVE: The control plane will be in observe mode - CONTROL: The control plane will be in control mode
+     * ControlPlaneMode is the mode for the control plane Possible values are: - UNSET: Defaults to CONTROL - OBSERVE: The control plane will be in observe mode - CONTROL: The control plane will be in control mode. Possible values: UNSET, CONTROL, OBSERVE.
      */
     controlPlaneMode: string;
     /**
@@ -575,7 +575,7 @@ export interface ClusterInstallTemplateHelmSpec {
      */
     meshObservability?: outputs.ClusterInstallTemplateHelmSpecMeshObservability;
     /**
-     * Mode in which the Control Plane is deployed. Defaults to Control.
+     * Mode in which the Control Plane is deployed. Defaults to Control. Possible values: UNSET, CONTROL, OBSERVE.
      */
     mode: string;
     /**
@@ -586,6 +586,10 @@ export interface ClusterInstallTemplateHelmSpec {
      * Configure the store that TSB will use to persist application telemetry data.
      */
     telemetryStore: outputs.ClusterInstallTemplateHelmSpecTelemetryStore;
+    /**
+     * Optional secondary telemetry store used during a migration window, mirroring the management plane's migration target. When set, the control plane OAP writes to both `telemetryStore` (primary) and this target. Should be automatically copied from the management plane; users don't need to set it. This can only be used to migrate to a different database type, e.g. ElasticSearch to BanyanDB. It cannot be used to migrate to a different database of the same type, e.g. an old BanyanDB to a new BanyanDB.
+     */
+    telemetryStoreMigrationTarget?: outputs.ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTarget;
     /**
      * **DEPRECATED**: This should not be set through Control plane API Instead use TSB Cluster API. Indicates that this cluster is used for tier1 gateways. Tier one clusters can only contain tier 1 gateways. Non-tier1 clusters contain tier2 gateways but not tier 1.
      */
@@ -2984,7 +2988,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsGitops {
      */
     managementplaneRequestTimeout?: outputs.ClusterInstallTemplateHelmSpecComponentsGitopsManagementplaneRequestTimeout;
     /**
-     * Push mode determines how the GitOps component creates resources in the Management Plane. In SYNC mode, TSB K8s resources are validated and pushed to the Management Plane synchronously. This means that if a TSB K8s resource is not accepted by the Management Plane, it will not be stored as a resource in the K8s API. SYNC mode can be useful in scenarios where eventual consistency of resources between K8s and Management Plane could cause problems such as in CI pipelines and testing. SYNC is the default mode. In ASYNC mode, TSB K8s resources are pushed to the Management Plane asynchronously. This means that resource creation does not block the process. ASYNC mode is useful in most cases as it does not require the user to manage dependencies between TSB K8s resources. The system will reconcile in the background to achieve the desired state of objects in the Management Plane and will update the Status subresource to report progress of reconciliation.
+     * Push mode determines how the GitOps component creates resources in the Management Plane. In SYNC mode, TSB K8s resources are validated and pushed to the Management Plane synchronously. This means that if a TSB K8s resource is not accepted by the Management Plane, it will not be stored as a resource in the K8s API. SYNC mode can be useful in scenarios where eventual consistency of resources between K8s and Management Plane could cause problems such as in CI pipelines and testing. SYNC is the default mode. In ASYNC mode, TSB K8s resources are pushed to the Management Plane asynchronously. This means that resource creation does not block the process. ASYNC mode is useful in most cases as it does not require the user to manage dependencies between TSB K8s resources. The system will reconcile in the background to achieve the desired state of objects in the Management Plane and will update the Status subresource to report progress of reconciliation. Possible values: SYNC, ASYNC.
      */
     pushMode: string;
     /**
@@ -3886,7 +3890,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCer
      */
     certManagerWebhookSpec?: outputs.ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCertManagerCertManagerWebhookSpec;
     /**
-     * Managed specifies whether TSB should manage the lifecycle of cert-manager.
+     * Managed specifies whether TSB should manage the lifecycle of cert-manager. Possible values: AUTO, EXTERNAL, INTERNAL.
      */
     managed: string;
 }
@@ -10605,6 +10609,10 @@ export interface ClusterInstallTemplateHelmSpecComponentsNgacKubeSpecServicePort
 }
 
 export interface ClusterInstallTemplateHelmSpecComponentsOap {
+    /**
+     * Feature flag to determine whether Envoy access log service (ALS) auth logs should be enabled. When disabled (default), OAP analyzes only the "envoy-als" LAL file. When enabled, the "envoy-als-auth" LAL file is added so that authorization (RBAC/authz) access logs are analyzed as well.
+     */
+    alsAuthLogEnabled: boolean;
     /**
      * Configure Kubernetes specific settings
      */
@@ -17907,7 +17915,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsWasmfetcherKubeSpecServ
 
 export interface ClusterInstallTemplateHelmSpecComponentsXcp {
     /**
-     * Authentication mode for connections from XCP Edges to XCP Central. If not set will default to mutual TLS.
+     * Authentication mode for connections from XCP Edges to XCP Central. If not set will default to mutual TLS. Possible values: UNKNOWN, MUTUAL_TLS, JWT.
      */
     centralAuthMode: string;
     /**
@@ -26603,7 +26611,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53 {
      */
     namespaceSelector?: outputs.ClusterInstallTemplateHelmSpecProviderSettingsRoute53NamespaceSelector;
     /**
-     * Specifies the policy to use when managing DNS records. Default: SYNC.
+     * Specifies the policy to use when managing DNS records. Default: SYNC. Possible values: SYNC, UPSERT_ONLY, CREATE_ONLY.
      */
     policy: string;
     /**
@@ -26645,7 +26653,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53FilterSett
      */
     zoneTagFilters: string[];
     /**
-     * Filter out (removes) zones of this type. Default: none, options: none, public, private.
+     * Filter out (removes) zones of this type. Default: none, options: none, public, private. Possible values: NONE, PUBLIC, PRIVATE.
      */
     zoneType: string;
 }
@@ -26717,6 +26725,64 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreElastic {
      */
     port: number;
     /**
+     * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
+     */
+    protocol: string;
+    /**
+     * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
+     */
+    selfSigned: boolean;
+    /**
+     * DEPRECATED: Major version of the Elasticsearch cluster. Currently supported Elasticsearch major versions are `6`, `7`, and `8`.
+     */
+    version: number;
+}
+
+export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTarget {
+    /**
+     * Configure the BanyanDB store that TSB will use to persist application telemetry data. When `embeddedBanyanDB` is enabled in the TSB management plane, the management plane will proxy requests from control plane to the  BanyanDB server, so this configuration will be pointing to the management plane, If you have an existing BanyanDB server running, you can modify this setting to point TSB to the existing BanyanDB server. Select the `BanyanDBSettings` settings to see complete examples.
+     */
+    banyandb?: outputs.ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetBanyandb;
+    elastic?: outputs.ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetElastic;
+    /**
+     * Number of days to retain metrics for. Defaults to 7 days. Should be automatically copied from MP and users don't need to set it.
+     */
+    retentionPeriodDays: number;
+    /**
+     * Number of days to retain traces for. Defaults to 3 days. Should be automatically copied from MP and users don't need to set it.
+     */
+    tracesRetentionPeriodDays: number;
+}
+
+export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetBanyandb {
+    /**
+     * BanyanDB host address (can be hostname or IP address).
+     */
+    host: string;
+    /**
+     * Port BanyanDB is listening on.
+     */
+    port: number;
+}
+
+export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetElastic {
+    /**
+     * Enable client certificate authentication (mTLS) to Elasticsearch/OpenSearch. When enabled, the es-certs secret must contain client.crt and client.key. The secret is generated by `tctl install manifest` from the ElasticSecrets clientCertificate and clientKey fields.
+     */
+    clientCertAuth: boolean;
+    /**
+     * Elasticsearch host address (can be hostname or IP address).
+     */
+    host: string;
+    /**
+     * The prefix of the ElasticSearch indices and templates. Defaults to `skywalking`.
+     */
+    indexPrefix: string;
+    /**
+     * Port Elasticsearch is listening on.
+     */
+    port: number;
+    /**
      * Protocol to communicate with Elasticsearch, defaults to https.
      */
     protocol: string;
@@ -26749,7 +26815,7 @@ export interface ClusterNamespace {
 
 export interface ClusterNamespaceIstio {
     /**
-     * Istio injection status for the namespace.
+     * Istio injection status for the namespace. Possible values: ISTIO_INJECTION_UNDEFINED, ISTIO_INJECTION_ENABLED, ISTIO_INJECTION_DISABLED.
      */
     istioInjection: string;
     /**
@@ -26764,7 +26830,7 @@ export interface ClusterNamespaceScope {
      */
     exceptions: string[];
     /**
-     * Default scope for namespaces in this cluster (global, local)
+     * Default scope for namespaces in this cluster (global, local). Possible values: GLOBAL, LOCAL.
      */
     scope: string;
 }
@@ -26839,7 +26905,7 @@ export interface ClusterNamespaceService {
      */
     spiffeIds: string[];
     /**
-     * State of the Service(External/Observed/Controlled)
+     * State of the Service(External/Observed/Controlled). Possible values: INVALID_STATE, EXTERNAL, OBSERVED, CONTROLLED.
      */
     state: string;
     /**
@@ -26911,7 +26977,7 @@ export interface ClusterNamespaceServiceWorkloadProxy {
 
 export interface ClusterOnboardingConfigNamespace {
     /**
-     * The desired state of the namespace.
+     * The desired state of the namespace. Possible values: DESIRED_UNDEFINED, DESIRED_UNASSIGNED, DESIRED_DISABLED, DESIRED_IGNORED, DESIRED_ONBOARDED, DESIRED_SYSTEM.
      */
     desiredState: string;
     /**
@@ -26938,7 +27004,7 @@ export interface ClusterState {
      */
     lastSyncTime?: outputs.ClusterStateLastSyncTime;
     /**
-     * Mode in which the  Control Plane is deployed.
+     * Mode in which the  Control Plane is deployed. Possible values: UNSET, CONTROL, OBSERVE.
      */
     mode: string;
     /**
@@ -26964,7 +27030,7 @@ export interface ClusterStateDiscoveredLocality {
 
 export interface ClusterStateIstioRevision {
     /**
-     * Istio distribution found in the cluster.
+     * Istio distribution found in the cluster. Possible values: UNKNOWN, TSB, TID.
      */
     distribution: string;
     /**
@@ -27089,7 +27155,7 @@ export interface OidcConfigJitProvisioningGroupSync {
      */
     maxDriftWindow?: outputs.OidcConfigJitProvisioningGroupSyncMaxDriftWindow;
     /**
-     * Mode selects the group-reconciliation behavior. Defaults to OFF.
+     * Mode selects the group-reconciliation behavior. Defaults to OFF. Possible values: OFF, DRY_RUN, MEMBERSHIP_ONLY.
      */
     mode: string;
     /**
@@ -27301,9 +27367,20 @@ export interface OrganizationConfigGenerationMetadata {
     labels: {[key: string]: string};
 }
 
+export interface OrganizationServiceAccountKeySettings {
+    /**
+     * Algorithm used to generate the service account key pairs.
+     */
+    algorithm: string;
+    /**
+     * Size in bits of the generated RSA keys. It only applies when `algorithm` is an RSA based one, and must be left unset for the ECDSA ones, where the curve is determined by the algorithm itself. Supported values are 2048, 3072 and 4096. Defaults to 2048.
+     */
+    rsaKeySize: number;
+}
+
 export interface OrganizationSettingDefaultSecuritySetting {
     /**
-     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release
+     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     authentication: string;
     /**
@@ -27331,7 +27408,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
      */
     extensions?: outputs.OrganizationSettingDefaultSecuritySettingExtension[];
     /**
-     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property.
+     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
     propagationStrategy: string;
     /**
@@ -27346,7 +27423,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     http?: outputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttp;
     /**
-     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -27435,7 +27512,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     authScopes: string[];
     /**
-     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
     authType: string;
     /**
@@ -27451,7 +27528,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     cookieConfig?: outputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
     /**
-     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
     grantType: string;
     /**
@@ -27478,7 +27555,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
     /**
-     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
     sameSite: string;
 }
@@ -27516,7 +27593,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
      */
     files?: outputs.OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProviderTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -27630,11 +27707,11 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorization {
      */
     http?: outputs.OrganizationSettingDefaultSecuritySettingAuthorizationHttp;
     /**
-     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
     identityMatch: string;
     /**
-     * A short cut for specifying the set of allowed callers.
+     * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
     mode: string;
     /**
@@ -27687,7 +27764,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorizationHttpExter
      */
     files?: outputs.OrganizationSettingDefaultSecuritySettingAuthorizationHttpExternalTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -27834,7 +27911,7 @@ export interface OrganizationSettingDefaultSecuritySettingExtension {
 
 export interface OrganizationSettingDefaultSecuritySettingExtensionMatch {
     /**
-     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
     mode: string;
     /**
@@ -27953,7 +28030,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettings
      */
     regionalFailovers?: outputs.OrganizationSettingDefaultTrafficSettingInboundFailoverSettingsRegionalFailover[];
     /**
-     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
     topologyChoice: string;
 }
@@ -28122,7 +28199,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingExte
      */
     files?: outputs.OrganizationSettingDefaultTrafficSettingInboundRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -28368,7 +28445,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingSett
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -28459,7 +28536,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTi
      */
     maxStreamDuration?: outputs.OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxStreamDuration;
     /**
-     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
     proxyType: string;
 }
@@ -28525,7 +28602,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
@@ -28558,7 +28635,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -28569,7 +28646,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
      */
     consistentHash?: outputs.OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -28643,7 +28720,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -29087,7 +29164,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingExternalSer
      */
     files?: outputs.OrganizationSettingDefaultTrafficSettingRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -29333,7 +29410,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingSettingsRul
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -29355,14 +29432,14 @@ export interface OrganizationSettingDefaultTrafficSettingReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingResilience {
     /**
-     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -29571,7 +29648,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -29582,7 +29659,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
      */
     consistentHash?: outputs.OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -29656,7 +29733,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -29977,7 +30054,7 @@ export interface OrganizationSettingFailoverSettings {
      */
     regionalFailovers?: outputs.OrganizationSettingFailoverSettingsRegionalFailover[];
     /**
-     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
     topologyChoice: string;
 }
@@ -30038,7 +30115,7 @@ export interface TenantConfigGenerationMetadata {
 
 export interface TenantSettingDefaultSecuritySetting {
     /**
-     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release
+     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     authentication: string;
     /**
@@ -30066,7 +30143,7 @@ export interface TenantSettingDefaultSecuritySetting {
      */
     extensions?: outputs.TenantSettingDefaultSecuritySettingExtension[];
     /**
-     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property.
+     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
     propagationStrategy: string;
     /**
@@ -30081,7 +30158,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettings {
      */
     http?: outputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttp;
     /**
-     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -30170,7 +30247,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      */
     authScopes: string[];
     /**
-     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
     authType: string;
     /**
@@ -30186,7 +30263,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      */
     cookieConfig?: outputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
     /**
-     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
     grantType: string;
     /**
@@ -30213,7 +30290,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
     /**
-     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
     sameSite: string;
 }
@@ -30251,7 +30328,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
      */
     files?: outputs.TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProviderTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -30365,11 +30442,11 @@ export interface TenantSettingDefaultSecuritySettingAuthorization {
      */
     http?: outputs.TenantSettingDefaultSecuritySettingAuthorizationHttp;
     /**
-     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
     identityMatch: string;
     /**
-     * A short cut for specifying the set of allowed callers.
+     * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
     mode: string;
     /**
@@ -30422,7 +30499,7 @@ export interface TenantSettingDefaultSecuritySettingAuthorizationHttpExternalTls
      */
     files?: outputs.TenantSettingDefaultSecuritySettingAuthorizationHttpExternalTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -30569,7 +30646,7 @@ export interface TenantSettingDefaultSecuritySettingExtension {
 
 export interface TenantSettingDefaultSecuritySettingExtensionMatch {
     /**
-     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
     mode: string;
     /**
@@ -30688,7 +30765,7 @@ export interface TenantSettingDefaultTrafficSettingInboundFailoverSettings {
      */
     regionalFailovers?: outputs.TenantSettingDefaultTrafficSettingInboundFailoverSettingsRegionalFailover[];
     /**
-     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
     topologyChoice: string;
 }
@@ -30857,7 +30934,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingExternalSe
      */
     files?: outputs.TenantSettingDefaultTrafficSettingInboundRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -31103,7 +31180,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingSettingsRu
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -31194,7 +31271,7 @@ export interface TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeout 
      */
     maxStreamDuration?: outputs.TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxStreamDuration;
     /**
-     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
     proxyType: string;
 }
@@ -31260,7 +31337,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
@@ -31293,7 +31370,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -31304,7 +31381,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
      */
     consistentHash?: outputs.TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -31378,7 +31455,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -31822,7 +31899,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingExternalServiceTl
      */
     files?: outputs.TenantSettingDefaultTrafficSettingRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -32068,7 +32145,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingSettingsRuleLimit
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -32090,14 +32167,14 @@ export interface TenantSettingDefaultTrafficSettingReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
 
 export interface TenantSettingDefaultTrafficSettingResilience {
     /**
-     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -32306,7 +32383,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -32317,7 +32394,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
      */
     consistentHash?: outputs.TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -32391,7 +32468,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -32767,7 +32844,7 @@ export interface WorkspaceSettingDefaultEastWestGatewaySettingWorkloadSelector {
 
 export interface WorkspaceSettingDefaultSecuritySetting {
     /**
-     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release
+     * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     authentication: string;
     /**
@@ -32795,7 +32872,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
      */
     extensions?: outputs.WorkspaceSettingDefaultSecuritySettingExtension[];
     /**
-     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property.
+     * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
     propagationStrategy: string;
     /**
@@ -32810,7 +32887,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettings {
      */
     http?: outputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttp;
     /**
-     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+     * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -32899,7 +32976,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      */
     authScopes: string[];
     /**
-     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+     * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
     authType: string;
     /**
@@ -32915,7 +32992,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      */
     cookieConfig?: outputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
     /**
-     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+     * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
     grantType: string;
     /**
@@ -32942,7 +33019,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
     /**
-     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+     * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
     sameSite: string;
 }
@@ -32980,7 +33057,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
      */
     files?: outputs.WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProviderTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -33094,11 +33171,11 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorization {
      */
     http?: outputs.WorkspaceSettingDefaultSecuritySettingAuthorizationHttp;
     /**
-     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+     * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
     identityMatch: string;
     /**
-     * A short cut for specifying the set of allowed callers.
+     * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
     mode: string;
     /**
@@ -33151,7 +33228,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorizationHttpExternal
      */
     files?: outputs.WorkspaceSettingDefaultSecuritySettingAuthorizationHttpExternalTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -33298,7 +33375,7 @@ export interface WorkspaceSettingDefaultSecuritySettingExtension {
 
 export interface WorkspaceSettingDefaultSecuritySettingExtensionMatch {
     /**
-     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+     * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
     mode: string;
     /**
@@ -33417,7 +33494,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettings {
      */
     regionalFailovers?: outputs.WorkspaceSettingDefaultTrafficSettingInboundFailoverSettingsRegionalFailover[];
     /**
-     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
     topologyChoice: string;
 }
@@ -33586,7 +33663,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingExterna
      */
     files?: outputs.WorkspaceSettingDefaultTrafficSettingInboundRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -33832,7 +33909,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingSetting
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -33923,7 +34000,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeo
      */
     maxStreamDuration?: outputs.WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxStreamDuration;
     /**
-     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+     * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
     proxyType: string;
 }
@@ -33989,7 +34066,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
@@ -34022,7 +34099,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -34033,7 +34110,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
      */
     consistentHash?: outputs.WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -34107,7 +34184,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -34551,7 +34628,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingExternalServic
      */
     files?: outputs.WorkspaceSettingDefaultTrafficSettingRateLimitingExternalServiceTlsFiles;
     /**
-     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+     * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
     mode: string;
     /**
@@ -34797,7 +34874,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingSettingsRuleLi
      */
     requestsPerUnit: number;
     /**
-     * Specifies the unit of time for rate limit.
+     * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
     unit: string;
 }
@@ -34819,14 +34896,14 @@ export interface WorkspaceSettingDefaultTrafficSettingReachability {
      */
     hosts: string[];
     /**
-     * A short cut for specifying the set of services accessed by the workload.
+     * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
     mode: string;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingResilience {
     /**
-     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -35035,7 +35112,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsAuthentication {
     /**
-     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+     * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
     trafficMode: string;
 }
@@ -35046,7 +35123,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
      */
     consistentHash?: outputs.WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
     /**
-     * Use standard load balancing algorithms that require no tuning.
+     * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
     simple: string;
 }
@@ -35120,7 +35197,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsResilience {
     /**
-     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+     * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
     circuitBreakerSensitivity: string;
     /**
@@ -35441,7 +35518,7 @@ export interface WorkspaceSettingFailoverSettings {
      */
     regionalFailovers?: outputs.WorkspaceSettingFailoverSettingsRegionalFailover[];
     /**
-     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+     * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
     topologyChoice: string;
 }
@@ -35618,7 +35695,7 @@ export namespace application {
          */
         tls?: outputs.application.ApplicationApiHttpServerTls;
         /**
-         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh.
+         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
         trafficMode: string;
         /**
@@ -35711,7 +35788,7 @@ export namespace application {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -35727,7 +35804,7 @@ export namespace application {
          */
         cookieConfig?: outputs.application.ApplicationApiHttpServerAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -35754,7 +35831,7 @@ export namespace application {
 
     export interface ApplicationApiHttpServerAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -35792,7 +35869,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiHttpServerAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -35940,7 +36017,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiHttpServerAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -36138,7 +36215,7 @@ export namespace application {
          */
         regionalFailovers?: outputs.application.ApplicationApiHttpServerFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -36325,7 +36402,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiHttpServerRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -36571,7 +36648,7 @@ export namespace application {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -37042,7 +37119,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiHttpServerRoutingRuleRouteServiceDestinationTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -37091,15 +37168,15 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiHttpServerTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -37254,7 +37331,7 @@ export namespace application {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -37270,7 +37347,7 @@ export namespace application {
          */
         cookieConfig?: outputs.application.ApplicationApiServerAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -37297,7 +37374,7 @@ export namespace application {
 
     export interface ApplicationApiServerAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -37335,7 +37412,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiServerAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -37483,7 +37560,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiServerAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -37696,7 +37773,7 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiServerRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -37942,7 +38019,7 @@ export namespace application {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -38207,15 +38284,15 @@ export namespace application {
          */
         files?: outputs.application.ApplicationApiServerTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -38356,7 +38433,7 @@ export namespace application {
 export namespace extension {
     export interface ExtensionWasmExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
     }
@@ -38378,7 +38455,7 @@ export namespace extension {
          */
         value: string;
         /**
-         * Source for the environment variable's value.
+         * Source for the environment variable's value. Possible values: INLINE, HOST.
          */
         valueFrom: string;
     }
@@ -38403,11 +38480,11 @@ export namespace gateway {
          */
         http?: outputs.gateway.GatewayEgressGatewayAuthorizationFromHttp;
         /**
-         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
         identityMatch: string;
         /**
-         * A short cut for specifying the set of allowed callers.
+         * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
         mode: string;
         /**
@@ -38460,7 +38537,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayEgressGatewayAuthorizationFromHttpExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -38607,7 +38684,7 @@ export namespace gateway {
 
     export interface GatewayEgressGatewayExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -38651,7 +38728,7 @@ export namespace gateway {
          */
         from?: outputs.gateway.GatewayGatewayEgressAuthorizationFrom;
         /**
-         * IdentityMatch defines the client identity used for evaluating the authorization rules. Possible values are: SOURCE_IDENTITY, PEER_CERTIFICATE, and PERMISSIVE. If no mode is specified, the mode is treated as PERMISSIVE mode.
+         * IdentityMatch defines the client identity used for evaluating the authorization rules. Possible values are: SOURCE_IDENTITY, PEER_CERTIFICATE, and PERMISSIVE. If no mode is specified, the mode is treated as PERMISSIVE mode. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
         identityMatch: string;
         /**
@@ -38662,7 +38739,7 @@ export namespace gateway {
 
     export interface GatewayGatewayEgressAuthorizationFrom {
         /**
-         * A shortcut for specifying the set of allowed callers. Deprecated: use `resources` or `serviceAccounts` instead.
+         * A shortcut for specifying the set of allowed callers. Deprecated: use `resources` or `serviceAccounts` instead. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, SERVICE_ACCOUNT.
          */
         mode: string;
         /**
@@ -38751,7 +38828,7 @@ export namespace gateway {
          */
         tls?: outputs.gateway.GatewayGatewayHttpTls;
         /**
-         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh.
+         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
         trafficMode: string;
         /**
@@ -38844,7 +38921,7 @@ export namespace gateway {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -38860,7 +38937,7 @@ export namespace gateway {
          */
         cookieConfig?: outputs.gateway.GatewayGatewayHttpAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -38887,7 +38964,7 @@ export namespace gateway {
 
     export interface GatewayGatewayHttpAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -38925,7 +39002,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayHttpAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -39073,7 +39150,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayHttpAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -39271,7 +39348,7 @@ export namespace gateway {
          */
         regionalFailovers?: outputs.gateway.GatewayGatewayHttpFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -39458,7 +39535,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayHttpRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -39704,7 +39781,7 @@ export namespace gateway {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -40175,7 +40252,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayHttpRoutingRuleRouteServiceDestinationTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -40224,15 +40301,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayHttpTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -40286,7 +40363,7 @@ export namespace gateway {
          */
         tls?: outputs.gateway.GatewayGatewayTcpTls;
         /**
-         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh.
+         * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
         trafficMode: string;
         /**
@@ -40311,7 +40388,7 @@ export namespace gateway {
          */
         regionalFailovers?: outputs.gateway.GatewayGatewayTcpFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -40399,7 +40476,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayTcpRouteServiceDestinationTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -40437,15 +40514,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayTcpTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -40512,7 +40589,7 @@ export namespace gateway {
          */
         regionalFailovers?: outputs.gateway.GatewayGatewayTlFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -40600,7 +40677,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayGatewayTlRouteServiceDestinationTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -40648,7 +40725,7 @@ export namespace gateway {
 
     export interface GatewayGatewayWasmPluginMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -40717,7 +40794,7 @@ export namespace gateway {
 
     export interface GatewayIngressGatewayExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -40860,7 +40937,7 @@ export namespace gateway {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -40876,7 +40953,7 @@ export namespace gateway {
          */
         cookieConfig?: outputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -40903,7 +40980,7 @@ export namespace gateway {
 
     export interface GatewayIngressGatewayHttpAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -40941,7 +41018,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayIngressGatewayHttpAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -41089,7 +41166,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayIngressGatewayHttpAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -41302,7 +41379,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayIngressGatewayHttpRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -41548,7 +41625,7 @@ export namespace gateway {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -41813,15 +41890,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayIngressGatewayHttpTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -41972,15 +42049,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayIngressGatewayTcpTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -42927,7 +43004,7 @@ export namespace gateway {
          */
         terminationGracePeriodSeconds: number;
         /**
-         * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST.
+         * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
          */
         type: string;
     }
@@ -43796,7 +43873,7 @@ export namespace gateway {
 
     export interface GatewayTier1GatewayExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -43935,7 +44012,7 @@ export namespace gateway {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -43951,7 +44028,7 @@ export namespace gateway {
          */
         cookieConfig?: outputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -43978,7 +44055,7 @@ export namespace gateway {
 
     export interface GatewayTier1GatewayExternalServerAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -44016,7 +44093,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayExternalServerAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -44164,7 +44241,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayExternalServerAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -44396,7 +44473,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayExternalServerRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -44642,7 +44719,7 @@ export namespace gateway {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -44691,15 +44768,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayExternalServerTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -44834,7 +44911,7 @@ export namespace gateway {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -44850,7 +44927,7 @@ export namespace gateway {
          */
         cookieConfig?: outputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -44877,7 +44954,7 @@ export namespace gateway {
 
     export interface GatewayTier1GatewayInternalServerAuthenticationOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -44915,7 +44992,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayInternalServerAuthenticationOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -45063,7 +45140,7 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayInternalServerAuthorizationExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -45246,15 +45323,15 @@ export namespace gateway {
          */
         files?: outputs.gateway.GatewayTier1GatewayTcpExternalServerTlsFiles;
         /**
-         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         maxProtocolVersion: string;
         /**
-         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
+         * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
         minProtocolVersion: string;
         /**
-         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively.
+         * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
         mode: string;
         /**
@@ -45580,7 +45657,7 @@ export namespace profile {
          */
         http?: outputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttp;
         /**
-         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -45669,7 +45746,7 @@ export namespace profile {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -45685,7 +45762,7 @@ export namespace profile {
          */
         cookieConfig?: outputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -45712,7 +45789,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -45750,7 +45827,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileDefaultsAuthenticationSettingsHttpOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -45900,7 +45977,7 @@ export namespace profile {
          */
         regionalFailovers?: outputs.profile.ProfileProfileDefaultsTrafficInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -46069,7 +46146,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileDefaultsTrafficInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
         mode: string;
         /**
@@ -46315,7 +46392,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -46406,7 +46483,7 @@ export namespace profile {
          */
         maxStreamDuration?: outputs.profile.ProfileProfileDefaultsTrafficInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -46472,7 +46549,7 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -46505,7 +46582,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -46516,7 +46593,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -46590,7 +46667,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -46991,7 +47068,7 @@ export namespace profile {
          */
         regionalFailovers?: outputs.profile.ProfileProfileDefaultsTrafficSettingsInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -47160,7 +47237,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileDefaultsTrafficSettingsInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -47406,7 +47483,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -47497,7 +47574,7 @@ export namespace profile {
          */
         maxStreamDuration?: outputs.profile.ProfileProfileDefaultsTrafficSettingsInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -47563,7 +47640,7 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -47596,7 +47673,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -47607,7 +47684,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -47681,7 +47758,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -48125,7 +48202,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileDefaultsTrafficSettingsRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -48371,7 +48448,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -48393,14 +48470,14 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsResilience {
         /**
-         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -48609,7 +48686,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -48620,7 +48697,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -48694,7 +48771,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -49019,7 +49096,7 @@ export namespace profile {
 
     export interface ProfileProfileDefaultsWasmExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -49068,7 +49145,7 @@ export namespace profile {
          */
         http?: outputs.profile.ProfileProfileMandatesAuthenticationSettingsHttp;
         /**
-         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -49157,7 +49234,7 @@ export namespace profile {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -49173,7 +49250,7 @@ export namespace profile {
          */
         cookieConfig?: outputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -49200,7 +49277,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -49238,7 +49315,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileMandatesAuthenticationSettingsHttpOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -49388,7 +49465,7 @@ export namespace profile {
          */
         regionalFailovers?: outputs.profile.ProfileProfileMandatesTrafficInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -49557,7 +49634,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileMandatesTrafficInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
         mode: string;
         /**
@@ -49803,7 +49880,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -49894,7 +49971,7 @@ export namespace profile {
          */
         maxStreamDuration?: outputs.profile.ProfileProfileMandatesTrafficInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -49960,7 +50037,7 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -49993,7 +50070,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -50004,7 +50081,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -50078,7 +50155,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -50479,7 +50556,7 @@ export namespace profile {
          */
         regionalFailovers?: outputs.profile.ProfileProfileMandatesTrafficSettingsInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -50648,7 +50725,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileMandatesTrafficSettingsInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -50894,7 +50971,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -50985,7 +51062,7 @@ export namespace profile {
          */
         maxStreamDuration?: outputs.profile.ProfileProfileMandatesTrafficSettingsInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -51051,7 +51128,7 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -51084,7 +51161,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -51095,7 +51172,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -51169,7 +51246,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -51613,7 +51690,7 @@ export namespace profile {
          */
         files?: outputs.profile.ProfileProfileMandatesTrafficSettingsRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -51859,7 +51936,7 @@ export namespace profile {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -51881,14 +51958,14 @@ export namespace profile {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsResilience {
         /**
-         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -52097,7 +52174,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -52108,7 +52185,7 @@ export namespace profile {
          */
         consistentHash?: outputs.profile.ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -52182,7 +52259,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -52507,7 +52584,7 @@ export namespace profile {
 
     export interface ProfileProfileMandatesWasmExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -52528,7 +52605,7 @@ export namespace profile {
 export namespace rbac {
     export interface RbacRoleRule {
         /**
-         * The set of actions allowed for these APIs. The current version supports requires the kind, but this constraint will be relaxed in upcoming releases so that rules can apply globally to an entire API group.
+         * The set of actions allowed for these APIs. The current version supports requires the kind, but this constraint will be relaxed in upcoming releases so that rules can apply globally to an entire API group. Possible values: INVALID, READ, WRITE, CREATE, DELETE, SET_POLICY, GET_POLICY.
          */
         permissions: string[];
         /**
@@ -52671,7 +52748,7 @@ export namespace security {
          */
         http?: outputs.security.SecuritySecuritySettingAuthenticationSettingsHttp;
         /**
-         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -52760,7 +52837,7 @@ export namespace security {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -52776,7 +52853,7 @@ export namespace security {
          */
         cookieConfig?: outputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -52803,7 +52880,7 @@ export namespace security {
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -52841,7 +52918,7 @@ export namespace security {
          */
         files?: outputs.security.SecuritySecuritySettingAuthenticationSettingsHttpOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -52955,11 +53032,11 @@ export namespace security {
          */
         http?: outputs.security.SecuritySecuritySettingAuthorizationHttp;
         /**
-         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
         identityMatch: string;
         /**
-         * A short cut for specifying the set of allowed callers.
+         * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
         mode: string;
         /**
@@ -53012,7 +53089,7 @@ export namespace security {
          */
         files?: outputs.security.SecuritySecuritySettingAuthorizationHttpExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -53159,7 +53236,7 @@ export namespace security {
 
     export interface SecuritySecuritySettingExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -53195,7 +53272,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSettings {
         /**
-         * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release
+         * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         authentication: string;
         /**
@@ -53223,7 +53300,7 @@ export namespace security {
          */
         extensions?: outputs.security.SecurityServiceSecuritySettingSettingsExtension[];
         /**
-         * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property.
+         * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
         propagationStrategy: string;
         /**
@@ -53238,7 +53315,7 @@ export namespace security {
          */
         http?: outputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttp;
         /**
-         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -53327,7 +53404,7 @@ export namespace security {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -53343,7 +53420,7 @@ export namespace security {
          */
         cookieConfig?: outputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -53370,7 +53447,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -53408,7 +53485,7 @@ export namespace security {
          */
         files?: outputs.security.SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -53522,11 +53599,11 @@ export namespace security {
          */
         http?: outputs.security.SecurityServiceSecuritySettingSettingsAuthorizationHttp;
         /**
-         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
         identityMatch: string;
         /**
-         * A short cut for specifying the set of allowed callers.
+         * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
         mode: string;
         /**
@@ -53579,7 +53656,7 @@ export namespace security {
          */
         files?: outputs.security.SecurityServiceSecuritySettingSettingsAuthorizationHttpExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -53726,7 +53803,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSettingsExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -53762,7 +53839,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSubsetSettings {
         /**
-         * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release
+         * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         authentication: string;
         /**
@@ -53790,7 +53867,7 @@ export namespace security {
          */
         extensions?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsExtension[];
         /**
-         * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property.
+         * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
         propagationStrategy: string;
         /**
@@ -53805,7 +53882,7 @@ export namespace security {
          */
         http?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttp;
         /**
-         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted
+         * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -53894,7 +53971,7 @@ export namespace security {
          */
         authScopes: string[];
         /**
-         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1
+         * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
         authType: string;
         /**
@@ -53910,7 +53987,7 @@ export namespace security {
          */
         cookieConfig?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig;
         /**
-         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3)
+         * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
         grantType: string;
         /**
@@ -53937,7 +54014,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcCookieConfig {
         /**
-         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set).
+         * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
         sameSite: string;
     }
@@ -53975,7 +54052,7 @@ export namespace security {
          */
         files?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcProviderTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -54089,11 +54166,11 @@ export namespace security {
          */
         http?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthorizationHttp;
         /**
-         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method.
+         * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
         identityMatch: string;
         /**
-         * A short cut for specifying the set of allowed callers.
+         * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
         mode: string;
         /**
@@ -54146,7 +54223,7 @@ export namespace security {
          */
         files?: outputs.security.SecurityServiceSecuritySettingSubsetSettingsAuthorizationHttpExternalTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -54293,7 +54370,7 @@ export namespace security {
 
     export interface SecurityServiceSecuritySettingSubsetSettingsExtensionMatch {
         /**
-         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER.
+         * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
         mode: string;
         /**
@@ -54623,7 +54700,7 @@ export namespace traffic {
          */
         stickySession?: outputs.traffic.TrafficServiceRoutePortLevelSettingStickySession;
         /**
-         * Type of traffic for which a route has to be generated
+         * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
         trafficType: string;
     }
@@ -54739,7 +54816,7 @@ export namespace traffic {
          */
         stickySession?: outputs.traffic.TrafficServiceRouteSubsetPortLevelSettingStickySession;
         /**
-         * Type of traffic for which a route has to be generated
+         * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
         trafficType: string;
     }
@@ -54937,7 +55014,7 @@ export namespace traffic {
          */
         regionalFailovers?: outputs.traffic.TrafficServiceTrafficSettingSettingsInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -55106,7 +55183,7 @@ export namespace traffic {
          */
         files?: outputs.traffic.TrafficServiceTrafficSettingSettingsInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -55352,7 +55429,7 @@ export namespace traffic {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -55443,7 +55520,7 @@ export namespace traffic {
          */
         maxStreamDuration?: outputs.traffic.TrafficServiceTrafficSettingSettingsInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -55509,7 +55586,7 @@ export namespace traffic {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -55542,7 +55619,7 @@ export namespace traffic {
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -55553,7 +55630,7 @@ export namespace traffic {
          */
         consistentHash?: outputs.traffic.TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -55627,7 +55704,7 @@ export namespace traffic {
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -56071,7 +56148,7 @@ export namespace traffic {
          */
         files?: outputs.traffic.TrafficServiceTrafficSettingSettingsRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -56317,7 +56394,7 @@ export namespace traffic {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -56339,14 +56416,14 @@ export namespace traffic {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
 
     export interface TrafficServiceTrafficSettingSettingsResilience {
         /**
-         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -56555,7 +56632,7 @@ export namespace traffic {
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -56566,7 +56643,7 @@ export namespace traffic {
          */
         consistentHash?: outputs.traffic.TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -56640,7 +56717,7 @@ export namespace traffic {
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -56998,7 +57075,7 @@ export namespace traffic {
          */
         regionalFailovers?: outputs.traffic.TrafficTrafficSettingInboundFailoverSettingsRegionalFailover[];
         /**
-         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored.
+         * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
         topologyChoice: string;
     }
@@ -57167,7 +57244,7 @@ export namespace traffic {
          */
         files?: outputs.traffic.TrafficTrafficSettingInboundRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -57413,7 +57490,7 @@ export namespace traffic {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -57504,7 +57581,7 @@ export namespace traffic {
          */
         maxStreamDuration?: outputs.traffic.TrafficTrafficSettingInboundResilienceMeshTimeoutMaxStreamDuration;
         /**
-         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars.
+         * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
         proxyType: string;
     }
@@ -57570,7 +57647,7 @@ export namespace traffic {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
@@ -57603,7 +57680,7 @@ export namespace traffic {
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -57614,7 +57691,7 @@ export namespace traffic {
          */
         consistentHash?: outputs.traffic.TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -57688,7 +57765,7 @@ export namespace traffic {
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -58132,7 +58209,7 @@ export namespace traffic {
          */
         files?: outputs.traffic.TrafficTrafficSettingRateLimitingExternalServiceTlsFiles;
         /**
-         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well)
+         * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
         mode: string;
         /**
@@ -58378,7 +58455,7 @@ export namespace traffic {
          */
         requestsPerUnit: number;
         /**
-         * Specifies the unit of time for rate limit.
+         * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
         unit: string;
     }
@@ -58400,14 +58477,14 @@ export namespace traffic {
          */
         hosts: string[];
         /**
-         * A short cut for specifying the set of services accessed by the workload.
+         * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
         mode: string;
     }
 
     export interface TrafficTrafficSettingResilience {
         /**
-         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
         circuitBreakerSensitivity: string;
         /**
@@ -58616,7 +58693,7 @@ export namespace traffic {
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsAuthentication {
         /**
-         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected.
+         * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
         trafficMode: string;
     }
@@ -58627,7 +58704,7 @@ export namespace traffic {
          */
         consistentHash?: outputs.traffic.TrafficTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash;
         /**
-         * Use standard load balancing algorithms that require no tuning.
+         * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
         simple: string;
     }
@@ -58701,7 +58778,7 @@ export namespace traffic {
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsResilience {
         /**
-         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool.
+         * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
         circuitBreakerSensitivity: string;
         /**

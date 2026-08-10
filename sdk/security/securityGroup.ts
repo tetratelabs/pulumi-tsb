@@ -41,7 +41,7 @@ export class SecurityGroup extends pulumi.CustomResource {
      */
     declare public readonly configGenerationMetadata: pulumi.Output<outputs.security.SecurityGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     declare public readonly configMode: pulumi.Output<string>;
     /**
@@ -136,7 +136,7 @@ export interface SecurityGroupState {
      */
     configGenerationMetadata?: pulumi.Input<inputs.security.SecurityGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     configMode?: pulumi.Input<string | undefined>;
     /**
@@ -182,7 +182,7 @@ export interface SecurityGroupArgs {
      */
     configGenerationMetadata?: pulumi.Input<inputs.security.SecurityGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     configMode?: pulumi.Input<string | undefined>;
     /**
