@@ -71,7 +71,7 @@ export class User extends pulumi.CustomResource {
      */
     declare public readonly providerName: pulumi.Output<string>;
     /**
-     * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). <!-- terraform code generation tags +protoc-gen-terraform:computed +protoc-gen-terraform:enumdefault:4 -->
+     * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
     declare public /*out*/ readonly sourceType: pulumi.Output<string>;
 
@@ -166,7 +166,7 @@ export interface UserState {
      */
     providerName?: pulumi.Input<string | undefined>;
     /**
-     * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). <!-- terraform code generation tags +protoc-gen-terraform:computed +protoc-gen-terraform:enumdefault:4 -->
+     * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
     sourceType?: pulumi.Input<string | undefined>;
 }

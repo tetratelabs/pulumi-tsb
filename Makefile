@@ -1,10 +1,10 @@
 # Copyright (c) Tetrate, Inc 2026 All Rights Reserved.
 
 # Terraform provider version
-PROVIDER_VERSION=0.1.2
+PROVIDER_VERSION=0.1.3
 
 # Pulumi bridged provider version (this package)
-VERSION=0.1.2
+VERSION=0.1.3
 
 default: build
 

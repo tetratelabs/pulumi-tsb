@@ -65,6 +65,10 @@ export class Organization extends pulumi.CustomResource {
      */
     declare public readonly profiles: pulumi.Output<string[]>;
     /**
+     * Settings that govern how the key pairs of the service accounts in this organization are generated. They are only applied to the keys generated after the settings are changed; existing service account keys are left untouched. If omitted, RSA keys of 2048 bits are generated.
+     */
+    declare public readonly serviceAccountKeySettings: pulumi.Output<outputs.OrganizationServiceAccountKeySettings | undefined>;
+    /**
      * List of namespaces that will be considered as system namespaces for the organization and will not be able to be onboarded into TSB. System namespaces are namespaces that should not have sidecars injected and don't be configured with Istio injection. This is useful for namespaces that are used for infrastructure components like monitoring, logging, cloud provider components, etc. and that should not be managed by TSB in the cluster namespace onboarding workflows.
      */
     declare public readonly systemNamespaces: pulumi.Output<string[]>;
@@ -89,6 +93,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["name"] = state?.name;
             resourceInputs["parent"] = state?.parent;
             resourceInputs["profiles"] = state?.profiles;
+            resourceInputs["serviceAccountKeySettings"] = state?.serviceAccountKeySettings;
             resourceInputs["systemNamespaces"] = state?.systemNamespaces;
         } else {
             const args = argsOrState as OrganizationArgs | undefined;
@@ -105,6 +110,7 @@ export class Organization extends pulumi.CustomResource {
             resourceInputs["name"] = args?.name;
             resourceInputs["parent"] = args?.parent;
             resourceInputs["profiles"] = args?.profiles;
+            resourceInputs["serviceAccountKeySettings"] = args?.serviceAccountKeySettings;
             resourceInputs["systemNamespaces"] = args?.systemNamespaces;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -145,6 +151,10 @@ export interface OrganizationState {
      */
     profiles?: pulumi.Input<pulumi.Input<string>[] | undefined>;
     /**
+     * Settings that govern how the key pairs of the service accounts in this organization are generated. They are only applied to the keys generated after the settings are changed; existing service account keys are left untouched. If omitted, RSA keys of 2048 bits are generated.
+     */
+    serviceAccountKeySettings?: pulumi.Input<inputs.OrganizationServiceAccountKeySettings | undefined>;
+    /**
      * List of namespaces that will be considered as system namespaces for the organization and will not be able to be onboarded into TSB. System namespaces are namespaces that should not have sidecars injected and don't be configured with Istio injection. This is useful for namespaces that are used for infrastructure components like monitoring, logging, cloud provider components, etc. and that should not be managed by TSB in the cluster namespace onboarding workflows.
      */
     systemNamespaces?: pulumi.Input<pulumi.Input<string>[] | undefined>;
@@ -182,6 +192,10 @@ export interface OrganizationArgs {
      * List of profiles attached to the Organization to be used to propagate default and mandatory configurations down to the children.
      */
     profiles?: pulumi.Input<pulumi.Input<string>[] | undefined>;
+    /**
+     * Settings that govern how the key pairs of the service accounts in this organization are generated. They are only applied to the keys generated after the settings are changed; existing service account keys are left untouched. If omitted, RSA keys of 2048 bits are generated.
+     */
+    serviceAccountKeySettings?: pulumi.Input<inputs.OrganizationServiceAccountKeySettings | undefined>;
     /**
      * List of namespaces that will be considered as system namespaces for the organization and will not be able to be onboarded into TSB. System namespaces are namespaces that should not have sidecars injected and don't be configured with Istio injection. This is useful for namespaces that are used for infrastructure components like monitoring, logging, cloud provider components, etc. and that should not be managed by TSB in the cluster namespace onboarding workflows.
      */

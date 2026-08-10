@@ -41,7 +41,7 @@ export class GatewayGroup extends pulumi.CustomResource {
      */
     declare public readonly configGenerationMetadata: pulumi.Output<outputs.gateway.GatewayGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     declare public readonly configMode: pulumi.Output<string>;
     /**
@@ -130,7 +130,7 @@ export interface GatewayGroupState {
      */
     configGenerationMetadata?: pulumi.Input<inputs.gateway.GatewayGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     configMode?: pulumi.Input<string | undefined>;
     /**
@@ -172,7 +172,7 @@ export interface GatewayGroupArgs {
      */
     configGenerationMetadata?: pulumi.Input<inputs.gateway.GatewayGroupConfigGenerationMetadata | undefined>;
     /**
-     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode.
+     * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
     configMode?: pulumi.Input<string | undefined>;
     /**
