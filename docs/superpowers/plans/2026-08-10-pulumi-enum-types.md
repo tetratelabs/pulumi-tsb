@@ -1527,13 +1527,15 @@ Ask the user before pushing. Single remote (`origin` = `tetratelabs/pulumi-tsb`)
 
 ## Carried forward from Phase 1
 
-- **Release note required on the provider bump (Task 1).** Phase 1's regeneration picked up four fields
-  that gained `OneOf` validators from stale output predating that branch. This is a **user-visible
-  break**, not merely tightened validation: an existing `tsb_cluster` with
-  `elasticsearch.protocol = "HTTPS"`, or an out-of-set
+- **Tightened enum validation on four fields — no release note needed.** Phase 1's regeneration picked up
+  four fields that gained `OneOf` validators from stale output predating that branch. An existing
+  `tsb_cluster` with `elasticsearch.protocol = "HTTPS"`, or an out-of-set
   `organization.service_account_key_settings.algorithm`, now fails at `terraform plan` where it
-  previously applied. Defaults are unaffected. Say so in the release notes for the version this plan's
-  Task 1 bumps to.
+  previously applied; defaults are unaffected. This was initially flagged as needing a release note, but
+  the Terraform provider is **preview-only with no users**, so there is nobody to notify — the upstream
+  PR carries the `release-notes-none` label instead. The behaviour change is real and documented in
+  tetrateio/tetrate#33545; it just does not warrant release-note ceremony. Revisit if the provider ever
+  reaches general availability.
 - **Task 1's gate program answers an open question.** Phase 1's reviewer could not verify whether
   pulumi-terraform-bridge's PF shim hands us the concrete `attr.Type` or a shimmed one. The gate program
   constructs the provider directly rather than through the shim, so it should see concrete types — if it
