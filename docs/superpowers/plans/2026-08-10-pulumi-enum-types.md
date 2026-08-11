@@ -23,6 +23,15 @@
 - Generated files (`provider/resources_gen.go`, `provider/cmd/pulumi-resource-tsb/schema.json`, `sdk/`) are committed. `make check` fails on a dirty tree after regeneration.
 - Enum member names use `enumMemberName`, **not** the existing `pascalCase`. `pascalCase` preserves each segment's tail (`api` → `Api`), which on a fully upper-cased proto value yields `ISTIOMUTUAL`.
 - Shared types used across tasks live in `provider/cmd/gen-resources-tsb/types.go`.
+- **Collection asymmetry.** `attr.GetType().(prototypes.EnumType)` is correct only for *singular*
+  attributes. A `ListAttribute`/`MapAttribute` whose element is an enum has attribute type
+  `ListType{ElemType: EnumType{...}}`, so the bare assertion returns `ok == false` and that site would
+  silently degrade to a plain string. Phase 1 added
+  `types.EnumTypeOf(t attr.Type) (basetypes.EnumType, bool)`, which unwraps one level, for callers
+  wanting a single yes/no answer. The walk in Task 4 deliberately does **not** use it everywhere: it must
+  distinguish a scalar enum from a collection element, because the two attach their token at different
+  depths (`{Type: tok}` vs `{Elem: &SchemaInfo{Type: tok}}`). Handling each attribute kind explicitly is
+  what produces that distinction — do not "simplify" it away.
 
 ---
 
@@ -1515,6 +1524,20 @@ strict enums make load-bearing."
 Ask the user before pushing. Single remote (`origin` = `tetratelabs/pulumi-tsb`).
 
 ---
+
+## Carried forward from Phase 1
+
+- **Release note required on the provider bump (Task 1).** Phase 1's regeneration picked up four fields
+  that gained `OneOf` validators from stale output predating that branch. This is a **user-visible
+  break**, not merely tightened validation: an existing `tsb_cluster` with
+  `elasticsearch.protocol = "HTTPS"`, or an out-of-set
+  `organization.service_account_key_settings.algorithm`, now fails at `terraform plan` where it
+  previously applied. Defaults are unaffected. Say so in the release notes for the version this plan's
+  Task 1 bumps to.
+- **Task 1's gate program answers an open question.** Phase 1's reviewer could not verify whether
+  pulumi-terraform-bridge's PF shim hands us the concrete `attr.Type` or a shimmed one. The gate program
+  constructs the provider directly rather than through the shim, so it should see concrete types — if it
+  prints populated `FullName`s, that question is settled empirically.
 
 ## Follow-up, not in scope
 

@@ -146,8 +146,10 @@ import (
 )
 
 // EnumType is the zero value of the enum-flavoured Terraform attribute type.
-// Generated schemas call EnumTypeFor instead so the attribute names its enum;
-// this var is retained for hand-written consumers that only need the marker.
+//
+// Every generated schema still references this until Task 4 regenerates them
+// to call EnumTypeFor; the whole monorepo is one Go module, so removing it
+// before then breaks the build. Task 4 deletes it.
 var EnumType = basetypes.EnumType{}
 
 // EnumTypeFor returns the enum-flavoured Terraform attribute type for the proto
@@ -502,7 +504,31 @@ echo "bare EnumType refs: $(grep -rEho '\btypes[0-9]*\.EnumType\b' --include='*.
 Expected: roughly 659 `EnumTypeFor` calls, and **0** bare `EnumType` references. A non-zero second
 number means an emission path was missed — do not proceed.
 
-- [ ] **Step 3: Verify the module still builds and tests pass**
+- [ ] **Step 3: Verify the license headers survived**
+
+Regeneration used to strip the `// Copyright (c) Tetrate, Inc 2026 All Rights Reserved.` header from
+every generated file; Task 2's fix made the plugin emit it at `main.go:58`. Confirm that holds across
+all 108 files, not just the two test fixtures:
+
+```bash
+cd ~/src/tetrate
+echo "with header: $(grep -rl '^// Copyright (c) Tetrate' --include='*.pb.terraform.go' api | wc -l)"
+echo "total:       $(find api -name '*.pb.terraform.go' | wc -l)"
+```
+
+Expected: 108 and 108. (Before the fix it was 106 of 108 — two files never had one.) A shortfall means
+the header emission regressed; fix that rather than re-adding headers by hand.
+
+- [ ] **Step 4: Delete the now-unreferenced `EnumType` var**
+
+Nothing references it once generation emits `EnumTypeFor` everywhere, and Step 2 just proved that.
+Remove the var and its doc comment from `api/protoc-plugins/protoc-gen-terraform/pkg/types/enum.go`,
+leaving only `EnumTypeFor`. The `basetypes` import stays (it is `EnumTypeFor`'s return type).
+
+This is deferred to here rather than done in Task 1 deliberately: the monorepo is a single Go module,
+so deleting the var before regeneration breaks every generated file that still references it.
+
+- [ ] **Step 5: Verify the module still builds and tests pass**
 
 ```bash
 cd ~/src/tetrate/api
@@ -510,9 +536,10 @@ go build ./...
 go test ./... 2>&1 | tail -20
 ```
 
-Expected: clean build; tests pass.
+Expected: clean build; tests pass. A build error naming `EnumType` means something still references
+the deleted var — find it rather than restoring the var.
 
-- [ ] **Step 4: Spot-check a known collision pair**
+- [ ] **Step 6: Spot-check a known collision pair**
 
 ```bash
 cd ~/src/tetrate/api
@@ -523,7 +550,7 @@ Expected: both `tetrateio.api.tsb.auth.v2.TLSMode` and `tetrateio.api.tsb.profil
 as distinct strings. This is the case that motivates the whole change — the two enums declare
 different values, and leaf-name naming would have merged them.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 7: Commit**
 
 ```bash
 cd ~/src/tetrate
@@ -534,7 +561,7 @@ Every enum attribute and collection element now names its proto enum.
 Generated-only change; no proto or hand-written source touched."
 ```
 
-- [ ] **Step 6: Confirm before pushing**
+- [ ] **Step 8: Confirm before pushing**
 
 Ask the user before pushing. The repo has multiple remotes (`origin` = `tetrateio/tetrate`, plus
 personal forks including `chirauki`); confirm which to push to and open the PR from there.
