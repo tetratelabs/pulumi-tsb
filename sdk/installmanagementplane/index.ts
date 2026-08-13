@@ -5,4 +5,4 @@
 
 
 // Export enums:
-export * from "../types/enums/installManagementplane";
+export * from "../types/enums/installmanagementplane";

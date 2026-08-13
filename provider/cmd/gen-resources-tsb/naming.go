@@ -35,8 +35,8 @@ var reservedModules = map[string]bool{
 // name absent from this table is a generation error rather than a silent
 // rename, so a future upstream package cannot quietly produce a broken SDK.
 var moduleRemap = map[string]string{
-	"types":   "coreTypes",
-	"private": "privateApi",
+	"types":   "coretypes",
+	"private": "privateapi",
 }
 
 // enumModule derives the Pulumi module name for a proto package.
@@ -62,7 +62,7 @@ func enumModule(pkg protoreflect.FullName) (string, error) {
 		segs = segs[1:]
 	}
 
-	mod := camelJoin(segs)
+	mod := lowerJoin(segs)
 	if reservedModules[mod] {
 		remapped, ok := moduleRemap[mod]
 		if !ok {
@@ -74,18 +74,22 @@ func enumModule(pkg protoreflect.FullName) (string, error) {
 	return mod, nil
 }
 
-// camelJoin joins lowercase proto package segments into a camelCase identifier.
-func camelJoin(segs []string) string {
+// lowerJoin concatenates proto package segments into a single lowercase
+// identifier with no separator.
+//
+// Pulumi's nodejs codegen lowercases the directory it generates for each
+// module, but emits `export * from` statements using the module name exactly
+// as given. Any casing other than all-lowercase therefore produces imports
+// that reference a directory whose casing doesn't exist on disk (e.g.
+// "coreTypes" resolves against a generated "coretypes/" directory), which
+// fails to compile.
+func lowerJoin(segs []string) string {
 	var b strings.Builder
-	for i, s := range segs {
+	for _, s := range segs {
 		if s == "" {
 			continue
 		}
-		if i == 0 {
-			b.WriteString(s)
-			continue
-		}
-		b.WriteString(strings.ToUpper(s[:1]) + s[1:])
+		b.WriteString(strings.ToLower(s))
 	}
 	return b.String()
 }

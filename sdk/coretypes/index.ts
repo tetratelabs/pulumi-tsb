@@ -5,4 +5,4 @@
 
 
 // Export enums:
-export * from "../types/enums/coreTypes";
+export * from "../types/enums/coretypes";

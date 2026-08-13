@@ -13,12 +13,12 @@ func TestEnumModule(t *testing.T) {
 		"tetrateio.api.tsb.v2":                         "index",
 		"tetrateio.api.tsb.auth.v2":                    "auth",
 		"tetrateio.api.tsb.gateway.v2":                 "gateway",
-		"tetrateio.api.tsb.observability.telemetry.v2": "observabilityTelemetry",
-		"tetrateio.api.install.controlplane.v1alpha1":  "installControlplane",
-		"tetrateio.api.install.dataplane.v1alpha1":     "installDataplane",
+		"tetrateio.api.tsb.observability.telemetry.v2": "observabilitytelemetry",
+		"tetrateio.api.install.controlplane.v1alpha1":  "installcontrolplane",
+		"tetrateio.api.install.dataplane.v1alpha1":     "installdataplane",
 		// Reserved names must remap, never silently pass through.
-		"tetrateio.api.tsb.types.v2":   "coreTypes",
-		"tetrateio.api.tsb.private.v2": "privateApi",
+		"tetrateio.api.tsb.types.v2":   "coretypes",
+		"tetrateio.api.tsb.private.v2": "privateapi",
 	}
 	for pkg, want := range cases {
 		got, err := enumModule(pkg)

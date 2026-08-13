@@ -36,7 +36,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				}}},
 			}}},
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+				"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -118,39 +118,39 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		"install_template": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"helm": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"operator": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"control_plane_mode": {Type: "tsb:coreTypes/ControlPlaneMode:ControlPlaneMode"},
+					"control_plane_mode": {Type: "tsb:coretypes/ControlPlaneMode:ControlPlaneMode"},
 				}}},
 				"spec": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"components": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"gitops": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"push_mode": {Type: "tsb:installCommon/GitOpsPushMode:GitOpsPushMode"},
+							"push_mode": {Type: "tsb:installcommon/GitOpsPushMode:GitOpsPushMode"},
 						}}},
 						"internal_cert_provider": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"cert_manager": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-								"managed": {Type: "tsb:installCommon/CertManagerSettingsManaged:CertManagerSettingsManaged"},
+								"managed": {Type: "tsb:installcommon/CertManagerSettingsManaged:CertManagerSettingsManaged"},
 							}}},
 						}}},
 						"xcp": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"central_auth_mode": {Type: "tsb:installControlplane/XCPCentralAuthMode:XCPCentralAuthMode"},
+							"central_auth_mode": {Type: "tsb:installcontrolplane/XCPCentralAuthMode:XCPCentralAuthMode"},
 						}}},
 					}}},
-					"mode": {Type: "tsb:coreTypes/ControlPlaneMode:ControlPlaneMode"},
+					"mode": {Type: "tsb:coretypes/ControlPlaneMode:ControlPlaneMode"},
 					"provider_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"route53": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"filter_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-								"zone_type": {Type: "tsb:installControlplane/Route53SettingsFilterSettingsAWSZoneType:Route53SettingsFilterSettingsAWSZoneType"},
+								"zone_type": {Type: "tsb:installcontrolplane/Route53SettingsFilterSettingsAWSZoneType:Route53SettingsFilterSettingsAWSZoneType"},
 							}}},
-							"policy": {Type: "tsb:installControlplane/Route53SettingsPolicy:Route53SettingsPolicy"},
+							"policy": {Type: "tsb:installcontrolplane/Route53SettingsPolicy:Route53SettingsPolicy"},
 						}}},
 					}}},
 					"telemetry_store": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"elastic": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"protocol": {Type: "tsb:installControlplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol"},
+							"protocol": {Type: "tsb:installcontrolplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol"},
 						}}},
 					}}},
 					"telemetry_store_migration_target": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"elastic": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"protocol": {Type: "tsb:installControlplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol"},
+							"protocol": {Type: "tsb:installcontrolplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol"},
 						}}},
 					}}},
 				}}},
@@ -171,7 +171,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"istio_revisions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"distribution": {Type: "tsb:index/ClusterStateIstioRevisionDistribution:ClusterStateIstioRevisionDistribution"},
 			}}}},
-			"mode": {Type: "tsb:coreTypes/ControlPlaneMode:ControlPlaneMode"},
+			"mode": {Type: "tsb:coretypes/ControlPlaneMode:ControlPlaneMode"},
 		}}},
 	}},
 	"tsb_cluster_onboarding_config": {Tok: tsbResourceTok(tsbMod, "ClusterOnboardingConfig"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -182,7 +182,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 	"tsb_extension_wasm_extension": {Tok: tsbResourceTok("extension", "ExtensionWasmExtension"), Fields: map[string]*tfbridge.SchemaInfo{
 		"image_pull_policy": {Type: "tsb:extension/WasmExtensionPullPolicy:WasmExtensionPullPolicy"},
 		"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+			"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 		}}},
 		"phase": {Type: "tsb:extension/WasmExtensionPluginPhase:WasmExtensionPluginPhase"},
 		"vm_config": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -201,13 +201,13 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 				}}},
-				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+				"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 		}}}},
 		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+				"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 			}}}},
 		}}}},
 	}},
@@ -216,7 +216,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"from": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:gateway/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-			"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+			"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 		}}}},
 		"http": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -241,7 +241,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				}}},
 			}}},
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+				"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -277,7 +277,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}}},
 		"tcp": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+				"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
 			"route": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"service_destination": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -295,7 +295,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}}},
 		"tls": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+				"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
 			"route": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"service_destination": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -307,17 +307,17 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}}},
 		"wasm_plugins": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+				"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 			}}}},
 		}}}},
 	}},
 	"tsb_gateway_group": {Tok: tsbResourceTok("gateway", "GatewayGroup"), Fields: map[string]*tfbridge.SchemaInfo{
-		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
+		"config_mode": {Type: "tsb:coretypes/ConfigMode:ConfigMode"},
 	}},
 	"tsb_gateway_ingress_gateway": {Tok: tsbResourceTok("gateway", "GatewayIngressGateway"), Fields: map[string]*tfbridge.SchemaInfo{
 		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+				"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 			}}}},
 		}}}},
 		"http": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -371,7 +371,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}}},
 	}},
 	"tsb_gateway_install_gateway": {Tok: tsbResourceTok("gateway", "GatewayInstallGateway"), Fields: map[string]*tfbridge.SchemaInfo{
-		"type": {Type: "tsb:installDataplane/GatewaySpecType:GatewaySpecType"},
+		"type": {Type: "tsb:installdataplane/GatewaySpecType:GatewaySpecType"},
 	}},
 	"tsb_gateway_install_gateway_template": {Tok: tsbResourceTok("gateway", "GatewayInstallGatewayTemplate"), Fields: map[string]*tfbridge.SchemaInfo{
 		"gateway_spec": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -382,7 +382,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 	"tsb_gateway_tier1_gateway": {Tok: tsbResourceTok("gateway", "GatewayTier1Gateway"), Fields: map[string]*tfbridge.SchemaInfo{
 		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+				"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 			}}}},
 		}}}},
 		"external_servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -476,7 +476,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		"config": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"jit_provisioning": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"group_sync": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:installManagementplane/GroupSyncMode:GroupSyncMode"},
+					"mode": {Type: "tsb:installmanagementplane/GroupSyncMode:GroupSyncMode"},
 				}}},
 			}}},
 		}}},
@@ -514,20 +514,20 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 				}}},
-				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+				"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
-			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+			"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+					"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -602,7 +602,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			}}}},
 		}}},
 		"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+			"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 		}}},
 	}},
 	"tsb_profile_profile": {Tok: tsbResourceTok("profile", "ProfileProfile"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -671,7 +671,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+						"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 					}}},
 					"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -747,7 +747,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			}}},
 			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
 		}}},
@@ -816,7 +816,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+						"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 					}}},
 					"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -892,7 +892,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			}}},
 			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
 		}}},
@@ -903,7 +903,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}}},
 	}},
 	"tsb_security_group": {Tok: tsbResourceTok("security", "SecurityGroup"), Fields: map[string]*tfbridge.SchemaInfo{
-		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
+		"config_mode": {Type: "tsb:coretypes/ConfigMode:ConfigMode"},
 	}},
 	"tsb_security_security_setting": {Tok: tsbResourceTok("security", "SecuritySecuritySetting"), Fields: map[string]*tfbridge.SchemaInfo{
 		"authentication": {Type: "tsb:security/SecuritySettingAuthenticationMode:SecuritySettingAuthenticationMode"},
@@ -932,15 +932,15 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 			}}},
-			"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+			"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 			"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 		}}},
 		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+				"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 			}}}},
 		}}}},
-		"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+		"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 	}},
 	"tsb_security_service_security_setting": {Tok: tsbResourceTok("security", "SecurityServiceSecuritySetting"), Fields: map[string]*tfbridge.SchemaInfo{
 		"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -970,15 +970,15 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 				}}},
-				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+				"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
-			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+			"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"subsets": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1008,15 +1008,15 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 					}}},
-					"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+					"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 					"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 				}}},
 				"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+						"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 					}}}},
 				}}}},
-				"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+				"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 			}}},
 		}}}},
 	}},
@@ -1053,20 +1053,20 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 				}}},
-				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+				"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
-			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+			"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+					"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1142,7 +1142,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}},
 	}},
 	"tsb_traffic_group": {Tok: tsbResourceTok("traffic", "TrafficGroup"), Fields: map[string]*tfbridge.SchemaInfo{
-		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
+		"config_mode": {Type: "tsb:coretypes/ConfigMode:ConfigMode"},
 	}},
 	"tsb_traffic_service_route": {Tok: tsbResourceTok("traffic", "TrafficServiceRoute"), Fields: map[string]*tfbridge.SchemaInfo{
 		"port_level_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1158,7 +1158,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+					"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1236,7 +1236,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 	"tsb_traffic_traffic_setting": {Tok: tsbResourceTok("traffic", "TrafficTrafficSetting"), Fields: map[string]*tfbridge.SchemaInfo{
 		"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+				"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1342,20 +1342,20 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 				}}},
-				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
+				"identity_match": {Type: "tsb:coretypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
+					"mode": {Type: "tsb:coretypes/WorkloadMode:WorkloadMode"},
 				}}}},
 			}}}},
-			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
+			"propagation_strategy": {Type: "tsb:coretypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"inbound": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+					"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1430,7 +1430,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			}}}},
 		}}},
 		"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
+			"topology_choice": {Type: "tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 		}}},
 	}},
 }
@@ -1469,14 +1469,14 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "IstioMutual", Value: "ISTIO_MUTUAL"},
 		},
 	},
-	"tsb:coreTypes/ConfigMode:ConfigMode": {
+	"tsb:coretypes/ConfigMode:ConfigMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Bridged", Value: "BRIDGED"},
 			{Name: "Direct", Value: "DIRECT"},
 		},
 	},
-	"tsb:coreTypes/ControlPlaneMode:ControlPlaneMode": {
+	"tsb:coretypes/ControlPlaneMode:ControlPlaneMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Unset", Value: "UNSET"},
@@ -1484,7 +1484,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Observe", Value: "OBSERVE"},
 		},
 	},
-	"tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice": {
+	"tsb:coretypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "None", Value: "NONE"},
@@ -1492,7 +1492,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Locality", Value: "LOCALITY"},
 		},
 	},
-	"tsb:coreTypes/IdentityMatch:IdentityMatch": {
+	"tsb:coretypes/IdentityMatch:IdentityMatch": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Unknown", Value: "UNKNOWN"},
@@ -1501,14 +1501,14 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "SourceIdentity", Value: "SOURCE_IDENTITY"},
 		},
 	},
-	"tsb:coreTypes/PropagationStrategy:PropagationStrategy": {
+	"tsb:coretypes/PropagationStrategy:PropagationStrategy": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Replace", Value: "REPLACE"},
 			{Name: "Stricter", Value: "STRICTER"},
 		},
 	},
-	"tsb:coreTypes/WorkloadMode:WorkloadMode": {
+	"tsb:coretypes/WorkloadMode:WorkloadMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Undefined", Value: "UNDEFINED"},
@@ -1663,7 +1663,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "OidcProvisioned", Value: "OIDC_PROVISIONED"},
 		},
 	},
-	"tsb:installCommon/CertManagerSettingsManaged:CertManagerSettingsManaged": {
+	"tsb:installcommon/CertManagerSettingsManaged:CertManagerSettingsManaged": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Auto", Value: "AUTO"},
@@ -1671,21 +1671,21 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Internal", Value: "INTERNAL"},
 		},
 	},
-	"tsb:installCommon/GitOpsPushMode:GitOpsPushMode": {
+	"tsb:installcommon/GitOpsPushMode:GitOpsPushMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Sync", Value: "SYNC"},
 			{Name: "Async", Value: "ASYNC"},
 		},
 	},
-	"tsb:installControlplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol": {
+	"tsb:installcontrolplane/ElasticSearchSettingsProtocol:ElasticSearchSettingsProtocol": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Https", Value: "https"},
 			{Name: "Http", Value: "http"},
 		},
 	},
-	"tsb:installControlplane/Route53SettingsFilterSettingsAWSZoneType:Route53SettingsFilterSettingsAWSZoneType": {
+	"tsb:installcontrolplane/Route53SettingsFilterSettingsAWSZoneType:Route53SettingsFilterSettingsAWSZoneType": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "None", Value: "NONE"},
@@ -1693,7 +1693,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Private", Value: "PRIVATE"},
 		},
 	},
-	"tsb:installControlplane/Route53SettingsPolicy:Route53SettingsPolicy": {
+	"tsb:installcontrolplane/Route53SettingsPolicy:Route53SettingsPolicy": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Sync", Value: "SYNC"},
@@ -1701,7 +1701,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "CreateOnly", Value: "CREATE_ONLY"},
 		},
 	},
-	"tsb:installControlplane/XCPCentralAuthMode:XCPCentralAuthMode": {
+	"tsb:installcontrolplane/XCPCentralAuthMode:XCPCentralAuthMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Unknown", Value: "UNKNOWN"},
@@ -1709,7 +1709,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Jwt", Value: "JWT"},
 		},
 	},
-	"tsb:installDataplane/GatewaySpecType:GatewaySpecType": {
+	"tsb:installdataplane/GatewaySpecType:GatewaySpecType": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Unified", Value: "UNIFIED"},
@@ -1718,7 +1718,7 @@ var generatedEnums = map[string]pschema.ComplexTypeSpec{
 			{Name: "Eastwest", Value: "EASTWEST"},
 		},
 	},
-	"tsb:installManagementplane/GroupSyncMode:GroupSyncMode": {
+	"tsb:installmanagementplane/GroupSyncMode:GroupSyncMode": {
 		ObjectTypeSpec: pschema.ObjectTypeSpec{Type: "string"},
 		Enum: []pschema.EnumValueSpec{
 			{Name: "Off", Value: "OFF"},

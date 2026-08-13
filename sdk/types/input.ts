@@ -90,7 +90,7 @@ export interface ClusterInstallTemplateHelmOperator {
     /**
      * ControlPlaneMode is the mode for the control plane Possible values are: - UNSET: Defaults to CONTROL - OBSERVE: The control plane will be in observe mode - CONTROL: The control plane will be in control mode. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    controlPlaneMode?: pulumi.Input<enums.coreTypes.ControlPlaneMode | undefined>;
+    controlPlaneMode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * DeletionProtection is the flag for the deletion protection for the control plane Possible values are: - enabled: The control plane will have deletion protection enabled - disabled: The control plane will have deletion protection disabled
      */
@@ -578,7 +578,7 @@ export interface ClusterInstallTemplateHelmSpec {
     /**
      * Mode in which the Control Plane is deployed. Defaults to Control. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode?: pulumi.Input<enums.coreTypes.ControlPlaneMode | undefined>;
+    mode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * Configures Kubernetes provider specific settings.
      */
@@ -2991,7 +2991,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsGitops {
     /**
      * Push mode determines how the GitOps component creates resources in the Management Plane. In SYNC mode, TSB K8s resources are validated and pushed to the Management Plane synchronously. This means that if a TSB K8s resource is not accepted by the Management Plane, it will not be stored as a resource in the K8s API. SYNC mode can be useful in scenarios where eventual consistency of resources between K8s and Management Plane could cause problems such as in CI pipelines and testing. SYNC is the default mode. In ASYNC mode, TSB K8s resources are pushed to the Management Plane asynchronously. This means that resource creation does not block the process. ASYNC mode is useful in most cases as it does not require the user to manage dependencies between TSB K8s resources. The system will reconcile in the background to achieve the desired state of objects in the Management Plane and will update the Status subresource to report progress of reconciliation. Possible values: SYNC, ASYNC.
      */
-    pushMode?: pulumi.Input<enums.installCommon.GitOpsPushMode | undefined>;
+    pushMode?: pulumi.Input<enums.installcommon.GitOpsPushMode | undefined>;
     /**
      * Periodical interval at which the objects will be reconciled after they are successfully synchronized (created, updated, deleted) with the Management Plane. This parameter does not affect retry on unsuccessful operation which are retried with exponential backoff strategy (staring with 3s and max delay 120s). Format: 1h/1m/1s/1ms. A value of 0 disables per-object reconciliation and uses the operator's global interval of 10h. Default: 10m.
      */
@@ -3893,7 +3893,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCer
     /**
      * Managed specifies whether TSB should manage the lifecycle of cert-manager. Possible values: AUTO, EXTERNAL, INTERNAL.
      */
-    managed?: pulumi.Input<enums.installCommon.CertManagerSettingsManaged | undefined>;
+    managed?: pulumi.Input<enums.installcommon.CertManagerSettingsManaged | undefined>;
 }
 
 export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCertManagerCertManagerCaInjector {
@@ -17918,7 +17918,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsXcp {
     /**
      * Authentication mode for connections from XCP Edges to XCP Central. If not set will default to mutual TLS. Possible values: UNKNOWN, MUTUAL_TLS, JWT.
      */
-    centralAuthMode?: pulumi.Input<enums.installControlplane.XCPCentralAuthMode | undefined>;
+    centralAuthMode?: pulumi.Input<enums.installcontrolplane.XCPCentralAuthMode | undefined>;
     /**
      * If true, obtain the CA cert for Istio from XCP central. To enable it, the XCP Central needs to be configured with `certIssuer.clusterIntermediateCASettings: {}`.
      */
@@ -26614,7 +26614,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53 {
     /**
      * Specifies the policy to use when managing DNS records. Default: SYNC. Possible values: SYNC, UPSERT_ONLY, CREATE_ONLY.
      */
-    policy?: pulumi.Input<enums.installControlplane.Route53SettingsPolicy | undefined>;
+    policy?: pulumi.Input<enums.installcontrolplane.Route53SettingsPolicy | undefined>;
     /**
      * Service account name to use for IAM role. Required. Deprecated, user AWSIntegrationSettings instead.
      */
@@ -26656,7 +26656,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53FilterSett
     /**
      * Filter out (removes) zones of this type. Default: none, options: none, public, private. Possible values: NONE, PUBLIC, PRIVATE.
      */
-    zoneType?: pulumi.Input<enums.installControlplane.Route53SettingsFilterSettingsAWSZoneType | undefined>;
+    zoneType?: pulumi.Input<enums.installcontrolplane.Route53SettingsFilterSettingsAWSZoneType | undefined>;
 }
 
 export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53Interval {
@@ -26728,7 +26728,7 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreElastic {
     /**
      * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol?: pulumi.Input<enums.installControlplane.ElasticSearchSettingsProtocol | undefined>;
+    protocol?: pulumi.Input<enums.installcontrolplane.ElasticSearchSettingsProtocol | undefined>;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -26786,7 +26786,7 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetElas
     /**
      * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol?: pulumi.Input<enums.installControlplane.ElasticSearchSettingsProtocol | undefined>;
+    protocol?: pulumi.Input<enums.installcontrolplane.ElasticSearchSettingsProtocol | undefined>;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -27007,7 +27007,7 @@ export interface ClusterState {
     /**
      * Mode in which the  Control Plane is deployed. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode?: pulumi.Input<enums.coreTypes.ControlPlaneMode | undefined>;
+    mode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * cluster provider. Ex: GKE, EKS, AKS
      */
@@ -27158,7 +27158,7 @@ export interface OidcConfigJitProvisioningGroupSync {
     /**
      * Mode selects the group-reconciliation behavior. Defaults to OFF. Possible values: OFF, DRY_RUN, MEMBERSHIP_ONLY.
      */
-    mode?: pulumi.Input<enums.installManagementplane.GroupSyncMode | undefined>;
+    mode?: pulumi.Input<enums.installmanagementplane.GroupSyncMode | undefined>;
     /**
      * RequireMappedTeam, when true, denies login or refresh for users whose group claims resolve to no existing teams (break-glass teams are exempt). Only meaningful when `mode` is not OFF.
      */
@@ -27411,7 +27411,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -27710,7 +27710,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
@@ -27914,7 +27914,7 @@ export interface OrganizationSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -28033,7 +28033,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettings
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -30057,7 +30057,7 @@ export interface OrganizationSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface OrganizationSettingFailoverSettingsAutomaticLoadBalancing {
@@ -30146,7 +30146,7 @@ export interface TenantSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -30445,7 +30445,7 @@ export interface TenantSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
@@ -30649,7 +30649,7 @@ export interface TenantSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -30768,7 +30768,7 @@ export interface TenantSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -32875,7 +32875,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -33174,7 +33174,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
@@ -33378,7 +33378,7 @@ export interface WorkspaceSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -33497,7 +33497,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -35521,7 +35521,7 @@ export interface WorkspaceSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface WorkspaceSettingFailoverSettingsAutomaticLoadBalancing {
@@ -36224,7 +36224,7 @@ export namespace application {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ApplicationApiHttpServerFailoverSettingsAutomaticLoadBalancing {
@@ -38448,7 +38448,7 @@ export namespace extension {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     }
 
     export interface ExtensionWasmExtensionVmConfig {
@@ -38494,7 +38494,7 @@ export namespace gateway {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
@@ -38698,7 +38698,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -38742,7 +38742,7 @@ export namespace gateway {
         /**
          * IdentityMatch defines the client identity used for evaluating the authorization rules. Possible values are: SOURCE_IDENTITY, PEER_CERTIFICATE, and PERMISSIVE. If no mode is specified, the mode is treated as PERMISSIVE mode. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * The set of hostnames exposed on the Gateway through which external hosts can be accessed.
          */
@@ -39369,7 +39369,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayHttpFailoverSettingsAutomaticLoadBalancing {
@@ -40416,7 +40416,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayTcpFailoverSettingsAutomaticLoadBalancing {
@@ -40617,7 +40617,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayTlFailoverSettingsAutomaticLoadBalancing {
@@ -40753,7 +40753,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -40822,7 +40822,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -43901,7 +43901,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -47094,7 +47094,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -49122,7 +49122,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -50582,7 +50582,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -52610,7 +52610,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53056,7 +53056,7 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
@@ -53260,7 +53260,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53324,7 +53324,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
+        propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -53623,7 +53623,7 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
@@ -53827,7 +53827,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53891,7 +53891,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
+        propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -54190,7 +54190,7 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<enums.coreTypes.IdentityMatch | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
@@ -54394,7 +54394,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<enums.coreTypes.WorkloadMode | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -55037,7 +55037,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -57098,7 +57098,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<enums.coreTypes.FailoverSettingsTopologyChoice | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface TrafficTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {

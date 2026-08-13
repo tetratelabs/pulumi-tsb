@@ -5,4 +5,4 @@
 
 
 // Export enums:
-export * from "../types/enums/installControlplane";
+export * from "../types/enums/installcontrolplane";

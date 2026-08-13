@@ -5,4 +5,4 @@
 
 
 // Export enums:
-export * from "../types/enums/installCommon";
+export * from "../types/enums/installcommon";

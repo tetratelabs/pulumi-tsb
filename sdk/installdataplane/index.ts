@@ -5,4 +5,4 @@
 
 
 // Export enums:
-export * from "../types/enums/installDataplane";
+export * from "../types/enums/installdataplane";
