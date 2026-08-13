@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class GatewayTier1Gateway extends pulumi.CustomResource {

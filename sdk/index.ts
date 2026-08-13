@@ -81,11 +81,20 @@ export const WorkspaceSetting: typeof import("./workspaceSetting").WorkspaceSett
 utilities.lazyLoad(exports, ["WorkspaceSetting"], () => require("./workspaceSetting"));
 
 
+// Export enums:
+export * from "./types/enums";
+
 // Export sub-modules:
 import * as application from "./application";
+import * as auth from "./auth";
 import * as config from "./config";
+import * as coretypes from "./coretypes";
 import * as extension from "./extension";
 import * as gateway from "./gateway";
+import * as installcommon from "./installcommon";
+import * as installcontrolplane from "./installcontrolplane";
+import * as installdataplane from "./installdataplane";
+import * as installmanagementplane from "./installmanagementplane";
 import * as istiointernal from "./istiointernal";
 import * as profile from "./profile";
 import * as rbac from "./rbac";
@@ -95,9 +104,15 @@ import * as types from "./types";
 
 export {
     application,
+    auth,
     config,
+    coretypes,
     extension,
     gateway,
+    installcommon,
+    installcontrolplane,
+    installdataplane,
+    installmanagementplane,
     istiointernal,
     profile,
     rbac,

@@ -43,6 +43,9 @@ export const TrafficTrafficSetting: typeof import("./trafficTrafficSetting").Tra
 utilities.lazyLoad(exports, ["TrafficTrafficSetting"], () => require("./trafficTrafficSetting"));
 
 
+// Export enums:
+export * from "../types/enums/traffic";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

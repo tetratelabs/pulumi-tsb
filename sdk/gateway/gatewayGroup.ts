@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class GatewayGroup extends pulumi.CustomResource {
@@ -43,7 +44,7 @@ export class GatewayGroup extends pulumi.CustomResource {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    declare public readonly configMode: pulumi.Output<string>;
+    declare public readonly configMode: pulumi.Output<enums.coretypes.ConfigMode>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */
@@ -132,7 +133,7 @@ export interface GatewayGroupState {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    configMode?: pulumi.Input<string | undefined>;
+    configMode?: pulumi.Input<enums.coretypes.ConfigMode | undefined>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */
@@ -174,7 +175,7 @@ export interface GatewayGroupArgs {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `IngressGateway`. `DIRECT` mode indicates that configurations added to this group will use Istio Networking v1beta1 APIs such as `Gateway` and `VirtualService`, Istio Security v1beta1 APIs such as `RequestAuthentication` and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    configMode?: pulumi.Input<string | undefined>;
+    configMode?: pulumi.Input<enums.coretypes.ConfigMode | undefined>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */

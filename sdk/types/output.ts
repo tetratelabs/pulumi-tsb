@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 
 export interface AccessBindingAllow {
     /**
@@ -89,7 +90,7 @@ export interface ClusterInstallTemplateHelmOperator {
     /**
      * ControlPlaneMode is the mode for the control plane Possible values are: - UNSET: Defaults to CONTROL - OBSERVE: The control plane will be in observe mode - CONTROL: The control plane will be in control mode. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    controlPlaneMode: string;
+    controlPlaneMode: enums.coretypes.ControlPlaneMode;
     /**
      * DeletionProtection is the flag for the deletion protection for the control plane Possible values are: - enabled: The control plane will have deletion protection enabled - disabled: The control plane will have deletion protection disabled
      */
@@ -577,7 +578,7 @@ export interface ClusterInstallTemplateHelmSpec {
     /**
      * Mode in which the Control Plane is deployed. Defaults to Control. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode: string;
+    mode: enums.coretypes.ControlPlaneMode;
     /**
      * Configures Kubernetes provider specific settings.
      */
@@ -2990,7 +2991,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsGitops {
     /**
      * Push mode determines how the GitOps component creates resources in the Management Plane. In SYNC mode, TSB K8s resources are validated and pushed to the Management Plane synchronously. This means that if a TSB K8s resource is not accepted by the Management Plane, it will not be stored as a resource in the K8s API. SYNC mode can be useful in scenarios where eventual consistency of resources between K8s and Management Plane could cause problems such as in CI pipelines and testing. SYNC is the default mode. In ASYNC mode, TSB K8s resources are pushed to the Management Plane asynchronously. This means that resource creation does not block the process. ASYNC mode is useful in most cases as it does not require the user to manage dependencies between TSB K8s resources. The system will reconcile in the background to achieve the desired state of objects in the Management Plane and will update the Status subresource to report progress of reconciliation. Possible values: SYNC, ASYNC.
      */
-    pushMode: string;
+    pushMode: enums.installcommon.GitOpsPushMode;
     /**
      * Periodical interval at which the objects will be reconciled after they are successfully synchronized (created, updated, deleted) with the Management Plane. This parameter does not affect retry on unsuccessful operation which are retried with exponential backoff strategy (staring with 3s and max delay 120s). Format: 1h/1m/1s/1ms. A value of 0 disables per-object reconciliation and uses the operator's global interval of 10h. Default: 10m.
      */
@@ -3892,7 +3893,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCer
     /**
      * Managed specifies whether TSB should manage the lifecycle of cert-manager. Possible values: AUTO, EXTERNAL, INTERNAL.
      */
-    managed: string;
+    managed: enums.installcommon.CertManagerSettingsManaged;
 }
 
 export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCertManagerCertManagerCaInjector {
@@ -17917,7 +17918,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsXcp {
     /**
      * Authentication mode for connections from XCP Edges to XCP Central. If not set will default to mutual TLS. Possible values: UNKNOWN, MUTUAL_TLS, JWT.
      */
-    centralAuthMode: string;
+    centralAuthMode: enums.installcontrolplane.XCPCentralAuthMode;
     /**
      * If true, obtain the CA cert for Istio from XCP central. To enable it, the XCP Central needs to be configured with `certIssuer.clusterIntermediateCASettings: {}`.
      */
@@ -26613,7 +26614,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53 {
     /**
      * Specifies the policy to use when managing DNS records. Default: SYNC. Possible values: SYNC, UPSERT_ONLY, CREATE_ONLY.
      */
-    policy: string;
+    policy: enums.installcontrolplane.Route53SettingsPolicy;
     /**
      * Service account name to use for IAM role. Required. Deprecated, user AWSIntegrationSettings instead.
      */
@@ -26655,7 +26656,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53FilterSett
     /**
      * Filter out (removes) zones of this type. Default: none, options: none, public, private. Possible values: NONE, PUBLIC, PRIVATE.
      */
-    zoneType: string;
+    zoneType: enums.installcontrolplane.Route53SettingsFilterSettingsAWSZoneType;
 }
 
 export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53Interval {
@@ -26727,7 +26728,7 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreElastic {
     /**
      * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol: string;
+    protocol: enums.installcontrolplane.ElasticSearchSettingsProtocol;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -26783,9 +26784,9 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetElas
      */
     port: number;
     /**
-     * Protocol to communicate with Elasticsearch, defaults to https.
+     * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol: string;
+    protocol: enums.installcontrolplane.ElasticSearchSettingsProtocol;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -26817,7 +26818,7 @@ export interface ClusterNamespaceIstio {
     /**
      * Istio injection status for the namespace. Possible values: ISTIO_INJECTION_UNDEFINED, ISTIO_INJECTION_ENABLED, ISTIO_INJECTION_DISABLED.
      */
-    istioInjection: string;
+    istioInjection: enums.IstioStatusIstioInjection;
     /**
      * Istio revision of the namespace.
      */
@@ -26832,7 +26833,7 @@ export interface ClusterNamespaceScope {
     /**
      * Default scope for namespaces in this cluster (global, local). Possible values: GLOBAL, LOCAL.
      */
-    scope: string;
+    scope: enums.NamespaceScopingScope;
 }
 
 export interface ClusterNamespaceService {
@@ -26907,7 +26908,7 @@ export interface ClusterNamespaceService {
     /**
      * State of the Service(External/Observed/Controlled). Possible values: INVALID_STATE, EXTERNAL, OBSERVED, CONTROLLED.
      */
-    state: string;
+    state: enums.ServiceState;
     /**
      * Name of subsets defined for this service
      */
@@ -26979,7 +26980,7 @@ export interface ClusterOnboardingConfigNamespace {
     /**
      * The desired state of the namespace. Possible values: DESIRED_UNDEFINED, DESIRED_UNASSIGNED, DESIRED_DISABLED, DESIRED_IGNORED, DESIRED_ONBOARDED, DESIRED_SYSTEM.
      */
-    desiredState: string;
+    desiredState: enums.NamespaceDesiredState;
     /**
      * The name of the namespace.
      */
@@ -27006,7 +27007,7 @@ export interface ClusterState {
     /**
      * Mode in which the  Control Plane is deployed. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode: string;
+    mode: enums.coretypes.ControlPlaneMode;
     /**
      * cluster provider. Ex: GKE, EKS, AKS
      */
@@ -27032,7 +27033,7 @@ export interface ClusterStateIstioRevision {
     /**
      * Istio distribution found in the cluster. Possible values: UNKNOWN, TSB, TID.
      */
-    distribution: string;
+    distribution: enums.ClusterStateIstioRevisionDistribution;
     /**
      * Istio revision found in the cluster
      */
@@ -27157,7 +27158,7 @@ export interface OidcConfigJitProvisioningGroupSync {
     /**
      * Mode selects the group-reconciliation behavior. Defaults to OFF. Possible values: OFF, DRY_RUN, MEMBERSHIP_ONLY.
      */
-    mode: string;
+    mode: enums.installmanagementplane.GroupSyncMode;
     /**
      * RequireMappedTeam, when true, denies login or refresh for users whose group claims resolve to no existing teams (break-glass teams are exempt). Only meaningful when `mode` is not OFF.
      */
@@ -27369,9 +27370,9 @@ export interface OrganizationConfigGenerationMetadata {
 
 export interface OrganizationServiceAccountKeySettings {
     /**
-     * Algorithm used to generate the service account key pairs.
+     * Algorithm used to generate the service account key pairs. Possible values: RS256, ES256, ES384, ES512.
      */
-    algorithm: string;
+    algorithm: enums.OrganizationServiceAccountKeySettingsAlgorithm;
     /**
      * Size in bits of the generated RSA keys. It only applies when `algorithm` is an RSA based one, and must be left unset for the ECDSA ones, where the curve is determined by the algorithm itself. Supported values are 2048, 3072 and 4096. Defaults to 2048.
      */
@@ -27382,7 +27383,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication: string;
+    authentication: enums.security.SecuritySettingAuthenticationMode;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -27410,7 +27411,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy: string;
+    propagationStrategy: enums.coretypes.PropagationStrategy;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -27425,7 +27426,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.security.SecuritySettingAuthenticationMode;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -27514,7 +27515,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType: string;
+    authType: enums.auth.OIDCAuthType;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -27530,7 +27531,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType: string;
+    grantType: enums.auth.OIDCGrantType;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -27557,7 +27558,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite: string;
+    sameSite: enums.auth.OIDCCookieConfigSameSite;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -27595,7 +27596,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -27709,11 +27710,11 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch: string;
+    identityMatch: enums.coretypes.IdentityMatch;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode: string;
+    mode: enums.security.AuthorizationSettingsMode;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -27766,7 +27767,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorizationHttpExter
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -27913,7 +27914,7 @@ export interface OrganizationSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode: string;
+    mode: enums.coretypes.WorkloadMode;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -28032,7 +28033,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettings
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice: string;
+    topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -28201,7 +28202,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingExte
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -28447,7 +28448,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingSett
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -28538,7 +28539,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTi
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType: string;
+    proxyType: enums.traffic.ProxyType;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -28604,7 +28605,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -28637,7 +28638,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -28648,7 +28649,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -28722,7 +28723,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -29166,7 +29167,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingExternalSer
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -29412,7 +29413,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingSettingsRul
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -29434,14 +29435,14 @@ export interface OrganizationSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -29650,7 +29651,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -29661,7 +29662,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -29735,7 +29736,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -30056,7 +30057,7 @@ export interface OrganizationSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice: string;
+    topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
 }
 
 export interface OrganizationSettingFailoverSettingsAutomaticLoadBalancing {
@@ -30117,7 +30118,7 @@ export interface TenantSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication: string;
+    authentication: enums.security.SecuritySettingAuthenticationMode;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -30145,7 +30146,7 @@ export interface TenantSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy: string;
+    propagationStrategy: enums.coretypes.PropagationStrategy;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -30160,7 +30161,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettings {
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.security.SecuritySettingAuthenticationMode;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -30249,7 +30250,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType: string;
+    authType: enums.auth.OIDCAuthType;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -30265,7 +30266,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType: string;
+    grantType: enums.auth.OIDCGrantType;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -30292,7 +30293,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite: string;
+    sameSite: enums.auth.OIDCCookieConfigSameSite;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -30330,7 +30331,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -30444,11 +30445,11 @@ export interface TenantSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch: string;
+    identityMatch: enums.coretypes.IdentityMatch;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode: string;
+    mode: enums.security.AuthorizationSettingsMode;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -30501,7 +30502,7 @@ export interface TenantSettingDefaultSecuritySettingAuthorizationHttpExternalTls
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -30648,7 +30649,7 @@ export interface TenantSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode: string;
+    mode: enums.coretypes.WorkloadMode;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -30767,7 +30768,7 @@ export interface TenantSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice: string;
+    topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -30936,7 +30937,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingExternalSe
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -31182,7 +31183,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingSettingsRu
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -31273,7 +31274,7 @@ export interface TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeout 
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType: string;
+    proxyType: enums.traffic.ProxyType;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -31339,7 +31340,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -31372,7 +31373,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -31383,7 +31384,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -31457,7 +31458,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -31901,7 +31902,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingExternalServiceTl
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -32147,7 +32148,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingSettingsRuleLimit
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface TenantSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -32169,14 +32170,14 @@ export interface TenantSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface TenantSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -32385,7 +32386,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -32396,7 +32397,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -32470,7 +32471,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -32846,7 +32847,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication: string;
+    authentication: enums.security.SecuritySettingAuthenticationMode;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -32874,7 +32875,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy: string;
+    propagationStrategy: enums.coretypes.PropagationStrategy;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -32889,7 +32890,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettings {
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.security.SecuritySettingAuthenticationMode;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -32978,7 +32979,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType: string;
+    authType: enums.auth.OIDCAuthType;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -32994,7 +32995,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType: string;
+    grantType: enums.auth.OIDCGrantType;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -33021,7 +33022,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite: string;
+    sameSite: enums.auth.OIDCCookieConfigSameSite;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -33059,7 +33060,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33173,11 +33174,11 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch: string;
+    identityMatch: enums.coretypes.IdentityMatch;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode: string;
+    mode: enums.security.AuthorizationSettingsMode;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -33230,7 +33231,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorizationHttpExternal
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33377,7 +33378,7 @@ export interface WorkspaceSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode: string;
+    mode: enums.coretypes.WorkloadMode;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -33496,7 +33497,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice: string;
+    topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -33665,7 +33666,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingExterna
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33911,7 +33912,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingSetting
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -34002,7 +34003,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeo
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType: string;
+    proxyType: enums.traffic.ProxyType;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -34068,7 +34069,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -34101,7 +34102,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -34112,7 +34113,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -34186,7 +34187,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -34630,7 +34631,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingExternalServic
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode: string;
+    mode: enums.auth.TLSMode;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -34876,7 +34877,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingSettingsRuleLi
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: string;
+    unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -34898,14 +34899,14 @@ export interface WorkspaceSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode: string;
+    mode: enums.traffic.ReachabilitySettingsMode;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -35114,7 +35115,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode: string;
+    trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -35125,7 +35126,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple: string;
+    simple: enums.traffic.LoadBalancerSettingsSimpleLB;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -35199,7 +35200,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity: string;
+    circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -35520,7 +35521,7 @@ export interface WorkspaceSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice: string;
+    topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
 }
 
 export interface WorkspaceSettingFailoverSettingsAutomaticLoadBalancing {
@@ -35697,7 +35698,7 @@ export namespace application {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode: string;
+        trafficMode: enums.gateway.TrafficMode;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -35790,7 +35791,7 @@ export namespace application {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -35806,7 +35807,7 @@ export namespace application {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -35833,7 +35834,7 @@ export namespace application {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface ApplicationApiHttpServerAuthenticationOidcProvider {
@@ -35871,7 +35872,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36019,7 +36020,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36093,60 +36094,45 @@ export namespace application {
 
     export interface ApplicationApiHttpServerExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: outputs.application.ApplicationApiHttpServerExtensionsComposer;
+        dynamicModule?: outputs.application.ApplicationApiHttpServerExtensionsDynamicModule;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: outputs.application.ApplicationApiHttpServerExtensionsKong;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: outputs.application.ApplicationApiHttpServerExtensionsLua;
     }
 
-    export interface ApplicationApiHttpServerExtensionsComposer {
+    export interface ApplicationApiHttpServerExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: outputs.application.ApplicationApiHttpServerExtensionsComposerPlugin[];
+        plugins?: outputs.application.ApplicationApiHttpServerExtensionsDynamicModulePlugin[];
     }
 
-    export interface ApplicationApiHttpServerExtensionsComposerPlugin {
+    export interface ApplicationApiHttpServerExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: outputs.application.ApplicationApiHttpServerExtensionsComposerPluginConfig;
+        config: string;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module: string;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: string;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority: number;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url: string;
-    }
-
-    export interface ApplicationApiHttpServerExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap: string;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline: string;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret: string;
     }
 
     export interface ApplicationApiHttpServerExtensionsKong {
@@ -36199,6 +36185,28 @@ export namespace application {
         configMap: string;
     }
 
+    export interface ApplicationApiHttpServerExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: outputs.application.ApplicationApiHttpServerExtensionsLuaPlugin[];
+    }
+
+    export interface ApplicationApiHttpServerExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: string;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: string;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority: number;
+    }
+
     export interface ApplicationApiHttpServerFailoverSettings {
         /**
          * Settings for configuring automatic load balancing between clusters based on observed metrics.
@@ -36217,7 +36225,7 @@ export namespace application {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface ApplicationApiHttpServerFailoverSettingsAutomaticLoadBalancing {
@@ -36404,7 +36412,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36650,7 +36658,7 @@ export namespace application {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ApplicationApiHttpServerRateLimitingSettingsTimeout {
@@ -36828,60 +36836,45 @@ export namespace application {
 
     export interface ApplicationApiHttpServerRoutingRuleExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposer;
+        dynamicModule?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsDynamicModule;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsKong;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsLua;
     }
 
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposer {
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposerPlugin[];
+        plugins?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsDynamicModulePlugin[];
     }
 
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposerPlugin {
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposerPluginConfig;
+        config: string;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module: string;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: string;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority: number;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url: string;
-    }
-
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap: string;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline: string;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret: string;
     }
 
     export interface ApplicationApiHttpServerRoutingRuleExtensionsKong {
@@ -36932,6 +36925,28 @@ export namespace application {
          * {{% /examples %}}
          */
         configMap: string;
+    }
+
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: outputs.application.ApplicationApiHttpServerRoutingRuleExtensionsLuaPlugin[];
+    }
+
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: string;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: string;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority: number;
     }
 
     export interface ApplicationApiHttpServerRoutingRuleMatch {
@@ -37121,7 +37136,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37170,15 +37185,15 @@ export namespace application {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -37333,7 +37348,7 @@ export namespace application {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -37349,7 +37364,7 @@ export namespace application {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -37376,7 +37391,7 @@ export namespace application {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface ApplicationApiServerAuthenticationOidcProvider {
@@ -37414,7 +37429,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37562,7 +37577,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37775,7 +37790,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -38021,7 +38036,7 @@ export namespace application {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ApplicationApiServerRateLimitingSettingsTimeout {
@@ -38286,15 +38301,15 @@ export namespace application {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -38435,7 +38450,7 @@ export namespace extension {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
     }
 
     export interface ExtensionWasmExtensionVmConfig {
@@ -38457,7 +38472,7 @@ export namespace extension {
         /**
          * Source for the environment variable's value. Possible values: INLINE, HOST.
          */
-        valueFrom: string;
+        valueFrom: enums.extension.EnvValueSource;
     }
 
 }
@@ -38482,11 +38497,11 @@ export namespace gateway {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch: string;
+        identityMatch: enums.coretypes.IdentityMatch;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode: string;
+        mode: enums.security.AuthorizationSettingsMode;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -38539,7 +38554,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -38686,7 +38701,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -38730,7 +38745,7 @@ export namespace gateway {
         /**
          * IdentityMatch defines the client identity used for evaluating the authorization rules. Possible values are: SOURCE_IDENTITY, PEER_CERTIFICATE, and PERMISSIVE. If no mode is specified, the mode is treated as PERMISSIVE mode. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch: string;
+        identityMatch: enums.coretypes.IdentityMatch;
         /**
          * The set of hostnames exposed on the Gateway through which external hosts can be accessed.
          */
@@ -38741,7 +38756,7 @@ export namespace gateway {
         /**
          * A shortcut for specifying the set of allowed callers. Deprecated: use `resources` or `serviceAccounts` instead. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, SERVICE_ACCOUNT.
          */
-        mode: string;
+        mode: enums.gateway.AuthorizationSettingsMode;
         /**
          * `resources` specify the allowed set of resources using TSB FQNs. - `organizations/myorg/tenants/mycompany-a/workspaces/w2` - allow access from workspace w2. - `organizations/myorg/tenants/mycompany/workspaces/w1/securitygroups/s1` - allow access from security group s1.
          */
@@ -38830,7 +38845,7 @@ export namespace gateway {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode: string;
+        trafficMode: enums.gateway.TrafficMode;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -38923,7 +38938,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -38939,7 +38954,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -38966,7 +38981,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface GatewayGatewayHttpAuthenticationOidcProvider {
@@ -39004,7 +39019,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39152,7 +39167,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39226,60 +39241,45 @@ export namespace gateway {
 
     export interface GatewayGatewayHttpExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: outputs.gateway.GatewayGatewayHttpExtensionsComposer;
+        dynamicModule?: outputs.gateway.GatewayGatewayHttpExtensionsDynamicModule;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: outputs.gateway.GatewayGatewayHttpExtensionsKong;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: outputs.gateway.GatewayGatewayHttpExtensionsLua;
     }
 
-    export interface GatewayGatewayHttpExtensionsComposer {
+    export interface GatewayGatewayHttpExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: outputs.gateway.GatewayGatewayHttpExtensionsComposerPlugin[];
+        plugins?: outputs.gateway.GatewayGatewayHttpExtensionsDynamicModulePlugin[];
     }
 
-    export interface GatewayGatewayHttpExtensionsComposerPlugin {
+    export interface GatewayGatewayHttpExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: outputs.gateway.GatewayGatewayHttpExtensionsComposerPluginConfig;
+        config: string;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module: string;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: string;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority: number;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url: string;
-    }
-
-    export interface GatewayGatewayHttpExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap: string;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline: string;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret: string;
     }
 
     export interface GatewayGatewayHttpExtensionsKong {
@@ -39332,6 +39332,28 @@ export namespace gateway {
         configMap: string;
     }
 
+    export interface GatewayGatewayHttpExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: outputs.gateway.GatewayGatewayHttpExtensionsLuaPlugin[];
+    }
+
+    export interface GatewayGatewayHttpExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: string;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: string;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority: number;
+    }
+
     export interface GatewayGatewayHttpFailoverSettings {
         /**
          * Settings for configuring automatic load balancing between clusters based on observed metrics.
@@ -39350,7 +39372,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface GatewayGatewayHttpFailoverSettingsAutomaticLoadBalancing {
@@ -39537,7 +39559,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39783,7 +39805,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface GatewayGatewayHttpRateLimitingSettingsTimeout {
@@ -39961,60 +39983,45 @@ export namespace gateway {
 
     export interface GatewayGatewayHttpRoutingRuleExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposer;
+        dynamicModule?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsDynamicModule;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsKong;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsLua;
     }
 
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposer {
+    export interface GatewayGatewayHttpRoutingRuleExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposerPlugin[];
+        plugins?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsDynamicModulePlugin[];
     }
 
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposerPlugin {
+    export interface GatewayGatewayHttpRoutingRuleExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposerPluginConfig;
+        config: string;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module: string;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: string;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority: number;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url: string;
-    }
-
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap: string;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline: string;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret: string;
     }
 
     export interface GatewayGatewayHttpRoutingRuleExtensionsKong {
@@ -40065,6 +40072,28 @@ export namespace gateway {
          * {{% /examples %}}
          */
         configMap: string;
+    }
+
+    export interface GatewayGatewayHttpRoutingRuleExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: outputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsLuaPlugin[];
+    }
+
+    export interface GatewayGatewayHttpRoutingRuleExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: string;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: string;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority: number;
     }
 
     export interface GatewayGatewayHttpRoutingRuleMatch {
@@ -40254,7 +40283,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40303,15 +40332,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -40365,7 +40394,7 @@ export namespace gateway {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode: string;
+        trafficMode: enums.gateway.TrafficMode;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -40390,7 +40419,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface GatewayGatewayTcpFailoverSettingsAutomaticLoadBalancing {
@@ -40478,7 +40507,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40516,15 +40545,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -40591,7 +40620,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface GatewayGatewayTlFailoverSettingsAutomaticLoadBalancing {
@@ -40679,7 +40708,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40727,7 +40756,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -40796,7 +40825,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -40939,7 +40968,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -40955,7 +40984,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -40982,7 +41011,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface GatewayIngressGatewayHttpAuthenticationOidcProvider {
@@ -41020,7 +41049,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41168,7 +41197,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41381,7 +41410,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41627,7 +41656,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface GatewayIngressGatewayHttpRateLimitingSettingsTimeout {
@@ -41892,15 +41921,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -42051,15 +42080,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -43006,7 +43035,7 @@ export namespace gateway {
         /**
          * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
          */
-        type: string;
+        type: enums.gateway.GatewaySpecType;
     }
 
     export interface GatewayInstallGatewayTemplateGatewaySpecConnectionDrainDuration {
@@ -43875,7 +43904,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -44014,7 +44043,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -44030,7 +44059,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -44057,7 +44086,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface GatewayTier1GatewayExternalServerAuthenticationOidcProvider {
@@ -44095,7 +44124,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44243,7 +44272,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44475,7 +44504,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44721,7 +44750,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface GatewayTier1GatewayExternalServerRateLimitingSettingsTimeout {
@@ -44770,15 +44799,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -44913,7 +44942,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -44929,7 +44958,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -44956,7 +44985,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface GatewayTier1GatewayInternalServerAuthenticationOidcProvider {
@@ -44994,7 +45023,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45142,7 +45171,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45325,15 +45354,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion: string;
+        maxProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion: string;
+        minProtocolVersion: enums.gateway.TLSProtocol;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode: string;
+        mode: enums.gateway.ServerTLSSettingsTLSMode;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -45659,7 +45688,7 @@ export namespace profile {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.security.SecuritySettingAuthenticationMode;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttp {
@@ -45748,7 +45777,7 @@ export namespace profile {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -45764,7 +45793,7 @@ export namespace profile {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -45791,7 +45820,7 @@ export namespace profile {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcProvider {
@@ -45829,7 +45858,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45979,7 +46008,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.profile.FailoverSettingsTopologyChoice;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundFailoverSettingsAutomaticLoadBalancing {
@@ -46148,7 +46177,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
-        mode: string;
+        mode: enums.profile.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -46394,7 +46423,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.profile.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundRateLimitingSettingsTimeout {
@@ -46485,7 +46514,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.profile.ProxyType;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -46551,7 +46580,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.profile.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSetting {
@@ -46584,7 +46613,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.profile.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -46595,7 +46624,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.profile.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -46669,7 +46698,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.profile.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -47070,7 +47099,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -47239,7 +47268,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -47485,7 +47514,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundRateLimitingSettingsTimeout {
@@ -47576,7 +47605,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.traffic.ProxyType;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -47642,7 +47671,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSetting {
@@ -47675,7 +47704,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -47686,7 +47715,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -47760,7 +47789,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -48204,7 +48233,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -48450,7 +48479,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsRateLimitingSettingsTimeout {
@@ -48472,14 +48501,14 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -48688,7 +48717,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -48699,7 +48728,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -48773,7 +48802,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -49098,7 +49127,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -49147,7 +49176,7 @@ export namespace profile {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.security.SecuritySettingAuthenticationMode;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttp {
@@ -49236,7 +49265,7 @@ export namespace profile {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -49252,7 +49281,7 @@ export namespace profile {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -49279,7 +49308,7 @@ export namespace profile {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcProvider {
@@ -49317,7 +49346,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -49467,7 +49496,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.profile.FailoverSettingsTopologyChoice;
     }
 
     export interface ProfileProfileMandatesTrafficInboundFailoverSettingsAutomaticLoadBalancing {
@@ -49636,7 +49665,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
-        mode: string;
+        mode: enums.profile.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -49882,7 +49911,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.profile.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileMandatesTrafficInboundRateLimitingSettingsTimeout {
@@ -49973,7 +50002,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.profile.ProxyType;
     }
 
     export interface ProfileProfileMandatesTrafficInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -50039,7 +50068,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.profile.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSetting {
@@ -50072,7 +50101,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.profile.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -50083,7 +50112,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.profile.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -50157,7 +50186,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.profile.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -50558,7 +50587,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -50727,7 +50756,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -50973,7 +51002,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundRateLimitingSettingsTimeout {
@@ -51064,7 +51093,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.traffic.ProxyType;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -51130,7 +51159,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSetting {
@@ -51163,7 +51192,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -51174,7 +51203,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -51248,7 +51277,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -51692,7 +51721,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -51938,7 +51967,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsRateLimitingSettingsTimeout {
@@ -51960,14 +51989,14 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -52176,7 +52205,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -52187,7 +52216,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -52261,7 +52290,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -52586,7 +52615,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -52607,7 +52636,7 @@ export namespace rbac {
         /**
          * The set of actions allowed for these APIs. The current version supports requires the kind, but this constraint will be relaxed in upcoming releases so that rules can apply globally to an entire API group. Possible values: INVALID, READ, WRITE, CREATE, DELETE, SET_POLICY, GET_POLICY.
          */
-        permissions: string[];
+        permissions: enums.rbac.Permission[];
         /**
          * The set of API groups and the api Kinds within the group on which this rule is applicable. If omitted, the permissions will globally apply to all resource types.
          */
@@ -52750,7 +52779,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.security.SecuritySettingAuthenticationMode;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttp {
@@ -52839,7 +52868,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -52855,7 +52884,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -52882,7 +52911,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -52920,7 +52949,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53034,11 +53063,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch: string;
+        identityMatch: enums.coretypes.IdentityMatch;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode: string;
+        mode: enums.security.AuthorizationSettingsMode;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -53091,7 +53120,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53238,7 +53267,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53274,7 +53303,7 @@ export namespace security {
         /**
          * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        authentication: string;
+        authentication: enums.security.SecuritySettingAuthenticationMode;
         /**
          * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
          */
@@ -53302,7 +53331,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy: string;
+        propagationStrategy: enums.coretypes.PropagationStrategy;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -53317,7 +53346,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.security.SecuritySettingAuthenticationMode;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttp {
@@ -53406,7 +53435,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -53422,7 +53451,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -53449,7 +53478,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcProvider {
@@ -53487,7 +53516,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53601,11 +53630,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch: string;
+        identityMatch: enums.coretypes.IdentityMatch;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode: string;
+        mode: enums.security.AuthorizationSettingsMode;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -53658,7 +53687,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53805,7 +53834,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53841,7 +53870,7 @@ export namespace security {
         /**
          * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        authentication: string;
+        authentication: enums.security.SecuritySettingAuthenticationMode;
         /**
          * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
          */
@@ -53869,7 +53898,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy: string;
+        propagationStrategy: enums.coretypes.PropagationStrategy;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -53884,7 +53913,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.security.SecuritySettingAuthenticationMode;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttp {
@@ -53973,7 +54002,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType: string;
+        authType: enums.auth.OIDCAuthType;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -53989,7 +54018,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType: string;
+        grantType: enums.auth.OIDCGrantType;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -54016,7 +54045,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite: string;
+        sameSite: enums.auth.OIDCCookieConfigSameSite;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcProvider {
@@ -54054,7 +54083,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -54168,11 +54197,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch: string;
+        identityMatch: enums.coretypes.IdentityMatch;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode: string;
+        mode: enums.security.AuthorizationSettingsMode;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -54225,7 +54254,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -54372,7 +54401,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode: string;
+        mode: enums.coretypes.WorkloadMode;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -54702,7 +54731,7 @@ export namespace traffic {
         /**
          * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
-        trafficType: string;
+        trafficType: enums.traffic.ServiceRouteTrafficType;
     }
 
     export interface TrafficServiceRoutePortLevelSettingStickySession {
@@ -54818,7 +54847,7 @@ export namespace traffic {
         /**
          * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
-        trafficType: string;
+        trafficType: enums.traffic.ServiceRouteTrafficType;
     }
 
     export interface TrafficServiceRouteSubsetPortLevelSettingStickySession {
@@ -55016,7 +55045,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -55185,7 +55214,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -55431,7 +55460,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundRateLimitingSettingsTimeout {
@@ -55522,7 +55551,7 @@ export namespace traffic {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.traffic.ProxyType;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -55588,7 +55617,7 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSetting {
@@ -55621,7 +55650,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -55632,7 +55661,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -55706,7 +55735,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -56150,7 +56179,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -56396,7 +56425,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface TrafficServiceTrafficSettingSettingsRateLimitingSettingsTimeout {
@@ -56418,14 +56447,14 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface TrafficServiceTrafficSettingSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -56634,7 +56663,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -56645,7 +56674,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -56719,7 +56748,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -57077,7 +57106,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice: string;
+        topologyChoice: enums.coretypes.FailoverSettingsTopologyChoice;
     }
 
     export interface TrafficTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -57246,7 +57275,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -57492,7 +57521,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface TrafficTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -57583,7 +57612,7 @@ export namespace traffic {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType: string;
+        proxyType: enums.traffic.ProxyType;
     }
 
     export interface TrafficTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -57649,7 +57678,7 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSetting {
@@ -57682,7 +57711,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -57693,7 +57722,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -57767,7 +57796,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -58211,7 +58240,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode: string;
+        mode: enums.auth.TLSMode;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -58457,7 +58486,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: string;
+        unit: enums.gateway.RateLimitSettingsRateLimitValueUnit;
     }
 
     export interface TrafficTrafficSettingRateLimitingSettingsTimeout {
@@ -58479,14 +58508,14 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode: string;
+        mode: enums.traffic.ReachabilitySettingsMode;
     }
 
     export interface TrafficTrafficSettingResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.ResilienceSettingsSensitivity;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -58695,7 +58724,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode: string;
+        trafficMode: enums.traffic.AuthenticationSettingsAuthenticationMode;
     }
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -58706,7 +58735,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple: string;
+        simple: enums.traffic.LoadBalancerSettingsSimpleLB;
     }
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -58780,7 +58809,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity: string;
+        circuitBreakerSensitivity: enums.traffic.UpstreamResilienceSettingsSensitivity;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */

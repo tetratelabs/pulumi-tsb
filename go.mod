@@ -6,8 +6,11 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.49.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.135.0
+	github.com/pulumi/pulumi/pkg/v3 v3.253.0
 	github.com/pulumi/pulumi/sdk/v3 v3.253.0
-	github.com/tetratelabs/terraform-provider-tsb v0.1.3
+	github.com/tetrateio/tetrate v0.0.0-20260813074402-d83bfbd29b1e
+	github.com/tetratelabs/terraform-provider-tsb v0.1.4
+	google.golang.org/protobuf v1.36.11
 )
 
 require (
@@ -180,7 +183,6 @@ require (
 	github.com/pulumi/pulumi-dotnet/pulumi-language-dotnet/v3 v3.107.4-0.20260720135410-6a2eb2585b50 // indirect
 	github.com/pulumi/pulumi-java v1.32.0 // indirect
 	github.com/pulumi/pulumi-yaml v1.37.1-0.20260717123218-294c561f47f4 // indirect
-	github.com/pulumi/pulumi/pkg/v3 v3.253.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect
@@ -196,7 +198,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
 	github.com/teekennedy/goldmark-markdown v0.3.0 // indirect
-	github.com/tetrateio/tetrate v0.0.0-20260807140910-c9291b4eab25 // indirect
 	github.com/tetratelabs/multierror v1.1.1 // indirect
 	github.com/tetratelabs/telemetry v0.8.2 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
@@ -250,7 +251,6 @@ require (
 	google.golang.org/genproto/googleapis/api v0.0.0-20260720211330-0afa2a65878a // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260720211330-0afa2a65878a // indirect
 	google.golang.org/grpc v1.82.1 // indirect
-	google.golang.org/protobuf v1.36.11 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	istio.io/api v1.30.2 // indirect

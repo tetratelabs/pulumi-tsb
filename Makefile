@@ -1,10 +1,10 @@
 # Copyright (c) Tetrate, Inc 2026 All Rights Reserved.
 
 # Terraform provider version
-PROVIDER_VERSION=0.1.3
+PROVIDER_VERSION=0.1.4
 
 # Pulumi bridged provider version (this package)
-VERSION=0.1.3
+VERSION=0.1.4
 
 default: build
 
@@ -39,6 +39,12 @@ sdk.nodejs:
 	mkdir -p sdk/scripts
 	sed -e 's/$${VERSION}/'v${VERSION}/ install-pulumi-plugin.js > sdk/scripts/install-pulumi-plugin.js
 
+# typechecks the generated TypeScript SDK; strict enums make this load-bearing,
+# since a bad enum token surfaces as a compile error rather than a bad value
+sdk.typecheck: sdk.nodejs
+	npm install --silent
+	npx tsc --noEmit
+
 # builds the pulumi terraform bridge
 bridge: schema
 	cd $(BRIDGE) && go build
@@ -59,5 +65,10 @@ versioncheck: providerversion
 tagcheck: versioncheck
 	git tag --points-at HEAD | grep -q v${VERSION} || (echo tag does not match specified version && false)
 
-check: generate licenser
+# depends on schema so the comparison is against a freshly generated schema.json
+# rather than a stale one, which would fail with a confusing count mismatch
+check-enums: schema
+	@./hack/check-enums.sh
+
+check: generate licenser check-enums
 	[ -z "`git status -uno --porcelain`" ] || (git status && echo 'Check failed. This could be a failed check or dirty git state.'; exit 1)

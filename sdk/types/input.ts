@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 
 export interface AccessBindingAllow {
     /**
@@ -89,7 +90,7 @@ export interface ClusterInstallTemplateHelmOperator {
     /**
      * ControlPlaneMode is the mode for the control plane Possible values are: - UNSET: Defaults to CONTROL - OBSERVE: The control plane will be in observe mode - CONTROL: The control plane will be in control mode. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    controlPlaneMode?: pulumi.Input<string | undefined>;
+    controlPlaneMode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * DeletionProtection is the flag for the deletion protection for the control plane Possible values are: - enabled: The control plane will have deletion protection enabled - disabled: The control plane will have deletion protection disabled
      */
@@ -577,7 +578,7 @@ export interface ClusterInstallTemplateHelmSpec {
     /**
      * Mode in which the Control Plane is deployed. Defaults to Control. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * Configures Kubernetes provider specific settings.
      */
@@ -2990,7 +2991,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsGitops {
     /**
      * Push mode determines how the GitOps component creates resources in the Management Plane. In SYNC mode, TSB K8s resources are validated and pushed to the Management Plane synchronously. This means that if a TSB K8s resource is not accepted by the Management Plane, it will not be stored as a resource in the K8s API. SYNC mode can be useful in scenarios where eventual consistency of resources between K8s and Management Plane could cause problems such as in CI pipelines and testing. SYNC is the default mode. In ASYNC mode, TSB K8s resources are pushed to the Management Plane asynchronously. This means that resource creation does not block the process. ASYNC mode is useful in most cases as it does not require the user to manage dependencies between TSB K8s resources. The system will reconcile in the background to achieve the desired state of objects in the Management Plane and will update the Status subresource to report progress of reconciliation. Possible values: SYNC, ASYNC.
      */
-    pushMode?: pulumi.Input<string | undefined>;
+    pushMode?: pulumi.Input<enums.installcommon.GitOpsPushMode | undefined>;
     /**
      * Periodical interval at which the objects will be reconciled after they are successfully synchronized (created, updated, deleted) with the Management Plane. This parameter does not affect retry on unsuccessful operation which are retried with exponential backoff strategy (staring with 3s and max delay 120s). Format: 1h/1m/1s/1ms. A value of 0 disables per-object reconciliation and uses the operator's global interval of 10h. Default: 10m.
      */
@@ -3892,7 +3893,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCer
     /**
      * Managed specifies whether TSB should manage the lifecycle of cert-manager. Possible values: AUTO, EXTERNAL, INTERNAL.
      */
-    managed?: pulumi.Input<string | undefined>;
+    managed?: pulumi.Input<enums.installcommon.CertManagerSettingsManaged | undefined>;
 }
 
 export interface ClusterInstallTemplateHelmSpecComponentsInternalCertProviderCertManagerCertManagerCaInjector {
@@ -17917,7 +17918,7 @@ export interface ClusterInstallTemplateHelmSpecComponentsXcp {
     /**
      * Authentication mode for connections from XCP Edges to XCP Central. If not set will default to mutual TLS. Possible values: UNKNOWN, MUTUAL_TLS, JWT.
      */
-    centralAuthMode?: pulumi.Input<string | undefined>;
+    centralAuthMode?: pulumi.Input<enums.installcontrolplane.XCPCentralAuthMode | undefined>;
     /**
      * If true, obtain the CA cert for Istio from XCP central. To enable it, the XCP Central needs to be configured with `certIssuer.clusterIntermediateCASettings: {}`.
      */
@@ -26613,7 +26614,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53 {
     /**
      * Specifies the policy to use when managing DNS records. Default: SYNC. Possible values: SYNC, UPSERT_ONLY, CREATE_ONLY.
      */
-    policy?: pulumi.Input<string | undefined>;
+    policy?: pulumi.Input<enums.installcontrolplane.Route53SettingsPolicy | undefined>;
     /**
      * Service account name to use for IAM role. Required. Deprecated, user AWSIntegrationSettings instead.
      */
@@ -26655,7 +26656,7 @@ export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53FilterSett
     /**
      * Filter out (removes) zones of this type. Default: none, options: none, public, private. Possible values: NONE, PUBLIC, PRIVATE.
      */
-    zoneType?: pulumi.Input<string | undefined>;
+    zoneType?: pulumi.Input<enums.installcontrolplane.Route53SettingsFilterSettingsAWSZoneType | undefined>;
 }
 
 export interface ClusterInstallTemplateHelmSpecProviderSettingsRoute53Interval {
@@ -26727,7 +26728,7 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreElastic {
     /**
      * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol?: pulumi.Input<string | undefined>;
+    protocol?: pulumi.Input<enums.installcontrolplane.ElasticSearchSettingsProtocol | undefined>;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -26783,9 +26784,9 @@ export interface ClusterInstallTemplateHelmSpecTelemetryStoreMigrationTargetElas
      */
     port: pulumi.Input<number>;
     /**
-     * Protocol to communicate with Elasticsearch, defaults to https.
+     * Protocol to communicate with Elasticsearch, defaults to https. Possible values: https, http.
      */
-    protocol?: pulumi.Input<string | undefined>;
+    protocol?: pulumi.Input<enums.installcontrolplane.ElasticSearchSettingsProtocol | undefined>;
     /**
      * Use Self-Signed certificates. The Self-signed CA bundle and key must be in a secret called es-certs.
      */
@@ -26817,7 +26818,7 @@ export interface ClusterNamespaceIstio {
     /**
      * Istio injection status for the namespace. Possible values: ISTIO_INJECTION_UNDEFINED, ISTIO_INJECTION_ENABLED, ISTIO_INJECTION_DISABLED.
      */
-    istioInjection?: pulumi.Input<string | undefined>;
+    istioInjection?: pulumi.Input<enums.IstioStatusIstioInjection | undefined>;
     /**
      * Istio revision of the namespace.
      */
@@ -26832,7 +26833,7 @@ export interface ClusterNamespaceScope {
     /**
      * Default scope for namespaces in this cluster (global, local). Possible values: GLOBAL, LOCAL.
      */
-    scope?: pulumi.Input<string | undefined>;
+    scope?: pulumi.Input<enums.NamespaceScopingScope | undefined>;
 }
 
 export interface ClusterNamespaceService {
@@ -26907,7 +26908,7 @@ export interface ClusterNamespaceService {
     /**
      * State of the Service(External/Observed/Controlled). Possible values: INVALID_STATE, EXTERNAL, OBSERVED, CONTROLLED.
      */
-    state?: pulumi.Input<string | undefined>;
+    state?: pulumi.Input<enums.ServiceState | undefined>;
     /**
      * Name of subsets defined for this service
      */
@@ -26979,7 +26980,7 @@ export interface ClusterOnboardingConfigNamespace {
     /**
      * The desired state of the namespace. Possible values: DESIRED_UNDEFINED, DESIRED_UNASSIGNED, DESIRED_DISABLED, DESIRED_IGNORED, DESIRED_ONBOARDED, DESIRED_SYSTEM.
      */
-    desiredState?: pulumi.Input<string | undefined>;
+    desiredState?: pulumi.Input<enums.NamespaceDesiredState | undefined>;
     /**
      * The name of the namespace.
      */
@@ -27006,7 +27007,7 @@ export interface ClusterState {
     /**
      * Mode in which the  Control Plane is deployed. Possible values: UNSET, CONTROL, OBSERVE.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.coretypes.ControlPlaneMode | undefined>;
     /**
      * cluster provider. Ex: GKE, EKS, AKS
      */
@@ -27032,7 +27033,7 @@ export interface ClusterStateIstioRevision {
     /**
      * Istio distribution found in the cluster. Possible values: UNKNOWN, TSB, TID.
      */
-    distribution?: pulumi.Input<string | undefined>;
+    distribution?: pulumi.Input<enums.ClusterStateIstioRevisionDistribution | undefined>;
     /**
      * Istio revision found in the cluster
      */
@@ -27157,7 +27158,7 @@ export interface OidcConfigJitProvisioningGroupSync {
     /**
      * Mode selects the group-reconciliation behavior. Defaults to OFF. Possible values: OFF, DRY_RUN, MEMBERSHIP_ONLY.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.installmanagementplane.GroupSyncMode | undefined>;
     /**
      * RequireMappedTeam, when true, denies login or refresh for users whose group claims resolve to no existing teams (break-glass teams are exempt). Only meaningful when `mode` is not OFF.
      */
@@ -27369,9 +27370,9 @@ export interface OrganizationConfigGenerationMetadata {
 
 export interface OrganizationServiceAccountKeySettings {
     /**
-     * Algorithm used to generate the service account key pairs.
+     * Algorithm used to generate the service account key pairs. Possible values: RS256, ES256, ES384, ES512.
      */
-    algorithm?: pulumi.Input<string | undefined>;
+    algorithm?: pulumi.Input<enums.OrganizationServiceAccountKeySettingsAlgorithm | undefined>;
     /**
      * Size in bits of the generated RSA keys. It only applies when `algorithm` is an RSA based one, and must be left unset for the ECDSA ones, where the curve is determined by the algorithm itself. Supported values are 2048, 3072 and 4096. Defaults to 2048.
      */
@@ -27382,7 +27383,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication?: pulumi.Input<string | undefined>;
+    authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -27410,7 +27411,7 @@ export interface OrganizationSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<string | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -27425,7 +27426,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -27514,7 +27515,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType?: pulumi.Input<string | undefined>;
+    authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -27530,7 +27531,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType?: pulumi.Input<string | undefined>;
+    grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -27557,7 +27558,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite?: pulumi.Input<string | undefined>;
+    sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
 }
 
 export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -27595,7 +27596,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthenticationSettings
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -27709,11 +27710,11 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<string | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -27766,7 +27767,7 @@ export interface OrganizationSettingDefaultSecuritySettingAuthorizationHttpExter
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -27913,7 +27914,7 @@ export interface OrganizationSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -28032,7 +28033,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettings
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<string | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -28201,7 +28202,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingExte
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -28447,7 +28448,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingSett
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -28538,7 +28539,7 @@ export interface OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTi
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType?: pulumi.Input<string | undefined>;
+    proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -28604,7 +28605,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -28637,7 +28638,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -28648,7 +28649,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -28722,7 +28723,7 @@ export interface OrganizationSettingDefaultTrafficSettingOutboundUpstreamTraffic
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -29166,7 +29167,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingExternalSer
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -29412,7 +29413,7 @@ export interface OrganizationSettingDefaultTrafficSettingRateLimitingSettingsRul
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -29434,14 +29435,14 @@ export interface OrganizationSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -29650,7 +29651,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -29661,7 +29662,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -29735,7 +29736,7 @@ export interface OrganizationSettingDefaultTrafficSettingUpstreamTrafficSettingS
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -30056,7 +30057,7 @@ export interface OrganizationSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<string | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface OrganizationSettingFailoverSettingsAutomaticLoadBalancing {
@@ -30117,7 +30118,7 @@ export interface TenantSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication?: pulumi.Input<string | undefined>;
+    authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -30145,7 +30146,7 @@ export interface TenantSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<string | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -30160,7 +30161,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettings {
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -30249,7 +30250,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType?: pulumi.Input<string | undefined>;
+    authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -30265,7 +30266,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType?: pulumi.Input<string | undefined>;
+    grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -30292,7 +30293,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite?: pulumi.Input<string | undefined>;
+    sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
 }
 
 export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -30330,7 +30331,7 @@ export interface TenantSettingDefaultSecuritySettingAuthenticationSettingsHttpOi
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -30444,11 +30445,11 @@ export interface TenantSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<string | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -30501,7 +30502,7 @@ export interface TenantSettingDefaultSecuritySettingAuthorizationHttpExternalTls
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -30648,7 +30649,7 @@ export interface TenantSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -30767,7 +30768,7 @@ export interface TenantSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<string | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -30936,7 +30937,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingExternalSe
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -31182,7 +31183,7 @@ export interface TenantSettingDefaultTrafficSettingInboundRateLimitingSettingsRu
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -31273,7 +31274,7 @@ export interface TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeout 
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType?: pulumi.Input<string | undefined>;
+    proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -31339,7 +31340,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -31372,7 +31373,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -31383,7 +31384,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -31457,7 +31458,7 @@ export interface TenantSettingDefaultTrafficSettingOutboundUpstreamTrafficSettin
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -31901,7 +31902,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingExternalServiceTl
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -32147,7 +32148,7 @@ export interface TenantSettingDefaultTrafficSettingRateLimitingSettingsRuleLimit
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface TenantSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -32169,14 +32170,14 @@ export interface TenantSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -32385,7 +32386,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -32396,7 +32397,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -32470,7 +32471,7 @@ export interface TenantSettingDefaultTrafficSettingUpstreamTrafficSettingSetting
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -32846,7 +32847,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication?: pulumi.Input<string | undefined>;
+    authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -32874,7 +32875,7 @@ export interface WorkspaceSettingDefaultSecuritySetting {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<string | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -32889,7 +32890,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettings {
     /**
      * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttp {
@@ -32978,7 +32979,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
      */
-    authType?: pulumi.Input<string | undefined>;
+    authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
     /**
      * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
      */
@@ -32994,7 +32995,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
      */
-    grantType?: pulumi.Input<string | undefined>;
+    grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
     /**
      * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
      */
@@ -33021,7 +33022,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
      */
-    sameSite?: pulumi.Input<string | undefined>;
+    sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
 }
 
 export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -33059,7 +33060,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthenticationSettingsHtt
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33173,11 +33174,11 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorization {
     /**
      * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
      */
-    identityMatch?: pulumi.Input<string | undefined>;
+    identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
     /**
      * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
     /**
      * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
      */
@@ -33230,7 +33231,7 @@ export interface WorkspaceSettingDefaultSecuritySettingAuthorizationHttpExternal
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33377,7 +33378,7 @@ export interface WorkspaceSettingDefaultSecuritySettingExtensionMatch {
     /**
      * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     /**
      * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
      */
@@ -33496,7 +33497,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<string | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -33665,7 +33666,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingExterna
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -33911,7 +33912,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingSetting
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -34002,7 +34003,7 @@ export interface WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeo
     /**
      * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
      */
-    proxyType?: pulumi.Input<string | undefined>;
+    proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -34068,7 +34069,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSetting {
@@ -34101,7 +34102,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -34112,7 +34113,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -34186,7 +34187,7 @@ export interface WorkspaceSettingDefaultTrafficSettingOutboundUpstreamTrafficSet
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -34630,7 +34631,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingExternalServic
     /**
      * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
     /**
      * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
      */
@@ -34876,7 +34877,7 @@ export interface WorkspaceSettingDefaultTrafficSettingRateLimitingSettingsRuleLi
     /**
      * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
      */
-    unit: pulumi.Input<string>;
+    unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingRateLimitingSettingsTimeout {
@@ -34898,14 +34899,14 @@ export interface WorkspaceSettingDefaultTrafficSettingReachability {
     /**
      * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
      */
-    mode?: pulumi.Input<string | undefined>;
+    mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingResilience {
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
     /**
      * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
      */
@@ -35114,7 +35115,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    trafficMode?: pulumi.Input<string | undefined>;
+    trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -35125,7 +35126,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
      */
-    simple?: pulumi.Input<string | undefined>;
+    simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
 }
 
 export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -35199,7 +35200,7 @@ export interface WorkspaceSettingDefaultTrafficSettingUpstreamTrafficSettingSett
     /**
      * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
      */
-    circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+    circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
     /**
      * Configures tolerance and other settings for TCP/HTTP connections to the service.
      */
@@ -35520,7 +35521,7 @@ export interface WorkspaceSettingFailoverSettings {
     /**
      * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
      */
-    topologyChoice?: pulumi.Input<string | undefined>;
+    topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
 }
 
 export interface WorkspaceSettingFailoverSettingsAutomaticLoadBalancing {
@@ -35696,7 +35697,7 @@ export namespace application {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.gateway.TrafficMode | undefined>;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -35789,7 +35790,7 @@ export namespace application {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -35805,7 +35806,7 @@ export namespace application {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -35832,7 +35833,7 @@ export namespace application {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface ApplicationApiHttpServerAuthenticationOidcProvider {
@@ -35870,7 +35871,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36018,7 +36019,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36092,60 +36093,45 @@ export namespace application {
 
     export interface ApplicationApiHttpServerExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsComposer | undefined>;
+        dynamicModule?: pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsDynamicModule | undefined>;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsKong | undefined>;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsLua | undefined>;
     }
 
-    export interface ApplicationApiHttpServerExtensionsComposer {
+    export interface ApplicationApiHttpServerExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsComposerPlugin>[] | undefined>;
+        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsDynamicModulePlugin>[] | undefined>;
     }
 
-    export interface ApplicationApiHttpServerExtensionsComposerPlugin {
+    export interface ApplicationApiHttpServerExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsComposerPluginConfig | undefined>;
+        config?: pulumi.Input<string | undefined>;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module?: pulumi.Input<string | undefined>;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: pulumi.Input<string>;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority?: pulumi.Input<number | undefined>;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url?: pulumi.Input<string | undefined>;
-    }
-
-    export interface ApplicationApiHttpServerExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret?: pulumi.Input<string | undefined>;
     }
 
     export interface ApplicationApiHttpServerExtensionsKong {
@@ -36198,6 +36184,28 @@ export namespace application {
         configMap: pulumi.Input<string>;
     }
 
+    export interface ApplicationApiHttpServerExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerExtensionsLuaPlugin>[] | undefined>;
+    }
+
+    export interface ApplicationApiHttpServerExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: pulumi.Input<string>;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority?: pulumi.Input<number | undefined>;
+    }
+
     export interface ApplicationApiHttpServerFailoverSettings {
         /**
          * Settings for configuring automatic load balancing between clusters based on observed metrics.
@@ -36216,7 +36224,7 @@ export namespace application {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ApplicationApiHttpServerFailoverSettingsAutomaticLoadBalancing {
@@ -36403,7 +36411,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -36649,7 +36657,7 @@ export namespace application {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ApplicationApiHttpServerRateLimitingSettingsTimeout {
@@ -36827,60 +36835,45 @@ export namespace application {
 
     export interface ApplicationApiHttpServerRoutingRuleExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposer | undefined>;
+        dynamicModule?: pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsDynamicModule | undefined>;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsKong | undefined>;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsLua | undefined>;
     }
 
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposer {
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposerPlugin>[] | undefined>;
+        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsDynamicModulePlugin>[] | undefined>;
     }
 
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposerPlugin {
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsComposerPluginConfig | undefined>;
+        config?: pulumi.Input<string | undefined>;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module?: pulumi.Input<string | undefined>;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: pulumi.Input<string>;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority?: pulumi.Input<number | undefined>;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url?: pulumi.Input<string | undefined>;
-    }
-
-    export interface ApplicationApiHttpServerRoutingRuleExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret?: pulumi.Input<string | undefined>;
     }
 
     export interface ApplicationApiHttpServerRoutingRuleExtensionsKong {
@@ -36931,6 +36924,28 @@ export namespace application {
          * {{% /examples %}}
          */
         configMap: pulumi.Input<string>;
+    }
+
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: pulumi.Input<pulumi.Input<inputs.application.ApplicationApiHttpServerRoutingRuleExtensionsLuaPlugin>[] | undefined>;
+    }
+
+    export interface ApplicationApiHttpServerRoutingRuleExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: pulumi.Input<string>;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority?: pulumi.Input<number | undefined>;
     }
 
     export interface ApplicationApiHttpServerRoutingRuleMatch {
@@ -37120,7 +37135,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37169,15 +37184,15 @@ export namespace application {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -37332,7 +37347,7 @@ export namespace application {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -37348,7 +37363,7 @@ export namespace application {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -37375,7 +37390,7 @@ export namespace application {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface ApplicationApiServerAuthenticationOidcProvider {
@@ -37413,7 +37428,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37561,7 +37576,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -37774,7 +37789,7 @@ export namespace application {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -38020,7 +38035,7 @@ export namespace application {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ApplicationApiServerRateLimitingSettingsTimeout {
@@ -38285,15 +38300,15 @@ export namespace application {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -38433,7 +38448,7 @@ export namespace extension {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
     }
 
     export interface ExtensionWasmExtensionVmConfig {
@@ -38455,7 +38470,7 @@ export namespace extension {
         /**
          * Source for the environment variable's value. Possible values: INLINE, HOST.
          */
-        valueFrom: pulumi.Input<string>;
+        valueFrom: pulumi.Input<enums.extension.EnvValueSource>;
     }
 }
 
@@ -38479,11 +38494,11 @@ export namespace gateway {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<string | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -38536,7 +38551,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -38683,7 +38698,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -38727,7 +38742,7 @@ export namespace gateway {
         /**
          * IdentityMatch defines the client identity used for evaluating the authorization rules. Possible values are: SOURCE_IDENTITY, PEER_CERTIFICATE, and PERMISSIVE. If no mode is specified, the mode is treated as PERMISSIVE mode. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<string | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * The set of hostnames exposed on the Gateway through which external hosts can be accessed.
          */
@@ -38738,7 +38753,7 @@ export namespace gateway {
         /**
          * A shortcut for specifying the set of allowed callers. Deprecated: use `resources` or `serviceAccounts` instead. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, SERVICE_ACCOUNT.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.AuthorizationSettingsMode | undefined>;
         /**
          * `resources` specify the allowed set of resources using TSB FQNs. - `organizations/myorg/tenants/mycompany-a/workspaces/w2` - allow access from workspace w2. - `organizations/myorg/tenants/mycompany/workspaces/w1/securitygroups/s1` - allow access from security group s1.
          */
@@ -38827,7 +38842,7 @@ export namespace gateway {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.gateway.TrafficMode | undefined>;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -38920,7 +38935,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -38936,7 +38951,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -38963,7 +38978,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface GatewayGatewayHttpAuthenticationOidcProvider {
@@ -39001,7 +39016,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39149,7 +39164,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39223,60 +39238,45 @@ export namespace gateway {
 
     export interface GatewayGatewayHttpExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsComposer | undefined>;
+        dynamicModule?: pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsDynamicModule | undefined>;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsKong | undefined>;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsLua | undefined>;
     }
 
-    export interface GatewayGatewayHttpExtensionsComposer {
+    export interface GatewayGatewayHttpExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsComposerPlugin>[] | undefined>;
+        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsDynamicModulePlugin>[] | undefined>;
     }
 
-    export interface GatewayGatewayHttpExtensionsComposerPlugin {
+    export interface GatewayGatewayHttpExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsComposerPluginConfig | undefined>;
+        config?: pulumi.Input<string | undefined>;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module?: pulumi.Input<string | undefined>;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: pulumi.Input<string>;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority?: pulumi.Input<number | undefined>;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url?: pulumi.Input<string | undefined>;
-    }
-
-    export interface GatewayGatewayHttpExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayGatewayHttpExtensionsKong {
@@ -39329,6 +39329,28 @@ export namespace gateway {
         configMap: pulumi.Input<string>;
     }
 
+    export interface GatewayGatewayHttpExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpExtensionsLuaPlugin>[] | undefined>;
+    }
+
+    export interface GatewayGatewayHttpExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: pulumi.Input<string>;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority?: pulumi.Input<number | undefined>;
+    }
+
     export interface GatewayGatewayHttpFailoverSettings {
         /**
          * Settings for configuring automatic load balancing between clusters based on observed metrics.
@@ -39347,7 +39369,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayHttpFailoverSettingsAutomaticLoadBalancing {
@@ -39534,7 +39556,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -39780,7 +39802,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface GatewayGatewayHttpRateLimitingSettingsTimeout {
@@ -39958,60 +39980,45 @@ export namespace gateway {
 
     export interface GatewayGatewayHttpRoutingRuleExtensions {
         /**
-         * Extend using Composer. Composer is a way to extend TSB functionality by using Tetrate's provided plugins missing in Envoy or by writing your own custom code. It supports both Lua and Golang. Refer to HowTos to understand how to use the same.
+         * Extend using Envoy dynamic modules. DynamicModule runs plugins in the data path as Envoy dynamic modules: you name the module to load, the filter inside that module, and the configuration to pass to it.
          */
-        composer?: pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposer | undefined>;
+        dynamicModule?: pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsDynamicModule | undefined>;
         /**
          * Extend using Kong. The functionality provided by this extender will be added just before routing is done. This means all other listener filters configured on the gateway will be executed first such as RBAC (authorization policies) and then the request will be proeccessed by the `tetrate-kong-extender` sidecar. Please note that extending using Kong requires to run `tetrate-kong-extender` sidecar. Refer to HowTos to understand how to inject the same.
          */
         kong?: pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsKong | undefined>;
+        /**
+         * Extend using Lua. Lua runs custom Lua scripts in the data path using the native Envoy Lua HTTP filter, so it does not require any additional sidecar.
+         */
+        lua?: pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsLua | undefined>;
     }
 
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposer {
+    export interface GatewayGatewayHttpRoutingRuleExtensionsDynamicModule {
         /**
          * List of plugins.
          */
-        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposerPlugin>[] | undefined>;
+        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsDynamicModulePlugin>[] | undefined>;
     }
 
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposerPlugin {
+    export interface GatewayGatewayHttpRoutingRuleExtensionsDynamicModulePlugin {
         /**
-         * Configuration for this plugin (Optional).
+         * {{% examples %}}
+         * Configuration for this plugin (Optional). The config is passed to the filter as-is, so its schema is defined by the filter itself. The following is an example of a valid config for the `coraza-waf` extension of the `composer` module: ``` yaml config:   directives:   - "SecRuleEngine On"   mode: "FULL"  ``` If the config fails the filter's own schema validation, it is rejected by the dynamic module at runtime. The `goplugin-loader` filter of the `composer` module is the one config XCP looks inside, because the plugin it loads is named by the config rather than by `name`. It is required there and takes the following shape: ``` yaml config:   # Name of the custom plugin to load. Required.   name: my-plugin   # Url of the custom plugin binary. Required. Only OCI registry or local   # file urls are supported for now, e.g.   # oci://my-registry.io/my-repo/my-plugin:latest or file:///plugins/my-plugin.so.   url: oci://my-registry.io/my-repo/my-plugin:latest   # Configuration handed to the custom plugin itself. Optional, and must be   # an object when set: its keys belong to the custom plugin, so XCP passes   # it on untouched but rejects a scalar or a list here.   config:     some_key: someValue  ```
+         * {{% /examples %}}
          */
-        config?: pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsComposerPluginConfig | undefined>;
+        config?: pulumi.Input<string | undefined>;
         /**
-         * Plugin name. This can be one of the [Tetrate built in plugins](https://docs.tetrate.io/service-bridge/) or a custom plugin. Tetrate built in plugins are bundled with TSB and can run directly. However providing `pluginSource` is required if this is a custom plugin.
+         * Name of the Envoy dynamic module to load (Optional). Defaults to `composer`, the Tetrate-provided module. Every extension of the Built-on-Envoy Composer is supported natively by that module, see https://github.com/tetratelabs/built-on-envoy/tree/main/extensions/composer
+         */
+        module?: pulumi.Input<string | undefined>;
+        /**
+         * Name of the filter to run within the dynamic module. For the `composer` module this is the name of any Built-on-Envoy Composer extension, e.g. `coraza-waf`, or `goplugin-loader` to load a custom Go plugin named by the `config`. The `module` and `name` pair identifies the plugin: two plugins on the same server or route must not repeat the same combination. The one exception is the `goplugin-loader` filter, which loads a different custom plugin per `config`, so there its `config.name` and `config.url` identify the plugin too.
          */
         name: pulumi.Input<string>;
         /**
-         * Priority to be given to this plugin (Optional). Priority decides the order of execution of plugins. For example. Plugin P1(priority=10) will be executed before Plugin P2(priority=100).
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
          */
         priority?: pulumi.Input<number | undefined>;
-        /**
-         * Optional reference to a custom plugin. This url will be used to load the custom plugin binary. This is required if this is a custom plugin and can be empty for Tetrate built in plugins. Only OCI registry urls are supported for now. For example: oci://my-registry.io/my-repo/my-plugin:latest
-         */
-        url?: pulumi.Input<string | undefined>;
-    }
-
-    export interface GatewayGatewayHttpRoutingRuleExtensionsComposerPluginConfig {
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes configMap. Ensure the configMap has a key "config" having values in the `yaml` format. The configMap must be present in the same namespace as the gateway install. The following is an example of a configMap which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: |     headersToAdd:     - key: "example-header"       value: "example-value"     headersToRemove:     - "example-header-to-remove"     bodyToSet: "the response is mutated!" kind: ConfigMap metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the configMap cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        configMap?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Provide plugin config inline in the `yaml` format. The following is an example of a valid config for tetrate's response-transformer plugin. ``` yaml inline:   headersToAdd:   - key: "example-header"     value: "example-value"   headersToRemove:   - "example-header-to-remove"   bodyToSet: "the response is mutated!"  ``` If the config fails plugin's schema validation, the `tetrate-composer` sidecar will reject it.
-         * {{% /examples %}}
-         */
-        inline?: pulumi.Input<string | undefined>;
-        /**
-         * {{% examples %}}
-         * Obtain plugin config from the specified kubernetes secret. Please ensure the secret has a key "config" having values in the `yaml` format. The secret must be present in the same namespace as the gateway install. The following is an example of a secret which contains a valid config for tetrate's response-transformer plugin. ``` yaml apiVersion: v1 data:   config: YWRkOgogIGpzb246CiAgLSBleGFtcGxl kind: Secret metadata:   name: response-transformer-config   namespace: gw-install-namespace type: Opaque  ``` In case the secret cannot be loaded (not found, bad format, schema validation failure or any other issue reading it), the config will be rejected by the `tetrate-composer` sidecar. NOT IMPLEMENTED.
-         * {{% /examples %}}
-         */
-        secret?: pulumi.Input<string | undefined>;
     }
 
     export interface GatewayGatewayHttpRoutingRuleExtensionsKong {
@@ -40062,6 +40069,28 @@ export namespace gateway {
          * {{% /examples %}}
          */
         configMap: pulumi.Input<string>;
+    }
+
+    export interface GatewayGatewayHttpRoutingRuleExtensionsLua {
+        /**
+         * List of plugins.
+         */
+        plugins?: pulumi.Input<pulumi.Input<inputs.gateway.GatewayGatewayHttpRoutingRuleExtensionsLuaPlugin>[] | undefined>;
+    }
+
+    export interface GatewayGatewayHttpRoutingRuleExtensionsLuaPlugin {
+        /**
+         * The inline Lua source code to run. The script follows the same contract as the native Envoy Lua HTTP filter, i.e. it may define `envoy_on_request(handle)` and/or `envoy_on_response(handle)` global functions.
+         */
+        inlineCode: pulumi.Input<string>;
+        /**
+         * Plugin name. A unique name identifying this Lua plugin. It must be unique among all Lua plugins configured on the same server or route, as it is used to name the generated HTTP filter entry and the Lua source-code key.
+         */
+        name: pulumi.Input<string>;
+        /**
+         * Priority to be given to this plugin (Optional). Priority decides the order of the extension in the filter chain. In the request path, the lower the priority number, the earlier the plugin will be executed. In the response path, the lower the priority number, the later the plugin will be executed.
+         */
+        priority?: pulumi.Input<number | undefined>;
     }
 
     export interface GatewayGatewayHttpRoutingRuleMatch {
@@ -40251,7 +40280,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40300,15 +40329,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -40362,7 +40391,7 @@ export namespace gateway {
         /**
          * Traffic mode specifies the type of configuration applied to this server. It defines how the server handles traffic within the mesh. This setting determines whether the server manages incoming, outgoing, or transit traffic. By default, this setting is not required and will auto-detect the mode based on the deployment where this configuration is attached to. If unspecified, the default mode is AUTO. Possible values are: - AUTO: Automatically detect the type of configuration from the underlying Gateway deployment. - INGRESS: Configuration for managing incoming traffic into the mesh. - EGRESS: Configuration for managing outgoing traffic from the mesh to external services. - TRANSIT: Configuration for facilitating transit traffic between different clusters within the mesh. Possible values: AUTO, INGRESS, EGRESS, TRANSIT.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.gateway.TrafficMode | undefined>;
         /**
          * If set to true, the server is configured to be exposed within the mesh. This configuration enables forwarding traffic between two clusters that are not directly reachable. Deprecated: use `trafficMode: TRANSIT` instead.
          */
@@ -40387,7 +40416,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayTcpFailoverSettingsAutomaticLoadBalancing {
@@ -40475,7 +40504,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40513,15 +40542,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -40588,7 +40617,7 @@ export namespace gateway {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface GatewayGatewayTlFailoverSettingsAutomaticLoadBalancing {
@@ -40676,7 +40705,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -40724,7 +40753,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -40793,7 +40822,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -40936,7 +40965,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -40952,7 +40981,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -40979,7 +41008,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface GatewayIngressGatewayHttpAuthenticationOidcProvider {
@@ -41017,7 +41046,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41165,7 +41194,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41378,7 +41407,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -41624,7 +41653,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface GatewayIngressGatewayHttpRateLimitingSettingsTimeout {
@@ -41889,15 +41918,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -42048,15 +42077,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -43003,7 +43032,7 @@ export namespace gateway {
         /**
          * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
          */
-        type?: pulumi.Input<string | undefined>;
+        type?: pulumi.Input<enums.gateway.GatewaySpecType | undefined>;
     }
 
     export interface GatewayInstallGatewayTemplateGatewaySpecConnectionDrainDuration {
@@ -43872,7 +43901,7 @@ export namespace gateway {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -44011,7 +44040,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -44027,7 +44056,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -44054,7 +44083,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface GatewayTier1GatewayExternalServerAuthenticationOidcProvider {
@@ -44092,7 +44121,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44240,7 +44269,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44472,7 +44501,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -44718,7 +44747,7 @@ export namespace gateway {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface GatewayTier1GatewayExternalServerRateLimitingSettingsTimeout {
@@ -44767,15 +44796,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -44910,7 +44939,7 @@ export namespace gateway {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -44926,7 +44955,7 @@ export namespace gateway {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -44953,7 +44982,7 @@ export namespace gateway {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface GatewayTier1GatewayInternalServerAuthenticationOidcProvider {
@@ -44991,7 +45020,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45139,7 +45168,7 @@ export namespace gateway {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45322,15 +45351,15 @@ export namespace gateway {
         /**
          * Set the maximum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        maxProtocolVersion?: pulumi.Input<string | undefined>;
+        maxProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set the minimum supported TLS protocol version. Valid options: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3. Possible values: TLS_AUTO, TLSV1_0, TLSV1_1, TLSV1_2, TLSV1_3.
          */
-        minProtocolVersion?: pulumi.Input<string | undefined>;
+        minProtocolVersion?: pulumi.Input<enums.gateway.TLSProtocol | undefined>;
         /**
          * Set this to SIMPLE, or MUTUAL for one-way TLS, mutual TLS respectively. Possible values: DISABLED, SIMPLE, MUTUAL, OPTIONAL_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.gateway.ServerTLSSettingsTLSMode | undefined>;
         /**
          * The name of the secret in Kubernetes that holds the TLS certs including the CA certificates. For Unified Gateway config, if the secret is in a different namespace than the gateway, it must be prefixed with the namespace in the format of <namespace>/<secret_name>. For all other gateway types, the secret must be in the same namespace as the gateway resource. The secret (type generic) should contain the following keys and values: key: `<privateKey>`, cert: `<serverCert>`, cacert: `<CACertificate>`.
          */
@@ -45654,7 +45683,7 @@ export namespace profile {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttp {
@@ -45743,7 +45772,7 @@ export namespace profile {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -45759,7 +45788,7 @@ export namespace profile {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -45786,7 +45815,7 @@ export namespace profile {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface ProfileProfileDefaultsAuthenticationSettingsHttpOidcProvider {
@@ -45824,7 +45853,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -45974,7 +46003,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.profile.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundFailoverSettingsAutomaticLoadBalancing {
@@ -46143,7 +46172,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.profile.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -46389,7 +46418,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.profile.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundRateLimitingSettingsTimeout {
@@ -46480,7 +46509,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.profile.ProxyType | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -46546,7 +46575,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.profile.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSetting {
@@ -46579,7 +46608,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.profile.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -46590,7 +46619,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.profile.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -46664,7 +46693,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.profile.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -47065,7 +47094,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -47234,7 +47263,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -47480,7 +47509,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundRateLimitingSettingsTimeout {
@@ -47571,7 +47600,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -47637,7 +47666,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSetting {
@@ -47670,7 +47699,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -47681,7 +47710,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -47755,7 +47784,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -48199,7 +48228,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -48445,7 +48474,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsRateLimitingSettingsTimeout {
@@ -48467,14 +48496,14 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -48683,7 +48712,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -48694,7 +48723,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileDefaultsTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -48768,7 +48797,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -49093,7 +49122,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -49142,7 +49171,7 @@ export namespace profile {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttp {
@@ -49231,7 +49260,7 @@ export namespace profile {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -49247,7 +49276,7 @@ export namespace profile {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -49274,7 +49303,7 @@ export namespace profile {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface ProfileProfileMandatesAuthenticationSettingsHttpOidcProvider {
@@ -49312,7 +49341,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -49462,7 +49491,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.profile.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficInboundFailoverSettingsAutomaticLoadBalancing {
@@ -49631,7 +49660,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.profile.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -49877,7 +49906,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.profile.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileMandatesTrafficInboundRateLimitingSettingsTimeout {
@@ -49968,7 +49997,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.profile.ProxyType | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -50034,7 +50063,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.profile.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSetting {
@@ -50067,7 +50096,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.profile.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -50078,7 +50107,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.profile.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -50152,7 +50181,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.profile.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -50553,7 +50582,7 @@ export namespace profile {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -50722,7 +50751,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -50968,7 +50997,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundRateLimitingSettingsTimeout {
@@ -51059,7 +51088,7 @@ export namespace profile {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -51125,7 +51154,7 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSetting {
@@ -51158,7 +51187,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -51169,7 +51198,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -51243,7 +51272,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -51687,7 +51716,7 @@ export namespace profile {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -51933,7 +51962,7 @@ export namespace profile {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsRateLimitingSettingsTimeout {
@@ -51955,14 +51984,14 @@ export namespace profile {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -52171,7 +52200,7 @@ export namespace profile {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -52182,7 +52211,7 @@ export namespace profile {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface ProfileProfileMandatesTrafficSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -52256,7 +52285,7 @@ export namespace profile {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -52581,7 +52610,7 @@ export namespace profile {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -52601,7 +52630,7 @@ export namespace rbac {
         /**
          * The set of actions allowed for these APIs. The current version supports requires the kind, but this constraint will be relaxed in upcoming releases so that rules can apply globally to an entire API group. Possible values: INVALID, READ, WRITE, CREATE, DELETE, SET_POLICY, GET_POLICY.
          */
-        permissions: pulumi.Input<pulumi.Input<string>[]>;
+        permissions: pulumi.Input<pulumi.Input<enums.rbac.Permission>[]>;
         /**
          * The set of API groups and the api Kinds within the group on which this rule is applicable. If omitted, the permissions will globally apply to all resource types.
          */
@@ -52743,7 +52772,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttp {
@@ -52832,7 +52861,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -52848,7 +52877,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -52875,7 +52904,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface SecuritySecuritySettingAuthenticationSettingsHttpOidcProvider {
@@ -52913,7 +52942,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53027,11 +53056,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<string | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -53084,7 +53113,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53231,7 +53260,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53267,7 +53296,7 @@ export namespace security {
         /**
          * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        authentication?: pulumi.Input<string | undefined>;
+        authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
         /**
          * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
          */
@@ -53295,7 +53324,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy?: pulumi.Input<string | undefined>;
+        propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -53310,7 +53339,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttp {
@@ -53399,7 +53428,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -53415,7 +53444,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -53442,7 +53471,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSettingsAuthenticationSettingsHttpOidcProvider {
@@ -53480,7 +53509,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53594,11 +53623,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<string | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -53651,7 +53680,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -53798,7 +53827,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -53834,7 +53863,7 @@ export namespace security {
         /**
          * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        authentication?: pulumi.Input<string | undefined>;
+        authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
         /**
          * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
          */
@@ -53862,7 +53891,7 @@ export namespace security {
         /**
          * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
          */
-        propagationStrategy?: pulumi.Input<string | undefined>;
+        propagationStrategy?: pulumi.Input<enums.coretypes.PropagationStrategy | undefined>;
         /**
          * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
          */
@@ -53877,7 +53906,7 @@ export namespace security {
         /**
          * Traffic authentication mode is used to specify if mTLS or plaintext traffic is accepted. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttp {
@@ -53966,7 +53995,7 @@ export namespace security {
         /**
          * Defines how clientId and clientSecret are sent in OAuth client to OAuth server requests. RFC https://datatracker.ietf.org/doc/html/rfc6749#section-2.3.1. Possible values: DEFAULT_AUTH_TYPE, URL_ENCODED_BODY, BASIC_AUTH.
          */
-        authType?: pulumi.Input<string | undefined>;
+        authType?: pulumi.Input<enums.auth.OIDCAuthType | undefined>;
         /**
          * The clientId to be used in the authorize calls. This value will be URL encoded when sent to the OAuth server.
          */
@@ -53982,7 +54011,7 @@ export namespace security {
         /**
          * Configure the [authorization grant type to be used](https://datatracker.ietf.org/doc/html/rfc6749#section-1.3). Possible values: DEFAULT_GRANT_TYPE, AUTHORIZATION_CODE.
          */
-        grantType?: pulumi.Input<string | undefined>;
+        grantType?: pulumi.Input<enums.auth.OIDCGrantType | undefined>;
         /**
          * The OIDC Provider configuration. If only `issuer` is provided, the config will be treated as `dynamic` and will be fetched from the well known endpoint. If more fields are configured, the configuration will be treated as `static` and thus should be complete.
          */
@@ -54009,7 +54038,7 @@ export namespace security {
         /**
          * The value used for the `SameSite` cookie attribute. If not specified, defaults to `DISABLED` (the attribute is not set). Possible values: DISABLED, STRICT, LAX, NONE.
          */
-        sameSite?: pulumi.Input<string | undefined>;
+        sameSite?: pulumi.Input<enums.auth.OIDCCookieConfigSameSite | undefined>;
     }
 
     export interface SecurityServiceSecuritySettingSubsetSettingsAuthenticationSettingsHttpOidcProvider {
@@ -54047,7 +54076,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -54161,11 +54190,11 @@ export namespace security {
         /**
          * identity_match specifies the strategy for client identity verification to be employed during the evaluation of authorization (authz) rules within the service. This field determines how the identity of a client is verified and utilized to make authz decisions, offering different levels of security and flexibility based on the chosen mode. Possible values for identityMatch are: - SOURCE_IDENTITY: Enforces authz decisions based on the service identity propagated from the client. This mode   ensures that authz is evaluated strictly based on the explicit identity of the requesting service, suitable for   environments requiring high security and strict identity verification. - PEER_CERTIFICATE: Utilizes the SPIFFE ID from mTLS certificates for authz decisions. This mode is aligned with   certificate-based identity validation, providing a secure, cryptographic method of asserting service identities. - PERMISSIVE: Allows a flexible approach by accepting either SOURCE_IDENTITY or PEER_CERTIFICATE for authz evaluation.   This mode is designed for transitional environments or for easing upgrades, offering a broader compatibility with   different identity verification methods. If identityMatch is not explicitly specified, the system defaults to the PERMISSIVE mode, allowing for a more inclusive evaluation of authz rules that accommodates various identity verification strategies. The use of this field is dependent upon the `enableHttpMeshInternalIdentityPropagation` feature being enabled in the Control plane's configuration resource (CR). When this feature is active, it allows for the propagation and recognition of HTTP mesh internal identities, enabling the specified identityMatch mode to take effect. If the feature is disabled in the Control Plane CR, the system reverts to using PEER_CERTIFICATE mode for identity verification, relying solely on mTLS certificate identities for authz rule evaluation. This configuration offers flexibility in adapting the identity verification strategy to the specific security requirements and operational contexts of your environment, ensuring that authz rules are applied effectively and securely based on the desired identity verification method. Possible values: UNKNOWN, PEER_CERTIFICATE, PERMISSIVE, SOURCE_IDENTITY.
          */
-        identityMatch?: pulumi.Input<string | undefined>;
+        identityMatch?: pulumi.Input<enums.coretypes.IdentityMatch | undefined>;
         /**
          * A short cut for specifying the set of allowed callers. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, DISABLED, CUSTOM, RULES.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.security.AuthorizationSettingsMode | undefined>;
         /**
          * When the mode is `RULES`, you can allow or deny workload-to-workload communication by specifying in the `rules` field which target workloads are allowed or denied to communicate with other target workloads. When the mode is `RULES`, if no authorization rules are provided all requests will be accepted.
          */
@@ -54218,7 +54247,7 @@ export namespace security {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -54365,7 +54394,7 @@ export namespace security {
         /**
          * Criteria for selecting traffic by their direction. Note that CLIENT and SERVER are analogous to OUTBOUND and INBOUND, respectively. For the gateway, the field should be CLIENT or CLIENT_AND_SERVER. If not specified, the default value is CLIENT_AND_SERVER. Possible values: UNDEFINED, CLIENT, SERVER, CLIENT_AND_SERVER.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.coretypes.WorkloadMode | undefined>;
         /**
          * Criteria for selecting traffic by their destination port. More specifically, for the outbound traffic, the destination port would be the port of the target service. On the other hand, for the inbound traffic, the destination port is the port bound by the server process in the same Pod. If one of the given `ports` is matched, this condition is evaluated to true. If not specified, this condition is evaluated to true for any port.
          */
@@ -54694,7 +54723,7 @@ export namespace traffic {
         /**
          * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
-        trafficType: pulumi.Input<string>;
+        trafficType: pulumi.Input<enums.traffic.ServiceRouteTrafficType>;
     }
 
     export interface TrafficServiceRoutePortLevelSettingStickySession {
@@ -54810,7 +54839,7 @@ export namespace traffic {
         /**
          * Type of traffic for which a route has to be generated. Possible values: HTTP, TCP, TLS_PASSTHROUGH.
          */
-        trafficType: pulumi.Input<string>;
+        trafficType: pulumi.Input<enums.traffic.ServiceRouteTrafficType>;
     }
 
     export interface TrafficServiceRouteSubsetPortLevelSettingStickySession {
@@ -55008,7 +55037,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundFailoverSettingsAutomaticLoadBalancing {
@@ -55177,7 +55206,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -55423,7 +55452,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundRateLimitingSettingsTimeout {
@@ -55514,7 +55543,7 @@ export namespace traffic {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -55580,7 +55609,7 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSetting {
@@ -55613,7 +55642,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -55624,7 +55653,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -55698,7 +55727,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -56142,7 +56171,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -56388,7 +56417,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsRateLimitingSettingsTimeout {
@@ -56410,14 +56439,14 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -56626,7 +56655,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsLoadBalancer {
@@ -56637,7 +56666,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface TrafficServiceTrafficSettingSettingsUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -56711,7 +56740,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -57069,7 +57098,7 @@ export namespace traffic {
         /**
          * TopologyChoice specifies the topology preference for traffic priority. If not specified, the default value is `CLUSTER`. If failoverPriority is specified then this value is ignored. Possible values: NONE, CLUSTER, LOCALITY.
          */
-        topologyChoice?: pulumi.Input<string | undefined>;
+        topologyChoice?: pulumi.Input<enums.coretypes.FailoverSettingsTopologyChoice | undefined>;
     }
 
     export interface TrafficTrafficSettingInboundFailoverSettingsAutomaticLoadBalancing {
@@ -57238,7 +57267,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -57484,7 +57513,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface TrafficTrafficSettingInboundRateLimitingSettingsTimeout {
@@ -57575,7 +57604,7 @@ export namespace traffic {
         /**
          * Specifies the type of proxy to which to apply the mesh timeout settings. The default is to apply the settings to both Gateways and Sidecars. Possible values: ANY, SIDECAR, GATEWAY.
          */
-        proxyType?: pulumi.Input<string | undefined>;
+        proxyType?: pulumi.Input<enums.traffic.ProxyType | undefined>;
     }
 
     export interface TrafficTrafficSettingInboundResilienceMeshTimeoutMaxConnectionDuration {
@@ -57641,7 +57670,7 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSetting {
@@ -57674,7 +57703,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancer {
@@ -57685,7 +57714,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface TrafficTrafficSettingOutboundUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -57759,7 +57788,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */
@@ -58203,7 +58232,7 @@ export namespace traffic {
         /**
          * Set this to DISABLED to disable TLS (not recommended from the security perspective), SIMPLE for one-way TLS and MUTUAL for mutual TLS (where client is required to present its certificate as well). Possible values: DISABLED, SIMPLE, MUTUAL, ISTIO_MUTUAL.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.auth.TLSMode | undefined>;
         /**
          * TLS key source from a Kubernetes Secret. This is applicable for gateway workloads.
          */
@@ -58449,7 +58478,7 @@ export namespace traffic {
         /**
          * Specifies the unit of time for rate limit. Possible values: UNKNOWN, SECOND, MINUTE, HOUR, DAY.
          */
-        unit: pulumi.Input<string>;
+        unit: pulumi.Input<enums.gateway.RateLimitSettingsRateLimitValueUnit>;
     }
 
     export interface TrafficTrafficSettingRateLimitingSettingsTimeout {
@@ -58471,14 +58500,14 @@ export namespace traffic {
         /**
          * A short cut for specifying the set of services accessed by the workload. Possible values: UNSET, NAMESPACE, GROUP, WORKSPACE, CLUSTER, CUSTOM.
          */
-        mode?: pulumi.Input<string | undefined>;
+        mode?: pulumi.Input<enums.traffic.ReachabilitySettingsMode | undefined>;
     }
 
     export interface TrafficTrafficSettingResilience {
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.circuitBreakerSensitivity`. Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.ResilienceSettingsSensitivity | undefined>;
         /**
          * This field is DEPRECATED in favor of `upstreamTrafficSettings.resilience.connectionPool.http.requestTimeout`. Timeout for HTTP requests. Disabled if not set.
          */
@@ -58687,7 +58716,7 @@ export namespace traffic {
         /**
          * If set to `REQUIRED`, client sidecars under this configuration will be configured to initiate mTLS connections using mesh-generated client certificates to services that do not have a sidecar injected. Possible values: UNSET, OPTIONAL, REQUIRED.
          */
-        trafficMode?: pulumi.Input<string | undefined>;
+        trafficMode?: pulumi.Input<enums.traffic.AuthenticationSettingsAuthenticationMode | undefined>;
     }
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsLoadBalancer {
@@ -58698,7 +58727,7 @@ export namespace traffic {
         /**
          * Use standard load balancing algorithms that require no tuning. Possible values: UNSPECIFIED, RANDOM, PASSTHROUGH, ROUND_ROBIN, LEAST_REQUEST.
          */
-        simple?: pulumi.Input<string | undefined>;
+        simple?: pulumi.Input<enums.traffic.LoadBalancerSettingsSimpleLB | undefined>;
     }
 
     export interface TrafficTrafficSettingUpstreamTrafficSettingSettingsLoadBalancerConsistentHash {
@@ -58772,7 +58801,7 @@ export namespace traffic {
         /**
          * Circuit breakers in Envoy are applied per endpoint in a load balancing pool. By default, circuit breakers are disabled. If set, the sensitivity level determines the maximum number of consecutive failures that Envoy will tolerate before ejecting an endpoint from the load balancing pool. Possible values: UNSET, LOW, MEDIUM, HIGH, CUSTOM.
          */
-        circuitBreakerSensitivity?: pulumi.Input<string | undefined>;
+        circuitBreakerSensitivity?: pulumi.Input<enums.traffic.UpstreamResilienceSettingsSensitivity | undefined>;
         /**
          * Configures tolerance and other settings for TCP/HTTP connections to the service.
          */

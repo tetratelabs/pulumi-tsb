@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class GatewayInstallGateway extends pulumi.CustomResource {
@@ -91,7 +92,7 @@ export class GatewayInstallGateway extends pulumi.CustomResource {
     /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
-    declare public readonly type: pulumi.Output<string>;
+    declare public readonly type: pulumi.Output<enums.installdataplane.GatewaySpecType>;
 
     /**
      * Create a GatewayInstallGateway resource with the given unique name, arguments, and options.
@@ -207,7 +208,7 @@ export interface GatewayInstallGatewayState {
     /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
-    type?: pulumi.Input<string | undefined>;
+    type?: pulumi.Input<enums.installdataplane.GatewaySpecType | undefined>;
 }
 
 /**
@@ -269,5 +270,5 @@ export interface GatewayInstallGatewayArgs {
     /**
      * Type defines the type of gateway deployment created as part of this gateway install object. Possible values are UNIFIED, INGRESS, EGRESS and EASTWEST. Possible values: UNIFIED, INGRESS, EGRESS, EASTWEST.
      */
-    type?: pulumi.Input<string | undefined>;
+    type?: pulumi.Input<enums.installdataplane.GatewaySpecType | undefined>;
 }
