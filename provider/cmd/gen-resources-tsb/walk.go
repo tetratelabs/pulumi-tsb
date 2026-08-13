@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	prototypes "github.com/tetrateio/tetrate/api/protoc-plugins/protoc-gen-terraform/pkg/types/basetypes"
@@ -75,31 +76,26 @@ func walkAttributes(res string, prefix []pathSegment, attrs map[string]schema.At
 func walkAttribute(res string, path []pathSegment, a schema.Attribute, out *[]enumSite) error {
 	switch t := a.(type) {
 	case schema.StringAttribute:
-		// Deliberately NOT hardened the way appendElementSite's CustomType
-		// check was: this branch silently does nothing when t.GetType() is
-		// not a prototypes.EnumType, including when it's an unrecognised
-		// CustomType. That asymmetry is intentional, not an oversight.
-		// appendElementSite could afford to error on any non-nil CustomType
-		// because List/MapAttribute CustomTypes are rare in this schema.
-		// StringAttribute is not: the real schema has 141 StringAttributes
-		// whose CustomType is jsontypes.NormalizedType, a legitimate,
-		// non-enum shape wholly unrelated to enums. Erroring on "CustomType
-		// present and not EnumType" here would false-positive on all 141 of
-		// them, not just the handful this walk actually needs to worry
-		// about. This carries 306 of the 334 measured enum $refs, so getting
-		// this wrong in either direction is expensive.
-		//
-		// Consequence of leaving it soft: if upstream ever re-expresses a
-		// scalar enum leaf as some other CustomType (rather than the plain
-		// prototypes.EnumType this walk currently detects via GetType()),
-		// that site is dropped with no error and no diagnostic — it just
-		// silently stops being an enum site, the same failure mode
-		// check-enums.sh exists to catch on the schema side. If that ever
-		// needs hardening, it will need a way to distinguish "an enum
-		// wrapped differently" from jsontypes.NormalizedType specifically,
-		// not a blanket CustomType-is-suspicious rule like appendElementSite's.
 		if et, ok := t.GetType().(prototypes.EnumType); ok {
 			*out = append(*out, enumSite{Resource: res, Path: path, Enum: et.FullName})
+			return nil
+		}
+		// Not an enum. A plain string is by far the common case, but a
+		// CustomType this walk does not recognise could be an enum wrapped in
+		// a shape it cannot see — and this branch carries the overwhelming
+		// majority of enum sites, so a silent miss here is expensive.
+		//
+		// A blanket "CustomType present and not EnumType is an error" rule
+		// cannot be used: the schema legitimately puts jsontypes.NormalizedType
+		// on the create-only JSON fields, wholly unrelated to enums. So
+		// allow-list that one shape and reject anything else, which fails
+		// loudly on a genuinely new shape while staying quiet on the known one.
+		if t.CustomType != nil {
+			if _, ok := t.CustomType.(jsontypes.NormalizedType); !ok {
+				return fmt.Errorf(
+					"%s: StringAttribute %q has an unrecognised CustomType (%T); teach walkAttribute this shape rather than ignoring it, since it could be hiding an enum",
+					res, pathKey(path), t.CustomType)
+			}
 		}
 		return nil
 

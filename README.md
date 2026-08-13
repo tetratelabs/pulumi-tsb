@@ -26,6 +26,32 @@ Installing runs `pulumi plugin install`, which downloads the provider binary
 from this repository's GitHub Releases. That download is unauthenticated — the
 token is only needed for the npm package itself.
 
+## Enums
+
+Properties backed by a TSB API enum are typed, so the compiler catches a bad
+value rather than the server rejecting it at apply time:
+
+```ts
+import * as tsb from "@tetratelabs/pulumi-tsb";
+
+mode: tsb.auth.TLSMode.Mutual   // ok
+mode: "mutual"                  // compile error
+```
+
+The enum types live in modules named after the proto package they come from,
+because the same leaf name can mean different things in different packages —
+`tsb.auth.TLSMode` has four values, `tsb.profile.TLSMode` has three.
+
+**One caveat on outputs.** These properties are both inputs and outputs, and the
+declared type is derived from the API descriptors this package was built
+against. A TSB server newer than those descriptors can return an enum value it
+knows and this package does not; protobuf renders such a value as its number in
+string form, e.g. `"7"`. That value is outside the declared type, but TypeScript
+enums are strings at runtime, so it flows through your program untouched and
+round-trips back to the server correctly — it is a type-level inaccuracy, not a
+failure. Upgrading this package to one built against newer descriptors resolves
+it.
+
 ## Updating
 
 To update the terraform provider version, edit 3 files:
