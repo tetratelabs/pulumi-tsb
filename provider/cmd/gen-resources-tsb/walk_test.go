@@ -4,11 +4,13 @@ package main
 
 import (
 	"reflect"
+	"strings"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-framework/types/basetypes"
 	prototypes "github.com/tetrateio/tetrate/api/protoc-plugins/protoc-gen-terraform/pkg/types/basetypes"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
@@ -73,4 +75,97 @@ func TestWalkSchemaRejectsUnknownAttributeKinds(t *testing.T) {
 	if _, err := walkSchema("tsb_thing", s); err == nil {
 		t.Error("walkSchema(ObjectAttribute) = nil error, want an error")
 	}
+}
+
+// A List/MapAttribute with a nil ElementType and no CustomType gives the walk
+// nothing to inspect. If upstream ever emitted a repeated enum this way, the
+// site would silently vanish; this must fail loudly instead.
+func TestWalkSchemaRejectsNilElementType(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"tags": schema.ListAttribute{},
+	}}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(ListAttribute{ElementType: nil}) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "nil ElementType") {
+		t.Errorf("error = %q, want it to mention nil ElementType", err.Error())
+	}
+}
+
+func TestWalkSchemaRejectsNilElementTypeOnMap(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"labels": schema.MapAttribute{},
+	}}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(MapAttribute{ElementType: nil}) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "nil ElementType") {
+		t.Errorf("error = %q, want it to mention nil ElementType", err.Error())
+	}
+}
+
+// A List/MapAttribute carrying a CustomType is a shape this walk has no logic
+// to inspect. If upstream ever re-expressed a repeated enum this way (as it
+// already does for scalar enum leaves via StringAttribute.CustomType), the
+// walk must refuse rather than silently drop the site.
+func TestWalkSchemaRejectsUnknownCustomTypeOnList(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"tags": schema.ListAttribute{
+			ElementType: types.StringType,
+			CustomType:  fakeListCustomType{},
+		},
+	}}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(ListAttribute{CustomType: ...}) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "CustomType") {
+		t.Errorf("error = %q, want it to mention CustomType", err.Error())
+	}
+}
+
+func TestWalkSchemaRejectsUnknownCustomTypeOnMap(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"labels": schema.MapAttribute{
+			ElementType: types.StringType,
+			CustomType:  fakeMapCustomType{},
+		},
+	}}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(MapAttribute{CustomType: ...}) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "CustomType") {
+		t.Errorf("error = %q, want it to mention CustomType", err.Error())
+	}
+}
+
+// A non-empty Blocks map is a second, parallel home for schema fields that
+// walkAttributes never looks at. Upstream emits none today, but silence here
+// is not a guarantee, so its mere presence must stop the build.
+func TestWalkSchemaRejectsNonEmptyBlocks(t *testing.T) {
+	s := schema.Schema{
+		Attributes: map[string]schema.Attribute{"name": schema.StringAttribute{}},
+		Blocks:     map[string]schema.Block{"nested": schema.ListNestedBlock{}},
+	}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(Blocks: non-empty) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "block") {
+		t.Errorf("error = %q, want it to mention blocks", err.Error())
+	}
+}
+
+// fakeListCustomType and fakeMapCustomType are minimal stand-ins for a
+// CustomType this walk has never seen, satisfying just enough of the
+// basetypes interfaces to compile into a schema.Attribute literal.
+type fakeListCustomType struct {
+	basetypes.ListType
+}
+
+type fakeMapCustomType struct {
+	basetypes.MapType
 }

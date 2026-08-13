@@ -6,6 +6,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.49.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.135.0
+	github.com/pulumi/pulumi/pkg/v3 v3.253.0
 	github.com/pulumi/pulumi/sdk/v3 v3.253.0
 	github.com/tetrateio/tetrate v0.0.0-20260813074402-d83bfbd29b1e
 	github.com/tetratelabs/terraform-provider-tsb v0.1.4
@@ -182,7 +183,6 @@ require (
 	github.com/pulumi/pulumi-dotnet/pulumi-language-dotnet/v3 v3.107.4-0.20260720135410-6a2eb2585b50 // indirect
 	github.com/pulumi/pulumi-java v1.32.0 // indirect
 	github.com/pulumi/pulumi-yaml v1.37.1-0.20260717123218-294c561f47f4 // indirect
-	github.com/pulumi/pulumi/pkg/v3 v3.253.0 // indirect
 	github.com/rivo/uniseg v0.4.7 // indirect
 	github.com/rogpeppe/go-internal v1.14.1 // indirect
 	github.com/russross/blackfriday/v2 v2.1.0 // indirect

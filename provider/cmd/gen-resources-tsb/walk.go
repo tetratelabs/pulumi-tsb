@@ -15,6 +15,22 @@ import (
 // walkSchema returns every enum-typed leaf reachable from a resource schema,
 // ordered by dotted attribute path so generated output is deterministic.
 func walkSchema(resourceType string, s schema.Schema) ([]enumSite, error) {
+	// Blocks are a second, parallel home for schema-level fields alongside
+	// Attributes; walkAttributes never looks at them. Upstream emits none
+	// today, but an enum tucked inside a block would vanish from this walk
+	// with no diagnostic, so treat any appearance as unsupported rather than
+	// silently ignoring it.
+	if len(s.Blocks) > 0 {
+		names := make([]string, 0, len(s.Blocks))
+		for n := range s.Blocks {
+			names = append(names, n)
+		}
+		sort.Strings(names)
+		return nil, fmt.Errorf(
+			"%s: schema has %d block(s) (%s) that walkSchema does not inspect; teach walkSchema to descend into blocks rather than skipping them",
+			resourceType, len(names), strings.Join(names, ", "))
+	}
+
 	var sites []enumSite
 	if err := walkAttributes(resourceType, nil, s.Attributes, &sites); err != nil {
 		return nil, err
@@ -68,12 +84,10 @@ func walkAttribute(res string, path []pathSegment, a schema.Attribute, out *[]en
 		return nil
 
 	case schema.ListAttribute:
-		appendElementSite(res, path, t.ElementType, out)
-		return nil
+		return appendElementSite(res, path, "ListAttribute", t.ElementType, t.CustomType, out)
 
 	case schema.MapAttribute:
-		appendElementSite(res, path, t.ElementType, out)
-		return nil
+		return appendElementSite(res, path, "MapAttribute", t.ElementType, t.CustomType, out)
 
 	case schema.SingleNestedAttribute:
 		return walkAttributes(res, path, t.Attributes, out)
@@ -98,8 +112,34 @@ func walkAttribute(res string, path []pathSegment, a schema.Attribute, out *[]en
 
 // appendElementSite records a collection whose ELEMENT is an enum. The token
 // attaches one level deeper than a scalar attribute's, hence Element.
-func appendElementSite(res string, path []pathSegment, et attr.Type, out *[]enumSite) {
+//
+// A List/MapAttribute with plain-string elements is common and legitimate,
+// so a non-enum ElementType is not an error. But two shapes mean enum-ness
+// could be hiding from us where we cannot see it, and both must fail loudly
+// rather than silently degrade to string:
+//
+//   - ElementType is nil: there is nothing to inspect. The framework requires
+//     ElementType to be set unless CustomType supplies an equivalent, so nil
+//     here (with no CustomType either) means the attribute is malformed or
+//     this walk's assumptions about the shape no longer hold.
+//   - CustomType is non-nil: it overrides ElementType for the framework's own
+//     purposes, and this walk has no logic to inspect a CustomType. If
+//     upstream ever re-expressed a repeated enum as a CustomType (as it
+//     already does for scalar enum leaves via StringAttribute.CustomType),
+//     this walk would need to be taught that shape rather than ignore it.
+func appendElementSite(res string, path []pathSegment, kind string, et attr.Type, customType any, out *[]enumSite) error {
+	if customType != nil {
+		return fmt.Errorf(
+			"%s: %s %q has a CustomType (%T) this walk does not understand; teach appendElementSite this shape rather than ignoring it, since it could be hiding an enum element",
+			res, kind, pathKey(path), customType)
+	}
+	if et == nil {
+		return fmt.Errorf(
+			"%s: %s %q has a nil ElementType and no CustomType; there is nothing to inspect for enum-ness",
+			res, kind, pathKey(path))
+	}
 	if e, ok := et.(prototypes.EnumType); ok {
 		*out = append(*out, enumSite{Resource: res, Path: path, Element: true, Enum: e.FullName})
 	}
+	return nil
 }
