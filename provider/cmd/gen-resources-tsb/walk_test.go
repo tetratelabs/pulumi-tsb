@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-framework-jsontypes/jsontypes"
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -168,4 +169,37 @@ type fakeListCustomType struct {
 
 type fakeMapCustomType struct {
 	basetypes.MapType
+}
+
+// An unrecognised CustomType on a StringAttribute could be an enum wrapped in a
+// shape this walk cannot see, and that branch carries most enum sites, so it
+// must fail loudly rather than quietly yield a plain string.
+func TestWalkSchemaRejectsUnknownCustomTypeOnString(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"odd": schema.StringAttribute{CustomType: basetypes.StringType{}},
+	}}
+	_, err := walkSchema("tsb_thing", s)
+	if err == nil {
+		t.Fatal("walkSchema(StringAttribute with unrecognised CustomType) = nil error, want an error")
+	}
+	if !strings.Contains(err.Error(), "unrecognised CustomType") {
+		t.Errorf("error = %q, want it to mention an unrecognised CustomType", err)
+	}
+}
+
+// jsontypes.NormalizedType is the one non-enum CustomType the real schema puts
+// on a StringAttribute (the create-only JSON fields). It must stay accepted, or
+// generation breaks on every one of them.
+func TestWalkSchemaAllowsNormalizedJSONCustomType(t *testing.T) {
+	s := schema.Schema{Attributes: map[string]schema.Attribute{
+		"secret": schema.StringAttribute{CustomType: jsontypes.NormalizedType{}},
+		"mode":   enumAttr("test.Mode"),
+	}}
+	got, err := walkSchema("tsb_thing", s)
+	if err != nil {
+		t.Fatalf("walkSchema returned error: %v", err)
+	}
+	if len(got) != 1 || got[0].Enum != "test.Mode" {
+		t.Errorf("walkSchema = %#v, want exactly the one enum site for test.Mode", got)
+	}
 }
