@@ -40,8 +40,8 @@ func Provider() tfbridge.ProviderInfo {
 		P:                 tfpfbridge.ShimProvider(getProvider()),
 		Name:              "tsb",
 		GitHubOrg:         "tetratelabs",
-		TFProviderVersion: "0.1.3",
-		Version:           "0.1.3",
+		TFProviderVersion: "0.1.4",
+		Version:           "0.1.4",
 		Resources:         generatedResources,
 		JavaScript: &tfbridge.JavaScriptInfo{
 			PackageName: "@tetratelabs/pulumi-tsb",
