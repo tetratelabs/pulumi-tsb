@@ -54,6 +54,31 @@ jobs:
       run: make check
       env:
         GOPRIVATE: github.com/tetrateio/*
+  sdk-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+        cache: true
+    - name: Set up Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+    - name: Configure SSH Agent
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.TETRATE_CI_SSH_PRIVATE_KEY }}
+    - name: Disable Strict Host Key Checking for SSH
+      run: mkdir -p ~/.ssh && echo -e "\tStrictHostKeyChecking no" >> ~/.ssh/config && ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - name: Pull over SSH instead of HTTPS
+      run: echo -e '[url "git@github.com:"]\n\tinsteadOf = https://github.com/' | sudo tee /etc/gitconfig
+    - name: Typecheck the generated SDK
+      run: make sdk.typecheck
+      env:
+        GOPRIVATE: github.com/tetrateio/*
   smoke:
     runs-on: ubuntu-latest
     steps:
