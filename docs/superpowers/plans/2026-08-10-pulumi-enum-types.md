@@ -21,6 +21,11 @@
 - Work on a branch. Nothing is pushed without explicit confirmation. Single remote (`origin`), no fork ambiguity.
 - **Fail loudly, never skip.** A silent drop is indistinguishable from success. Every unresolved enum, reserved module name, token collision, or unrecognised schema node is a generation error.
 - Generated files (`provider/resources_gen.go`, `provider/cmd/pulumi-resource-tsb/schema.json`, `sdk/`) are committed. `make check` fails on a dirty tree after regeneration.
+- **`make generate` strips the licence header — always follow it with `make licenser` before committing.**
+  `gen-resources-tsb` does not emit `// Copyright (c) Tetrate, Inc 2026 All Rights Reserved.`; the
+  repo's `check: generate licenser` target re-adds it. Running `generate` alone and committing that
+  produces a file whose header `make check` then restores, failing the dirty-tree assertion. This bit
+  Task 1 once. Safest habit: run `make check` before every commit that touches a generated file.
 - Enum member names use `enumMemberName`, **not** the existing `pascalCase`. `pascalCase` preserves each segment's tail (`api` → `Api`), which on a fully upper-cased proto value yields `ISTIOMUTUAL`.
 - Shared types used across tasks live in `provider/cmd/gen-resources-tsb/types.go`.
 - **Collection asymmetry.** `attr.GetType().(prototypes.EnumType)` is correct only for *singular*
