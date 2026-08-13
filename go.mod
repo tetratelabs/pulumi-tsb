@@ -7,6 +7,7 @@ require (
 	github.com/pulumi/pulumi-terraform-bridge/pf v0.49.0
 	github.com/pulumi/pulumi-terraform-bridge/v3 v3.135.0
 	github.com/pulumi/pulumi/sdk/v3 v3.253.0
+	github.com/tetrateio/tetrate v0.0.0-20260813074402-d83bfbd29b1e
 	github.com/tetratelabs/terraform-provider-tsb v0.1.4
 	google.golang.org/protobuf v1.36.11
 )
@@ -197,7 +198,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/spiffe/go-spiffe/v2 v2.6.0 // indirect
 	github.com/teekennedy/goldmark-markdown v0.3.0 // indirect
-	github.com/tetrateio/tetrate v0.0.0-20260813074402-d83bfbd29b1e // indirect
 	github.com/tetratelabs/multierror v1.1.1 // indirect
 	github.com/tetratelabs/telemetry v0.8.2 // indirect
 	github.com/texttheater/golang-levenshtein v1.0.1 // indirect
