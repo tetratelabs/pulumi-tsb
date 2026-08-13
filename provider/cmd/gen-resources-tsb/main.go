@@ -10,6 +10,7 @@ import (
 	"sort"
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"google.golang.org/protobuf/reflect/protoreflect"
 
 	tsbprovider "github.com/tetratelabs/terraform-provider-tsb/pkg/provider"
 )
@@ -18,27 +19,41 @@ import (
 // resource's Metadata() call prepends its suffix to (e.g. "tsb_workspace").
 const providerTypeName = "tsb"
 
-// discoverResourceTypes instantiates every resource the live
-// terraform-provider-tsb registers and asks each for its real Terraform
-// type name, so the generated map always reflects what the provider
-// actually exposes rather than a side artifact like doc filenames.
-func discoverResourceTypes(ctx context.Context) ([]string, error) {
+// discoverResources instantiates every resource the live terraform-provider-tsb
+// registers, asking each for its real Terraform type name and walking its
+// schema for enum leaves, so the generated map always reflects what the
+// provider actually exposes rather than a side artifact like doc filenames.
+func discoverResources(ctx context.Context) ([]string, []enumSite, error) {
 	p := tsbprovider.New()()
 
-	var types []string
+	var (
+		types []string
+		sites []enumSite
+	)
 	for _, newResource := range p.Resources(ctx) {
 		r := newResource()
 
-		var resp resource.MetadataResponse
-		r.Metadata(ctx, resource.MetadataRequest{ProviderTypeName: providerTypeName}, &resp)
-		if resp.TypeName == "" {
-			return nil, fmt.Errorf("resource %T returned an empty TypeName", r)
+		var md resource.MetadataResponse
+		r.Metadata(ctx, resource.MetadataRequest{ProviderTypeName: providerTypeName}, &md)
+		if md.TypeName == "" {
+			return nil, nil, fmt.Errorf("resource %T returned an empty TypeName", r)
 		}
-		types = append(types, resp.TypeName)
+		types = append(types, md.TypeName)
+
+		var sr resource.SchemaResponse
+		r.Schema(ctx, resource.SchemaRequest{}, &sr)
+		if sr.Diagnostics.HasError() {
+			return nil, nil, fmt.Errorf("resource %s: schema diagnostics: %v", md.TypeName, sr.Diagnostics)
+		}
+		found, err := walkSchema(md.TypeName, sr.Schema)
+		if err != nil {
+			return nil, nil, err
+		}
+		sites = append(sites, found...)
 	}
 
 	sort.Strings(types)
-	return types, nil
+	return types, sites, nil
 }
 
 func main() {
@@ -47,19 +62,25 @@ func main() {
 
 	ctx := context.Background()
 
-	types, err := discoverResourceTypes(ctx)
+	types, sites, err := discoverResources(ctx)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "gen-resources-tsb:", err)
 		os.Exit(1)
 	}
 
-	groups := tsbprovider.Groups()
-
-	// sites and enums are wired up in a later task, once resource schemas are
-	// available here to walk.
-	src, err := generateSource(types, groups, nil, nil)
+	names := make(map[protoreflect.FullName]bool, len(sites))
+	for _, s := range sites {
+		names[s.Enum] = true
+	}
+	enums, err := resolveEnums(names)
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "gen-resources-tsb: formatting generated source:", err)
+		fmt.Fprintln(os.Stderr, "gen-resources-tsb:", err)
+		os.Exit(1)
+	}
+
+	src, err := generateSource(types, tsbprovider.Groups(), sites, enums)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "gen-resources-tsb: generating source:", err)
 		os.Exit(1)
 	}
 
@@ -68,5 +89,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Fprintf(os.Stderr, "gen-resources-tsb: wrote %d resources to %s\n", len(types), *out)
+	fmt.Fprintf(os.Stderr, "gen-resources-tsb: wrote %d resources, %d enums, %d enum sites to %s\n",
+		len(types), len(enums), len(sites), *out)
 }
