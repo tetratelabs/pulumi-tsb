@@ -10,7 +10,7 @@
 
 **Repo:** `tetratelabs/pulumi-tsb`, at `~/src/pulumi-tsb`. All paths below are relative to that repo root.
 
-**Prerequisite:** Phase 1 (`docs/superpowers/plans/2026-08-10-enum-identity-upstream.md`) must be merged, and `terraform-provider-tsb` must be tagged with the bumped `github.com/tetrateio/tetrate`. Task 1 does that bump.
+**Prerequisite:** SATISFIED. Phase 1 merged as tetrateio/tetrate#33545 (`64341d8e8c`), and `terraform-provider-tsb` `v0.1.4` picked it up (pinned to `tetrate@v0.0.0-20260813074402-d83bfbd29b1e`). Task 1 bumps to `0.1.4`.
 
 **Spec:** `docs/superpowers/specs/2026-08-10-pulumi-enum-types-design.md`
 
@@ -1536,10 +1536,45 @@ Ask the user before pushing. Single remote (`origin` = `tetratelabs/pulumi-tsb`)
   PR carries the `release-notes-none` label instead. The behaviour change is real and documented in
   tetrateio/tetrate#33545; it just does not warrant release-note ceremony. Revisit if the provider ever
   reaches general availability.
-- **Task 1's gate program answers an open question.** Phase 1's reviewer could not verify whether
-  pulumi-terraform-bridge's PF shim hands us the concrete `attr.Type` or a shimmed one. The gate program
-  constructs the provider directly rather than through the shim, so it should see concrete types — if it
-  prints populated `FullName`s, that question is settled empirically.
+- **RESOLVED — the identity arrives.** Phase 1's reviewer could not verify whether the concrete
+  `attr.Type` reaches us. Measured against `terraform-provider-tsb v0.1.4`: it does, with zero empty
+  `FullName`s. Task 1's gate is now a regression check rather than an open question.
+
+## Confirmed against the real provider (terraform-provider-tsb v0.1.4)
+
+Measured by walking all 48 resource schemas after Phase 1 landed, so these supersede the static upper
+bounds in the spec:
+
+| Measure | Static upper bound | **Actual reachable** |
+| --- | --- | --- |
+| Enum sites | ~660 | **316** (315 scalar + 1 collection) |
+| Distinct enums | 77 | **52** |
+| Collection sites | 13 | **1** |
+| Sites with an empty `FullName` | — | **0** |
+| Unrecognised attribute kinds | — | **0** |
+
+Roughly half the static count, because unreachable packages and `protoc-gen-terraform`'s own test
+fixtures drop out. Three things this confirms:
+
+- **The walk's attribute-kind allow-list is complete.** Zero unrecognised kinds across all 48 resources,
+  so Task 4's `default:` branch should never fire in practice — which is exactly why it must stay an
+  error rather than a skip.
+- **The reserved-module remap is load-bearing.** `tetrateio.api.tsb.types.v2` is reachable with 6 enums
+  and derives the reserved name `types`, so the `coreTypes` remap is required, not defensive.
+  `tetrateio.api.tsb.private.v2` is **not** reachable, so the `privateApi` entry is currently dead —
+  keep or drop it, but do not treat its absence as a bug.
+- **Collection handling matters but is low-volume.** Exactly one reachable collection site, versus 13 in
+  the API overall. It still must be handled — dropping it silently emits a plain string where an enum
+  belongs — just do not expect it to show up often while testing.
+
+The 13 reachable proto packages map to modules `index`, `auth`, `extension`, `gateway`, `profile`,
+`rbac`, `security`, `traffic`, `coreTypes`, `installCommon`, `installControlplane`, `installDataplane`,
+`installManagementplane`. Six already exist as resource modules; six are new namespaces.
+
+## Open items for the implementation plan
+
+- Where the `tsc --noEmit` step attaches, given the Makefile removes `sdk/tsconfig.json` during
+  `sdk.nodejs`.
 
 ## Follow-up, not in scope
 
