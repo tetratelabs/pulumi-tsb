@@ -13,6 +13,9 @@ export const RbacRole: typeof import("./rbacRole").RbacRole = null as any;
 utilities.lazyLoad(exports, ["RbacRole"], () => require("./rbacRole"));
 
 
+// Export enums:
+export * from "../types/enums/rbac";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

@@ -26,9 +26,15 @@ func walkSchema(resourceType string, s schema.Schema) ([]enumSite, error) {
 }
 
 // pathKey renders an attribute path for sorting and diagnostics.
-func pathKey(p []string) string { return strings.Join(p, ".") }
+func pathKey(p []pathSegment) string {
+	names := make([]string, len(p))
+	for i, seg := range p {
+		names[i] = seg.Name
+	}
+	return strings.Join(names, ".")
+}
 
-func walkAttributes(res string, prefix []string, attrs map[string]schema.Attribute, out *[]enumSite) error {
+func walkAttributes(res string, prefix []pathSegment, attrs map[string]schema.Attribute, out *[]enumSite) error {
 	names := make([]string, 0, len(attrs))
 	for n := range attrs {
 		names = append(names, n)
@@ -38,7 +44,7 @@ func walkAttributes(res string, prefix []string, attrs map[string]schema.Attribu
 	for _, name := range names {
 		// Copy rather than append in place: sibling branches must not share
 		// backing storage with this path.
-		path := append(append([]string{}, prefix...), name)
+		path := append(append([]pathSegment{}, prefix...), pathSegment{Name: name})
 		if err := walkAttribute(res, path, attrs[name], out); err != nil {
 			return err
 		}
@@ -50,7 +56,7 @@ func walkAttributes(res string, prefix []string, attrs map[string]schema.Attribu
 // kinds protoc-gen-terraform emits; anything else is an error rather than a
 // skip, so a future generator change surfaces as a build failure instead of
 // silently missing enums.
-func walkAttribute(res string, path []string, a schema.Attribute, out *[]enumSite) error {
+func walkAttribute(res string, path []pathSegment, a schema.Attribute, out *[]enumSite) error {
 	switch t := a.(type) {
 	case schema.StringAttribute:
 		if et, ok := t.GetType().(prototypes.EnumType); ok {
@@ -73,9 +79,14 @@ func walkAttribute(res string, path []string, a schema.Attribute, out *[]enumSit
 		return walkAttributes(res, path, t.Attributes, out)
 
 	case schema.ListNestedAttribute:
+		// See pathSegment.Collection: the pf shim needs two .Elem hops to
+		// reach a List/MapNestedAttribute's nested fields, versus one for a
+		// SingleNestedAttribute.
+		path[len(path)-1].Collection = true
 		return walkAttributes(res, path, t.NestedObject.Attributes, out)
 
 	case schema.MapNestedAttribute:
+		path[len(path)-1].Collection = true
 		return walkAttributes(res, path, t.NestedObject.Attributes, out)
 
 	default:
@@ -87,7 +98,7 @@ func walkAttribute(res string, path []string, a schema.Attribute, out *[]enumSit
 
 // appendElementSite records a collection whose ELEMENT is an enum. The token
 // attaches one level deeper than a scalar attribute's, hence Element.
-func appendElementSite(res string, path []string, et attr.Type, out *[]enumSite) {
+func appendElementSite(res string, path []pathSegment, et attr.Type, out *[]enumSite) {
 	if e, ok := et.(prototypes.EnumType); ok {
 		*out = append(*out, enumSite{Resource: res, Path: path, Element: true, Enum: e.FullName})
 	}

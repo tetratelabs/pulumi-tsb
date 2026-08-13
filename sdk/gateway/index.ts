@@ -68,6 +68,9 @@ export const IstioGatewayVirtualService: typeof import("./istioGatewayVirtualSer
 utilities.lazyLoad(exports, ["IstioGatewayVirtualService"], () => require("./istioGatewayVirtualService"));
 
 
+// Export enums:
+export * from "../types/enums/gateway";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

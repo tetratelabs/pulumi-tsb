@@ -38,6 +38,9 @@ export const SecurityServiceSecuritySetting: typeof import("./securityServiceSec
 utilities.lazyLoad(exports, ["SecurityServiceSecuritySetting"], () => require("./securityServiceSecuritySetting"));
 
 
+// Export enums:
+export * from "../types/enums/security";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

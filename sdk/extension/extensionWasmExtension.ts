@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class ExtensionWasmExtension extends pulumi.CustomResource {
@@ -59,7 +60,7 @@ export class ExtensionWasmExtension extends pulumi.CustomResource {
     /**
      * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
-    declare public readonly imagePullPolicy: pulumi.Output<string>;
+    declare public readonly imagePullPolicy: pulumi.Output<enums.extension.WasmExtensionPullPolicy>;
     /**
      * Credentials to use for OCI image pulling. Name of a K8s Secret that contains a docker pull secret which is to be used to authenticate against the registry when pulling the image. If TSB is configured to use the WASM download proxy, this secret must exist in the `istio-system` namespace of each cluster that has applications that use the extension. If the download proxy is disabled, the secret must exist in each application namespace that is using the extension.
      */
@@ -79,7 +80,7 @@ export class ExtensionWasmExtension extends pulumi.CustomResource {
     /**
      * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
-    declare public readonly phase: pulumi.Output<string>;
+    declare public readonly phase: pulumi.Output<enums.extension.WasmExtensionPluginPhase>;
     /**
      * Determines the ordering of WasmExtensions in the same phase. When multiple WasmExtensions are applied to the same workload in the same phase, they will be applied by priority, in descending order. If no priority is assigned it will use the default 0 value. In case of several extensions having the same priority in the same phase, the fqn will be used to sort them.
      */
@@ -184,7 +185,7 @@ export interface ExtensionWasmExtensionState {
     /**
      * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
-    imagePullPolicy?: pulumi.Input<string | undefined>;
+    imagePullPolicy?: pulumi.Input<enums.extension.WasmExtensionPullPolicy | undefined>;
     /**
      * Credentials to use for OCI image pulling. Name of a K8s Secret that contains a docker pull secret which is to be used to authenticate against the registry when pulling the image. If TSB is configured to use the WASM download proxy, this secret must exist in the `istio-system` namespace of each cluster that has applications that use the extension. If the download proxy is disabled, the secret must exist in each application namespace that is using the extension.
      */
@@ -204,7 +205,7 @@ export interface ExtensionWasmExtensionState {
     /**
      * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
-    phase?: pulumi.Input<string | undefined>;
+    phase?: pulumi.Input<enums.extension.WasmExtensionPluginPhase | undefined>;
     /**
      * Determines the ordering of WasmExtensions in the same phase. When multiple WasmExtensions are applied to the same workload in the same phase, they will be applied by priority, in descending order. If no priority is assigned it will use the default 0 value. In case of several extensions having the same priority in the same phase, the fqn will be used to sort them.
      */
@@ -250,7 +251,7 @@ export interface ExtensionWasmExtensionArgs {
     /**
      * The pull behaviour to be applied when fetching Wasm module by either OCI image or http/https. Only relevant when referencing Wasm module without any digest, including the digest in OCI image URL or sha256 field in `vmConfig`. Defaults to IfNotPresent, except when an OCI image is referenced in the `url` and the `latest` tag is used, in which case `Always` is the default, mirroring K8s behaviour. Possible values: UNSPECIFIED_POLICY, IfNotPresent, Always.
      */
-    imagePullPolicy?: pulumi.Input<string | undefined>;
+    imagePullPolicy?: pulumi.Input<enums.extension.WasmExtensionPullPolicy | undefined>;
     /**
      * Credentials to use for OCI image pulling. Name of a K8s Secret that contains a docker pull secret which is to be used to authenticate against the registry when pulling the image. If TSB is configured to use the WASM download proxy, this secret must exist in the `istio-system` namespace of each cluster that has applications that use the extension. If the download proxy is disabled, the secret must exist in each application namespace that is using the extension.
      */
@@ -270,7 +271,7 @@ export interface ExtensionWasmExtensionArgs {
     /**
      * The phase in the filter chain where the extension will be injected. https://istio.io/latest/docs/reference/config/proxy_extensions/wasm-plugin/#PluginPhase. Possible values: UNSPECIFIED_PHASE, AUTHN, AUTHZ, STATS.
      */
-    phase?: pulumi.Input<string | undefined>;
+    phase?: pulumi.Input<enums.extension.WasmExtensionPluginPhase | undefined>;
     /**
      * Determines the ordering of WasmExtensions in the same phase. When multiple WasmExtensions are applied to the same workload in the same phase, they will be applied by priority, in descending order. If no priority is assigned it will use the default 0 value. In case of several extensions having the same priority in the same phase, the fqn will be used to sort them.
      */

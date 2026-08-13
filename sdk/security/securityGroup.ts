@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class SecurityGroup extends pulumi.CustomResource {
@@ -43,7 +44,7 @@ export class SecurityGroup extends pulumi.CustomResource {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    declare public readonly configMode: pulumi.Output<string>;
+    declare public readonly configMode: pulumi.Output<enums.coreTypes.ConfigMode>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */
@@ -138,7 +139,7 @@ export interface SecurityGroupState {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    configMode?: pulumi.Input<string | undefined>;
+    configMode?: pulumi.Input<enums.coreTypes.ConfigMode | undefined>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */
@@ -184,7 +185,7 @@ export interface SecurityGroupArgs {
     /**
      * The Configuration types that will be added to this group. `BRIDGED` mode indicates that configurations added to this group will use Tetrate APIs such as `SecuritySetting`. `DIRECT` mode indicates that configurations added to this group will use Istio Security v2beta1 APIs such as `PeerAuthentication`, and `AuthorizationPolicy`. Defaults to `BRIDGED` mode. Possible values: BRIDGED, DIRECT.
      */
-    configMode?: pulumi.Input<string | undefined>;
+    configMode?: pulumi.Input<enums.coreTypes.ConfigMode | undefined>;
     /**
      * When set, prevents the resource from being deleted. In order to delete the resource this property needs to be set to `false` first.
      */

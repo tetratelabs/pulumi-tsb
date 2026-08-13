@@ -4,6 +4,9 @@
 // *** Do not edit by hand unless you're certain you know what you are doing! ***
 
 import * as pulumi from "@pulumi/pulumi";
+import * as inputs from "./types/input";
+import * as outputs from "./types/output";
+import * as enums from "./types/enums";
 import * as utilities from "./utilities";
 
 export class User extends pulumi.CustomResource {
@@ -73,7 +76,7 @@ export class User extends pulumi.CustomResource {
     /**
      * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
-    declare public /*out*/ readonly sourceType: pulumi.Output<string>;
+    declare public /*out*/ readonly sourceType: pulumi.Output<enums.SourceType>;
 
     /**
      * Create a User resource with the given unique name, arguments, and options.
@@ -168,7 +171,7 @@ export interface UserState {
     /**
      * Where the user comes from. It can be a local user that exists only in TSB (type LOCAL) or it can be a user that has been synchronized from the Identity Provider (for example: type LDAP). Possible values: INVALID, LDAP, LOCAL, AZURE, MANUAL, PINGAM, OIDC_PROVISIONED.
      */
-    sourceType?: pulumi.Input<string | undefined>;
+    sourceType?: pulumi.Input<enums.SourceType | undefined>;
 }
 
 /**

@@ -15,9 +15,9 @@ func TestGenerateSourceEmitsEnumsAndNestedFields(t *testing.T) {
 		Values:   []string{"DISABLED", "SIMPLE", "MUTUAL", "ISTIO_MUTUAL"},
 	}}
 	sites := []enumSite{
-		{Resource: "tsb_cluster", Path: []string{"spec", "tls", "mode"},
+		{Resource: "tsb_cluster", Path: []pathSegment{{Name: "spec"}, {Name: "tls"}, {Name: "mode"}},
 			Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
-		{Resource: "tsb_cluster", Path: []string{"modes"}, Element: true,
+		{Resource: "tsb_cluster", Path: []pathSegment{{Name: "modes"}}, Element: true,
 			Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
 	}
 
@@ -63,8 +63,8 @@ func TestGenerateSourceMergesSiblingPaths(t *testing.T) {
 		Values:   []string{"DISABLED"},
 	}}
 	sites := []enumSite{
-		{Resource: "tsb_cluster", Path: []string{"spec", "a"}, Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
-		{Resource: "tsb_cluster", Path: []string{"spec", "b"}, Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
+		{Resource: "tsb_cluster", Path: []pathSegment{{Name: "spec"}, {Name: "a"}}, Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
+		{Resource: "tsb_cluster", Path: []pathSegment{{Name: "spec"}, {Name: "b"}}, Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
 	}
 
 	got, err := generateSource([]string{"tsb_cluster"}, map[string]string{}, sites, enums)
@@ -73,6 +73,44 @@ func TestGenerateSourceMergesSiblingPaths(t *testing.T) {
 	}
 	if n := strings.Count(stripSpace(string(got)), `"spec":`); n != 1 {
 		t.Errorf("generated source has %d \"spec\" keys, want 1\n---\n%s", n, got)
+	}
+}
+
+// A List/MapNestedAttribute ancestor needs two .Elem hops to reach its
+// nested fields, versus one for a SingleNestedAttribute — see
+// pathSegment.Collection. Getting this wrong doesn't fail generation; it
+// fails tfgen's schema-build validation later with no indication of which
+// enum silently vanished, so pin the emitted shape here.
+func TestGenerateSourceDoubleElemsCollectionAncestors(t *testing.T) {
+	enums := []enumInfo{{
+		FullName: "tetrateio.api.tsb.auth.v2.TLSMode",
+		Package:  "tetrateio.api.tsb.auth.v2",
+		Values:   []string{"DISABLED"},
+	}}
+	sites := []enumSite{
+		{Resource: "tsb_cluster",
+			Path: []pathSegment{{Name: "rules", Collection: true}, {Name: "mode"}},
+			Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
+		{Resource: "tsb_cluster",
+			Path: []pathSegment{{Name: "spec"}, {Name: "mode"}},
+			Enum: "tetrateio.api.tsb.auth.v2.TLSMode"},
+	}
+
+	got, err := generateSource([]string{"tsb_cluster"}, map[string]string{}, sites, enums)
+	if err != nil {
+		t.Fatalf("generateSource returned error: %v", err)
+	}
+	src := stripSpace(string(got))
+
+	for _, want := range []string{
+		// Collection ancestor: two .Elem hops before Fields.
+		`"rules":{Elem:&tfbridge.SchemaInfo{Elem:&tfbridge.SchemaInfo{Fields:map[string]*tfbridge.SchemaInfo{"mode":{Type:"tsb:auth/TLSMode:TLSMode"},}}}}`,
+		// SingleNestedAttribute ancestor: one .Elem hop before Fields.
+		`"spec":{Elem:&tfbridge.SchemaInfo{Fields:map[string]*tfbridge.SchemaInfo{"mode":{Type:"tsb:auth/TLSMode:TLSMode"},}}}`,
+	} {
+		if !strings.Contains(src, stripSpace(want)) {
+			t.Errorf("generated source is missing %q\n---\n%s", want, got)
+		}
 	}
 }
 

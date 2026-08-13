@@ -13,6 +13,9 @@ export const ExtensionWasmExtension: typeof import("./extensionWasmExtension").E
 utilities.lazyLoad(exports, ["ExtensionWasmExtension"], () => require("./extensionWasmExtension"));
 
 
+// Export enums:
+export * from "../types/enums/extension";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

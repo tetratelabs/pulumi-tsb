@@ -15,9 +15,10 @@ import (
 // fieldNode merges many enum sites into one nested SchemaInfo literal per
 // resource. Non-leaf nodes carry children; leaves carry a token.
 type fieldNode struct {
-	children map[string]*fieldNode
-	token    string // non-empty at an enum leaf
-	element  bool   // leaf is a collection element, so the token nests one deeper
+	children   map[string]*fieldNode
+	token      string // non-empty at an enum leaf
+	element    bool   // leaf is a collection element, so the token nests one deeper
+	collection bool   // non-leaf reached via a List/MapNestedAttribute; see pathSegment.Collection
 }
 
 func newFieldNode() *fieldNode {
@@ -39,11 +40,12 @@ func buildFieldTrees(sites []enumSite, tokens map[protoreflect.FullName]string) 
 		}
 		n := root
 		for _, seg := range s.Path {
-			child, ok := n.children[seg]
+			child, ok := n.children[seg.Name]
 			if !ok {
 				child = newFieldNode()
-				n.children[seg] = child
+				n.children[seg.Name] = child
 			}
+			child.collection = seg.Collection
 			n = child
 		}
 		n.token, n.element = tok, s.Element
@@ -68,14 +70,24 @@ func renderFields(b *strings.Builder, children map[string]*fieldNode) {
 	b.WriteString("}")
 }
 
-// renderNode writes a single *tfbridge.SchemaInfo literal. Every nesting level
-// costs one .Elem, matching how tfgen descends (pkg/tfgen/generate.go:519,541).
+// renderNode writes a single *tfbridge.SchemaInfo literal. A nesting level
+// costs one .Elem for a SingleNestedAttribute (pf shim: Type=Map/Elem=Resource
+// directly) but two for a List/MapNestedAttribute (pf shim: List-or-Map
+// wrapping that same Type=Map/Elem=Resource shape one level deeper) — see
+// pathSegment.Collection. Getting this wrong doesn't error at generation
+// time; tfgen's own structural validator (pkg/tfbridge/info/validate.go)
+// rejects the mismatch with ".Fields should be .Elem.Fields" at schema-build
+// time instead.
 func renderNode(b *strings.Builder, n *fieldNode) {
 	switch {
 	case n.token != "" && n.element:
 		fmt.Fprintf(b, "{Elem: &tfbridge.SchemaInfo{Type: %q}}", n.token)
 	case n.token != "":
 		fmt.Fprintf(b, "{Type: %q}", n.token)
+	case n.collection:
+		b.WriteString("{Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: ")
+		renderFields(b, n.children)
+		b.WriteString("}}}")
 	default:
 		b.WriteString("{Elem: &tfbridge.SchemaInfo{Fields: ")
 		renderFields(b, n.children)

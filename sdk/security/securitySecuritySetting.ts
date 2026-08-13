@@ -6,6 +6,7 @@
 import * as pulumi from "@pulumi/pulumi";
 import * as inputs from "../types/input";
 import * as outputs from "../types/output";
+import * as enums from "../types/enums";
 import * as utilities from "../utilities";
 
 export class SecuritySecuritySetting extends pulumi.CustomResource {
@@ -39,7 +40,7 @@ export class SecuritySecuritySetting extends pulumi.CustomResource {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    declare public readonly authentication: pulumi.Output<string>;
+    declare public readonly authentication: pulumi.Output<enums.security.SecuritySettingAuthenticationMode>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -75,7 +76,7 @@ export class SecuritySecuritySetting extends pulumi.CustomResource {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    declare public readonly propagationStrategy: pulumi.Output<string>;
+    declare public readonly propagationStrategy: pulumi.Output<enums.coreTypes.PropagationStrategy>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -137,7 +138,7 @@ export interface SecuritySecuritySettingState {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication?: pulumi.Input<string | undefined>;
+    authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -173,7 +174,7 @@ export interface SecuritySecuritySettingState {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<string | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */
@@ -187,7 +188,7 @@ export interface SecuritySecuritySettingArgs {
     /**
      * DEPRECATED: Specifies whether the proxy workloads should accept only mutual TLS authenticated traffic or allow legacy plaintext traffic as well. This field is deprecated in favor of `authenticationSettings` and will be removed in the future release. Possible values: UNSET, OPTIONAL, REQUIRED.
      */
-    authentication?: pulumi.Input<string | undefined>;
+    authentication?: pulumi.Input<enums.security.SecuritySettingAuthenticationMode | undefined>;
     /**
      * Authentication settings is used to set workload-to-workload traffic and end-user/origin authentication configuration. Authentication settings is affected by the security setting's defined propagation strategy. If `STRICTER` is used the most restrictive AuthenticationSettings traffic mode along the configuration hierarchy will prevail. AuthenticationSettings traffic mode can only be changed from `UNSET` to `OPTIONAL` to `REQUIRED`. Authentication settings http will use replace propagation strategy.
      */
@@ -223,7 +224,7 @@ export interface SecuritySecuritySettingArgs {
     /**
      * Propagation strategy specifies how a security setting is propagated along the configuration hierarchy. The default strategy is `REPLACE`. The propagation strategy from security settings can only be changed from `REPLACE` to `STRICTER` along the settings in the configuration hierarchy. Any security setting propagation strategy changed from the default one, higher up in the configuration hierarchy, will prevail over any other defined security setting propagation strategy further down in the configuration hierarchy. For instance, if an organization's default security setting propagation strategy is changed to `STRICTER`, a restrictive propagation strategy will be used at tenant, workspace default security settings and group security settings. `STRICTER` propagation strategy will be used even though, tenant, workspace or group security settings specifies a `REPLACE` propagation strategy. Security setting properties affected by the propagation strategy are: - Authorization - AuthenticationSettings - Extension All the other properties will use the default `REPLACE` propagation strategy. How each property affected by the propagation strategy will be restricted is explained in more detail at each property. Possible values: REPLACE, STRICTER.
      */
-    propagationStrategy?: pulumi.Input<string | undefined>;
+    propagationStrategy?: pulumi.Input<enums.coreTypes.PropagationStrategy | undefined>;
     /**
      * NOTICE: this feature is in alpha stage and under active development. it would encounter breaking changes in further release and should not be adopted in production WAF settings is used to set firewall rules.
      */

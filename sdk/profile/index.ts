@@ -13,6 +13,9 @@ export const ProfileProfile: typeof import("./profileProfile").ProfileProfile = 
 utilities.lazyLoad(exports, ["ProfileProfile"], () => require("./profileProfile"));
 
 
+// Export enums:
+export * from "../types/enums/profile";
+
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {

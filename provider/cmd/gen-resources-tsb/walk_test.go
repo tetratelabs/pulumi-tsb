@@ -39,6 +39,11 @@ func TestWalkSchemaFindsEnumLeaves(t *testing.T) {
 				Attributes: map[string]schema.Attribute{"action": enumAttr("test.Action")},
 			},
 		},
+		"entries": schema.MapNestedAttribute{
+			NestedObject: schema.NestedAttributeObject{
+				Attributes: map[string]schema.Attribute{"mode": enumAttr("test.EntryMode")},
+			},
+		},
 	}}
 
 	got, err := walkSchema("tsb_thing", s)
@@ -47,11 +52,12 @@ func TestWalkSchemaFindsEnumLeaves(t *testing.T) {
 	}
 
 	want := []enumSite{
-		{Resource: "tsb_thing", Path: []string{"labels"}, Element: true, Enum: "test.Label"},
-		{Resource: "tsb_thing", Path: []string{"mode"}, Enum: "test.Mode"},
-		{Resource: "tsb_thing", Path: []string{"modes"}, Element: true, Enum: "test.Mode"},
-		{Resource: "tsb_thing", Path: []string{"rules", "action"}, Enum: "test.Action"},
-		{Resource: "tsb_thing", Path: []string{"spec", "tls", "mode"}, Enum: "test.TLSMode"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "entries", Collection: true}, {Name: "mode"}}, Enum: "test.EntryMode"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "labels"}}, Element: true, Enum: "test.Label"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "mode"}}, Enum: "test.Mode"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "modes"}}, Element: true, Enum: "test.Mode"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "rules", Collection: true}, {Name: "action"}}, Enum: "test.Action"},
+		{Resource: "tsb_thing", Path: []pathSegment{{Name: "spec"}, {Name: "tls"}, {Name: "mode"}}, Enum: "test.TLSMode"},
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Errorf("walkSchema =\n%#v\nwant\n%#v", got, want)

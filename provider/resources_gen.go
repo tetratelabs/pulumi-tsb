@@ -13,7 +13,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 	"tsb_access_binding": {Tok: tsbResourceTok(tsbMod, "AccessBinding")},
 	"tsb_api":            {Tok: tsbResourceTok(tsbMod, "Api")},
 	"tsb_application_api": {Tok: tsbResourceTok("application", "ApplicationApi"), Fields: map[string]*tfbridge.SchemaInfo{
-		"http_servers": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"http_servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -45,15 +45,15 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"routing": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"route": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"service_destination": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -61,7 +61,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"max_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
@@ -69,8 +69,8 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
 			"traffic_mode": {Type: "tsb:gateway/TrafficMode:TrafficMode"},
-		}}},
-		"servers": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -99,11 +99,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -111,7 +111,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"min_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
-		}}},
+		}}}},
 	}},
 	"tsb_application_application": {Tok: tsbResourceTok("application", "ApplicationApplication")},
 	"tsb_cluster": {Tok: tsbResourceTok(tsbMod, "Cluster"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -159,25 +159,25 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		"namespace_scope": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"scope": {Type: "tsb:index/NamespaceScopingScope:NamespaceScopingScope"},
 		}}},
-		"namespaces": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"namespaces": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"istio": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"istio_injection": {Type: "tsb:index/IstioStatusIstioInjection:IstioStatusIstioInjection"},
 			}}},
-			"services": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"services": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"state": {Type: "tsb:index/ServiceState:ServiceState"},
-			}}},
-		}}},
+			}}}},
+		}}}},
 		"state": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"istio_revisions": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"istio_revisions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"distribution": {Type: "tsb:index/ClusterStateIstioRevisionDistribution:ClusterStateIstioRevisionDistribution"},
-			}}},
+			}}}},
 			"mode": {Type: "tsb:coreTypes/ControlPlaneMode:ControlPlaneMode"},
 		}}},
 	}},
 	"tsb_cluster_onboarding_config": {Tok: tsbResourceTok(tsbMod, "ClusterOnboardingConfig"), Fields: map[string]*tfbridge.SchemaInfo{
-		"namespaces": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"namespaces": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"desired_state": {Type: "tsb:index/NamespaceDesiredState:NamespaceDesiredState"},
-		}}},
+		}}}},
 	}},
 	"tsb_extension_wasm_extension": {Tok: tsbResourceTok("extension", "ExtensionWasmExtension"), Fields: map[string]*tfbridge.SchemaInfo{
 		"image_pull_policy": {Type: "tsb:extension/WasmExtensionPullPolicy:WasmExtensionPullPolicy"},
@@ -186,13 +186,13 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		}}},
 		"phase": {Type: "tsb:extension/WasmExtensionPluginPhase:WasmExtensionPluginPhase"},
 		"vm_config": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"env": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"env": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"value_from": {Type: "tsb:extension/EnvValueSource:EnvValueSource"},
-			}}},
+			}}}},
 		}}},
 	}},
 	"tsb_gateway_egress_gateway": {Tok: tsbResourceTok("gateway", "GatewayEgressGateway"), Fields: map[string]*tfbridge.SchemaInfo{
-		"authorization": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"authorization": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"from": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"http": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -204,21 +204,21 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-		}}},
-		"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-			}}},
-		}}},
+			}}}},
+		}}}},
 	}},
 	"tsb_gateway_gateway": {Tok: tsbResourceTok("gateway", "GatewayGateway"), Fields: map[string]*tfbridge.SchemaInfo{
-		"egress_authorization": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"egress_authorization": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"from": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:gateway/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
 			"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
-		}}},
-		"http": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"http": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -250,15 +250,15 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"routing": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"route": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"service_destination": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -266,7 +266,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"max_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
@@ -274,8 +274,8 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
 			"traffic_mode": {Type: "tsb:gateway/TrafficMode:TrafficMode"},
-		}}},
-		"tcp": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"tcp": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
@@ -292,8 +292,8 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
 			"traffic_mode": {Type: "tsb:gateway/TrafficMode:TrafficMode"},
-		}}},
-		"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"tls": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
 			}}},
@@ -304,23 +304,23 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 			}}},
-		}}},
-		"wasm_plugins": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"wasm_plugins": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-			}}},
-		}}},
+			}}}},
+		}}}},
 	}},
 	"tsb_gateway_group": {Tok: tsbResourceTok("gateway", "GatewayGroup"), Fields: map[string]*tfbridge.SchemaInfo{
 		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
 	}},
 	"tsb_gateway_ingress_gateway": {Tok: tsbResourceTok("gateway", "GatewayIngressGateway"), Fields: map[string]*tfbridge.SchemaInfo{
-		"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-			}}},
-		}}},
-		"http": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			}}}},
+		}}}},
+		"http": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -349,11 +349,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -361,14 +361,14 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"min_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
-		}}},
-		"tcp": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"tcp": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"max_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"min_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
-		}}},
+		}}}},
 	}},
 	"tsb_gateway_install_gateway": {Tok: tsbResourceTok("gateway", "GatewayInstallGateway"), Fields: map[string]*tfbridge.SchemaInfo{
 		"type": {Type: "tsb:installDataplane/GatewaySpecType:GatewaySpecType"},
@@ -380,12 +380,12 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 	}},
 	"tsb_gateway_shared_gateway_reference_grant": {Tok: tsbResourceTok("gateway", "GatewaySharedGatewayReferenceGrant")},
 	"tsb_gateway_tier1_gateway": {Tok: tsbResourceTok("gateway", "GatewayTier1Gateway"), Fields: map[string]*tfbridge.SchemaInfo{
-		"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-			}}},
-		}}},
-		"external_servers": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			}}}},
+		}}}},
+		"external_servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -414,11 +414,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -426,8 +426,8 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"min_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
-		}}},
-		"internal_servers": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"internal_servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"oidc": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"auth_type": {Type: "tsb:auth/OIDCAuthType:OIDCAuthType"},
@@ -449,14 +449,14 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 			}}},
-		}}},
-		"tcp_external_servers": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"tcp_external_servers": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"tls": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"max_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"min_protocol_version": {Type: "tsb:gateway/TLSProtocol:TLSProtocol"},
 				"mode":                 {Type: "tsb:gateway/ServerTLSSettingsTLSMode:ServerTLSSettingsTLSMode"},
 			}}},
-		}}},
+		}}}},
 	}},
 	"tsb_istio_gateway_authorization_policy":    {Tok: tsbResourceTok("gateway", "IstioGatewayAuthorizationPolicy")},
 	"tsb_istio_gateway_gateway":                 {Tok: tsbResourceTok("gateway", "IstioGatewayGateway")},
@@ -517,11 +517,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-			"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -536,11 +536,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -553,7 +553,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -565,7 +565,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -574,11 +574,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -587,7 +587,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 			}}},
-			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -599,7 +599,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 					}}},
 				}}},
-			}}},
+			}}}},
 		}}},
 		"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
@@ -636,11 +636,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+							"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 									"unit": {Type: "tsb:profile/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 								}}},
-							}}},
+							}}}},
 						}}},
 					}}},
 					"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -653,7 +653,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"mode": {Type: "tsb:profile/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 					}}},
-					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"traffic_mode": {Type: "tsb:profile/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -665,7 +665,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 								"circuit_breaker_sensitivity": {Type: "tsb:profile/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 							}}},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -680,11 +680,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+							"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 									"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 								}}},
-							}}},
+							}}}},
 						}}},
 					}}},
 					"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -697,7 +697,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 					}}},
-					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -709,7 +709,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 								"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 							}}},
 						}}},
-					}}},
+					}}}},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -718,11 +718,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -731,7 +731,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -743,13 +743,13 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
-			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 		}}},
 		"mandates": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"authentication_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -781,11 +781,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+							"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 									"unit": {Type: "tsb:profile/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 								}}},
-							}}},
+							}}}},
 						}}},
 					}}},
 					"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -798,7 +798,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"mode": {Type: "tsb:profile/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 					}}},
-					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"traffic_mode": {Type: "tsb:profile/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -810,7 +810,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 								"circuit_breaker_sensitivity": {Type: "tsb:profile/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 							}}},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -825,11 +825,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							}}},
 						}}},
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-							"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+							"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 									"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 								}}},
-							}}},
+							}}}},
 						}}},
 					}}},
 					"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -842,7 +842,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 					}}},
-					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -854,7 +854,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 								"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 							}}},
 						}}},
-					}}},
+					}}}},
 				}}},
 				"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -863,11 +863,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -876,7 +876,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -888,19 +888,19 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
-			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"wasm_extensions": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 		}}},
 	}},
 	"tsb_rbac_role": {Tok: tsbResourceTok("rbac", "RbacRole"), Fields: map[string]*tfbridge.SchemaInfo{
-		"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"permissions": {Elem: &tfbridge.SchemaInfo{Type: "tsb:rbac/Permission:Permission"}},
-		}}},
+		}}}},
 	}},
 	"tsb_security_group": {Tok: tsbResourceTok("security", "SecurityGroup"), Fields: map[string]*tfbridge.SchemaInfo{
 		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
@@ -935,11 +935,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 			"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 		}}},
-		"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-			}}},
-		}}},
+			}}}},
+		}}}},
 		"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 	}},
 	"tsb_security_service_security_setting": {Tok: tsbResourceTok("security", "SecurityServiceSecuritySetting"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -973,14 +973,14 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-			"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 		}}},
-		"subsets": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"subsets": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"authentication": {Type: "tsb:security/SecuritySettingAuthenticationMode:SecuritySettingAuthenticationMode"},
 				"authentication_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1011,14 +1011,14 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 					"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 				}}},
-				"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-					}}},
-				}}},
+					}}}},
+				}}}},
 				"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 			}}},
-		}}},
+		}}}},
 	}},
 	"tsb_service_account": {Tok: tsbResourceTok(tsbMod, "ServiceAccount")},
 	"tsb_team": {Tok: tsbResourceTok(tsbMod, "Team"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -1056,11 +1056,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-			"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1075,11 +1075,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1092,7 +1092,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1104,7 +1104,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1113,11 +1113,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1126,7 +1126,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 			}}},
-			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1138,21 +1138,21 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 					}}},
 				}}},
-			}}},
+			}}}},
 		}}},
 	}},
 	"tsb_traffic_group": {Tok: tsbResourceTok("traffic", "TrafficGroup"), Fields: map[string]*tfbridge.SchemaInfo{
 		"config_mode": {Type: "tsb:coreTypes/ConfigMode:ConfigMode"},
 	}},
 	"tsb_traffic_service_route": {Tok: tsbResourceTok("traffic", "TrafficServiceRoute"), Fields: map[string]*tfbridge.SchemaInfo{
-		"port_level_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"port_level_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"traffic_type": {Type: "tsb:traffic/ServiceRouteTrafficType:ServiceRouteTrafficType"},
-		}}},
-		"subsets": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-			"port_level_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		}}}},
+		"subsets": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"port_level_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"traffic_type": {Type: "tsb:traffic/ServiceRouteTrafficType:ServiceRouteTrafficType"},
-			}}},
-		}}},
+			}}}},
+		}}}},
 	}},
 	"tsb_traffic_service_traffic_setting": {Tok: tsbResourceTok("traffic", "TrafficServiceTrafficSetting"), Fields: map[string]*tfbridge.SchemaInfo{
 		"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1167,11 +1167,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1184,7 +1184,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1196,7 +1196,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1205,11 +1205,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1218,7 +1218,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 			}}},
-			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1230,7 +1230,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 					}}},
 				}}},
-			}}},
+			}}}},
 		}}},
 	}},
 	"tsb_traffic_traffic_setting": {Tok: tsbResourceTok("traffic", "TrafficTrafficSetting"), Fields: map[string]*tfbridge.SchemaInfo{
@@ -1245,11 +1245,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1262,7 +1262,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 			}}},
-			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1274,7 +1274,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 					}}},
 				}}},
-			}}},
+			}}}},
 		}}},
 		"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1283,11 +1283,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				}}},
 			}}},
 			"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 					}}},
-				}}},
+				}}}},
 			}}},
 		}}},
 		"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1296,7 +1296,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 		"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 		}}},
-		"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+		"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1308,7 +1308,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 				}}},
 			}}},
-		}}},
+		}}}},
 	}},
 	"tsb_user": {Tok: tsbResourceTok(tsbMod, "User"), Fields: map[string]*tfbridge.SchemaInfo{
 		"source_type": {Type: "tsb:index/SourceType:SourceType"},
@@ -1345,11 +1345,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"identity_match": {Type: "tsb:coreTypes/IdentityMatch:IdentityMatch"},
 				"mode":           {Type: "tsb:security/AuthorizationSettingsMode:AuthorizationSettingsMode"},
 			}}},
-			"extension": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-				"match": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"extension": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"match": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:coreTypes/WorkloadMode:WorkloadMode"},
-				}}},
-			}}},
+				}}}},
+			}}}},
 			"propagation_strategy": {Type: "tsb:coreTypes/PropagationStrategy:PropagationStrategy"},
 		}}},
 		"default_traffic_setting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1364,11 +1364,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						}}},
 					}}},
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-						"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+						"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 								"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 							}}},
-						}}},
+						}}}},
 					}}},
 				}}},
 				"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1381,7 +1381,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 				"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"mode": {Type: "tsb:traffic/ReachabilitySettingsMode:ReachabilitySettingsMode"},
 				}}},
-				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+				"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1393,7 +1393,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 							"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 						}}},
 					}}},
-				}}},
+				}}}},
 			}}},
 			"rate_limiting": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"external_service": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1402,11 +1402,11 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 					}}},
 				}}},
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
-					"rules": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+					"rules": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"limit": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 							"unit": {Type: "tsb:gateway/RateLimitSettingsRateLimitValueUnit:RateLimitSettingsRateLimitValueUnit"},
 						}}},
-					}}},
+					}}}},
 				}}},
 			}}},
 			"reachability": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
@@ -1415,7 +1415,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 			"resilience": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"circuit_breaker_sensitivity": {Type: "tsb:traffic/ResilienceSettingsSensitivity:ResilienceSettingsSensitivity"},
 			}}},
-			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
+			"upstream_traffic_settings": {Elem: &tfbridge.SchemaInfo{Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 				"settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 					"authentication": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 						"traffic_mode": {Type: "tsb:traffic/AuthenticationSettingsAuthenticationMode:AuthenticationSettingsAuthenticationMode"},
@@ -1427,7 +1427,7 @@ var generatedResources = map[string]*tfbridge.ResourceInfo{
 						"circuit_breaker_sensitivity": {Type: "tsb:traffic/UpstreamResilienceSettingsSensitivity:UpstreamResilienceSettingsSensitivity"},
 					}}},
 				}}},
-			}}},
+			}}}},
 		}}},
 		"failover_settings": {Elem: &tfbridge.SchemaInfo{Fields: map[string]*tfbridge.SchemaInfo{
 			"topology_choice": {Type: "tsb:coreTypes/FailoverSettingsTopologyChoice:FailoverSettingsTopologyChoice"},
