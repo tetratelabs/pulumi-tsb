@@ -70,5 +70,11 @@ tagcheck: versioncheck
 check-enums: schema
 	@./hack/check-enums.sh
 
-check: generate licenser check-enums
+# `sdk` is a prerequisite so the committed sdk/ is regenerated too: without it,
+# sdk/ can drift from schema.json undetected, since nothing else here rebuilds
+# it. licenser is invoked from the recipe rather than listed as a prerequisite
+# because make would treat it as already-made from an earlier prerequisite and
+# skip it, leaving the freshly generated files without their headers.
+check: generate check-enums sdk
+	$(MAKE) licenser
 	[ -z "`git status -uno --porcelain`" ] || (git status && echo 'Check failed. This could be a failed check or dirty git state.'; exit 1)
